@@ -1,0 +1,692 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning App</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --correct: #10b981;
+            --wrong: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--primary); color: white; padding: 16px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 1.1rem; font-weight: 600; flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(37, 99, 235, 0.2); z-index: 10;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.2); border: none; color: white; padding: 6px 16px;
+            border-radius: 20px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s;
+        }
+        .header-btn:active { background: rgba(255, 255, 255, 0.3); }
+
+        .main-content { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+        .section { display: none; flex-direction: column; height: 100%; padding: 20px; animation: fadeIn 0.3s ease; }
+        .section.active { display: flex; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HOME SCREEN & MENUS --- */
+        .welcome-header { text-align: center; padding: 15px 10px; flex-shrink: 0; }
+        .welcome-title { font-size: 2.2rem; font-weight: 800; color: #111827; margin-bottom: 8px; }
+        .welcome-subtitle { font-size: 1rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; margin: 0 auto; }
+
+        .menu-list { display: flex; flex-direction: column; gap: 12px; padding-bottom: 30px; }
+        .menu-card {
+            background: var(--card-bg); border-radius: 20px; padding: 16px; display: flex;
+            align-items: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: transform 0.1s;
+        }
+        .menu-card:active { transform: scale(0.97); }
+
+        .icon-box {
+            width: 56px; height: 56px; border-radius: 16px; display: flex;
+            align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0;
+        }
+
+        .bg-blue { background-color: #dbeafe; } .bg-green { background-color: #dcfce7; }
+        .bg-yellow { background-color: #fef08a; } .bg-purple { background-color: #f3e8ff; }
+        .bg-red { background-color: #fee2e2; } .bg-orange { background-color: #ffedd5; }
+        .bg-gray { background-color: #f3f4f6; }
+
+        .menu-text { margin-left: 16px; flex: 1; }
+        .menu-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+        .menu-desc { font-size: 0.85rem; color: var(--text-muted); }
+        .menu-badge { font-size: 0.8rem; font-weight: 700; color: var(--primary); background: #dbeafe; padding: 2px 8px; border-radius: 10px; float: right; }
+
+        /* --- SHARED COMPONENTS --- */
+        .status-bar { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; flex-shrink: 0; }
+        .question-box { background: var(--card-bg); padding: 25px 20px; border-radius: 20px; text-align: center; font-size: 1.5rem; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); flex-shrink: 0; }
+        .options-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; flex: 1; overflow-y: auto; }
+        
+        .option-btn { padding: 16px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; font-size: 1.1rem; font-weight: 600; text-align: left; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: 0.2s; color: var(--text-main); flex-shrink: 0; }
+        .option-btn.correct { background: var(--correct); color: white; border-color: var(--correct); }
+        .option-btn.wrong { background: var(--wrong); color: white; border-color: var(--wrong); }
+
+        .btn { flex: 1; padding: 16px; border: none; border-radius: 16px; font-size: 1.1rem; font-weight: 600; cursor: pointer; background: #e5e7eb; color: var(--text-main); transition: 0.2s; text-align: center;}
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:active { background: var(--primary-hover); }
+        .btn:active { transform: scale(0.96); }
+        .controls { display: flex; gap: 12px; flex-shrink: 0; }
+
+        .result-screen { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
+        .result-score { font-size: 4rem; font-weight: 800; color: var(--primary); margin: 10px 0 30px; }
+
+        /* --- DICTIONARY GRID --- */
+        .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 30px; flex: 1; }
+        .dict-card { height: 90px; perspective: 1000px; cursor: pointer; }
+        .dict-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.4s; transform-style: preserve-3d; }
+        .dict-card.flipped .dict-card-inner { transform: rotateY(180deg); }
+        .dict-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 16px; font-weight: 700; font-size: 1.05rem; box-shadow: 0 4px 10px rgba(0,0,0,0.04); text-align: center; padding: 5px; color: var(--text-main);}
+        .dict-back { transform: rotateY(180deg); color: var(--primary); background: #eff6ff;}
+
+        /* --- FLASHCARDS --- */
+        .flashcard-container { flex: 1; perspective: 1000px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; min-height: 0; }
+        .flashcard { width: 100%; height: 100%; max-height: 400px; position: relative; transition: transform 0.5s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; cursor: pointer; }
+        .flashcard.is-flipped { transform: rotateY(180deg); }
+        .flashcard-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background: var(--card-bg); border-radius: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; padding: 20px; text-align: center; }
+        .flashcard-back { transform: rotateY(180deg); color: var(--primary); }
+
+        /* --- MATCH THE WORDS --- */
+        .match-columns { display: flex; gap: 12px; flex: 1; overflow-y: auto; padding-bottom: 20px; }
+        .match-col { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+        .match-btn { padding: 12px; background: var(--card-bg); border: 2px solid #e5e7eb; border-radius: 16px; font-size: 1.05rem; font-weight: 600; text-align: center; cursor: pointer; transition: all 0.2s; color: var(--text-main); min-height: 70px; display: flex; align-items: center; justify-content: center; }
+        .match-btn.selected { border-color: var(--primary); background: #eff6ff; color: var(--primary); transform: scale(0.96); }
+        .match-btn.correct { border-color: var(--correct); background: #dcfce7; color: var(--correct); opacity: 0; visibility: hidden; transform: scale(0.8); transition: all 0.4s ease-out; pointer-events: none; }
+        .match-btn.wrong { border-color: var(--wrong); background: #fee2e2; color: var(--wrong); animation: shake 0.4s; }
+
+        /* --- SPELLING MODE --- */
+        .spell-slots { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; }
+        .spell-slot { width: 45px; height: 55px; border-bottom: 4px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: var(--primary); cursor: pointer; text-transform: uppercase; }
+        .spell-slot.filled { border-bottom-color: var(--primary); }
+        .spell-letters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .letter-btn { width: 50px; height: 50px; background: var(--card-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.1s; text-transform: uppercase; }
+        .letter-btn:active { transform: scale(0.9); }
+        .letter-btn.hidden { opacity: 0; pointer-events: none; transform: scale(0); transition: 0.2s; }
+
+        /* --- TRUE/FALSE MODE --- */
+        .tf-card { background: var(--card-bg); flex: 1; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; text-align: center; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .tf-equals { color: var(--primary); margin: 15px 0; font-size: 2.5rem; }
+
+        /* --- SPRINT MODE --- */
+        .timer-container { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; margin-bottom: 15px; overflow: hidden; }
+        .timer-fill { height: 100%; background: var(--correct); width: 100%; transition: width 1s linear, background-color 0.3s; }
+        .timer-fill.low { background: var(--wrong); }
+
+        /* --- HANGMAN (ВРЯТУЙ СЕРДЕЧКО) --- */
+        .hm-slots { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+        .hm-slot { width: 35px; height: 45px; border-bottom: 3px solid #cbd5e1; display: flex; align-items: flex-end; justify-content: center; font-size: 1.6rem; font-weight: 800; color: var(--text-main); text-transform: uppercase; padding-bottom: 5px;}
+        .hm-keyboard { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: auto; padding-bottom: 10px;}
+        .hm-key { width: 38px; height: 48px; background: var(--card-bg); border-radius: 8px; font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); cursor: pointer; transition: 0.1s; }
+        .hm-key:active { transform: scale(0.9); }
+        .hm-key.disabled { opacity: 0.4; pointer-events: none; background: #e5e7eb; }
+        .hm-key.correct { background: var(--correct); color: white; border-color: var(--correct); }
+        .hm-lives { font-size: 1.4rem; letter-spacing: 2px; }
+
+        /* --- PARTICLES --- */
+        .particle { position: fixed; pointer-events: none; font-weight: bold; z-index: 9999; animation: explodeAnim forwards; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        @keyframes explodeAnim {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.1); opacity: 0; }
+        }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <div class="logo">❤️❤️❤️ English App</div>
+        <button class="header-btn" onclick="showSection('home')">Меню</button>
+    </header>
+
+    <div class="main-content">
+        
+        <div id="home" class="section active">
+            <div class="welcome-header">
+                <h1 class="welcome-title">Привіт кицю😘🫶</h1>
+                <p class="welcome-subtitle">Обирай будь-який режим для тренування.</p>
+            </div>
+
+            <div class="menu-list">
+                <div class="menu-card" onclick="showSection('dictionary')">
+                    <div class="icon-box bg-gray">📖</div>
+                    <div class="menu-text"><div class="menu-title">Словник-картки</div><div class="menu-desc">Усі 56 слів для повторення</div></div>
+                </div>
+                <div class="menu-card" onclick="showSection('flashcards-menu')">
+                    <div class="icon-box bg-blue">🗂️</div>
+                    <div class="menu-text"><div class="menu-title">Картки</div><div class="menu-desc">Вивчай слова по черзі</div></div>
+                </div>
+                <div class="menu-card" onclick="startHangman()">
+                    <div class="icon-box bg-red">❤️‍🩹</div>
+                    <div class="menu-text"><div class="menu-title">Врятуй сердечко</div><div class="menu-desc">Відгадай слово по буквах</div></div>
+                </div>
+                <div class="menu-card" onclick="startMatchGame()">
+                    <div class="icon-box bg-purple">🧩</div>
+                    <div class="menu-text"><div class="menu-title">Знайди пару</div><div class="menu-desc">З'єднай слово з перекладом</div></div>
+                </div>
+                <div class="menu-card" onclick="startSpelling()">
+                    <div class="icon-box bg-orange">🔠</div>
+                    <div class="menu-text"><div class="menu-title">Збери слово</div><div class="menu-desc">Тренуємо написання</div></div>
+                </div>
+                <div class="menu-card" onclick="startTrueFalse()">
+                    <div class="icon-box bg-yellow">⚖️</div>
+                    <div class="menu-text"><div class="menu-title">Правда чи Брехня</div><div class="menu-desc">Швидка реакція на переклад</div></div>
+                </div>
+                <div class="menu-card" onclick="startSprint()">
+                    <div class="icon-box bg-red" style="background-color: #fecaca;">⏱️</div>
+                    <div class="menu-text"><div class="menu-title">Спринт на час <span class="menu-badge" id="sprint-badge">Рекорд: 0</span></div><div class="menu-desc">Встигни за 60 секунд</div></div>
+                </div>
+                <div class="menu-card" onclick="showSection('quiz-menu')">
+                    <div class="icon-box bg-green">🎯</div>
+                    <div class="menu-text"><div class="menu-title">Класичний Квіз</div><div class="menu-desc">Перевір знання (20 питань)</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dictionary" class="section">
+            <div class="welcome-header" style="padding: 0 0 15px 0;">
+                <h1 class="welcome-title">Словник 📖</h1>
+                <p class="welcome-subtitle">Натисни на картку, щоб дізнатися переклад</p>
+            </div>
+            <div class="controls" style="margin-bottom: 15px;">
+                <button class="btn btn-primary" id="btn-dict-en" onclick="renderDictionary('en-uk')">Англ ➡️ Укр</button>
+                <button class="btn" id="btn-dict-uk" onclick="renderDictionary('uk-en')">Укр ➡️ Англ</button>
+            </div>
+            <div class="dict-grid" id="dict-grid">
+                </div>
+        </div>
+
+        <div id="flashcards-menu" class="section">
+            <div class="welcome-header"><h1 class="welcome-title">Картки 🗂️</h1></div>
+            <div class="menu-list">
+                <div class="menu-card" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue">🇬🇧</div><div class="menu-text"><div class="menu-title">Англ ➡️ Укр</div></div></div>
+                <div class="menu-card" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow">🇺🇦</div><div class="menu-text"><div class="menu-title">Укр ➡️ Англ</div></div></div>
+            </div>
+        </div>
+
+        <div id="quiz-menu" class="section">
+            <div class="welcome-header"><h1 class="welcome-title">Квіз 🎯</h1></div>
+            <div class="menu-list">
+                <div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div class="menu-text"><div class="menu-title">Укр ➡️ Англ</div></div></div>
+                <div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div class="menu-text"><div class="menu-title">Англ ➡️ Укр</div></div></div>
+            </div>
+        </div>
+
+        <div id="flashcards" class="section">
+            <div class="status-bar"><span id="fc-counter">Картка 1</span><span class="hint" style="color:var(--primary);">Натисни</span></div>
+            <div class="flashcard-container" onclick="flipCard()"><div class="flashcard" id="flashcard"><div class="flashcard-face" id="fc-front">Word</div><div class="flashcard-face flashcard-back" id="fc-back">Слово</div></div></div>
+            <div class="controls"><button class="btn" onclick="prevCard()">Назад</button><button class="btn btn-primary" onclick="nextCard()">Наступна</button></div>
+        </div>
+
+        <div id="quiz" class="section">
+            <div id="quiz-active" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="status-bar"><span id="quiz-counter">Питання 1</span><span>⭐ <span id="quiz-score">0</span></span></div>
+                <div class="question-box" id="quiz-question">"Слово" англійською:</div>
+                <div class="options-grid" id="quiz-options"></div>
+                <button class="btn btn-primary" id="btn-next-quiz" style="display:none; width: 100%; margin-top: 10px; flex-shrink: 0;" onclick="nextQuizQuestion()">Далі</button>
+            </div>
+            <div class="result-screen" id="quiz-result"><h2 style="font-size: 2rem;">Квіз завершено!</h2><div class="result-score" id="final-score">20/20</div><button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="restartQuiz()">Ще раз</button><button class="btn" style="width: 100%;" onclick="showSection('home')">В меню</button></div>
+        </div>
+
+        <div id="match" class="section">
+            <div class="status-bar"><span id="match-counter">Пари: 0/6</span><span style="color:var(--wrong);">Помилки: <span id="match-errors">0</span></span></div>
+            <div class="match-columns" id="match-columns"><div class="match-col" id="match-col-uk"></div><div class="match-col" id="match-col-en"></div></div>
+            <div class="result-screen" id="match-result"><h2 style="font-size: 2rem;">Чудова гра! 🧩</h2><div class="result-score" style="font-size: 2rem;" id="match-final-score">0 помилок</div><button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="startMatchGame()">Ще раз</button><button class="btn" style="width: 100%;" onclick="showSection('home')">В меню</button></div>
+        </div>
+
+        <div id="spelling" class="section">
+            <div id="spell-active" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="status-bar"><span id="spell-counter">Слово 1</span><span>⭐ <span id="spell-score">0</span></span></div>
+                <div class="question-box" style="margin-bottom: 40px;" id="spell-question">Дерево</div>
+                <div class="spell-slots" id="spell-slots"></div>
+                <div class="spell-letters" id="spell-letters"></div>
+            </div>
+            <div class="result-screen" id="spell-result"><h2 style="font-size: 2rem;">Молодець! 🔠</h2><div class="result-score" id="spell-final-score">10/10</div><button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="startSpelling()">Ще раз</button><button class="btn" style="width: 100%;" onclick="showSection('home')">В меню</button></div>
+        </div>
+
+        <div id="truefalse" class="section">
+            <div id="tf-active" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="status-bar"><span id="tf-counter">Слово 1</span><span>⭐ <span id="tf-score">0</span></span></div>
+                <div class="tf-card" id="tf-card"><span id="tf-en">Cloud</span><span class="tf-equals">=</span><span id="tf-uk">Сонце</span></div>
+                <div class="controls" style="margin-top: auto;"><button class="btn" style="background:var(--wrong); color:white; font-size:1.3rem;" onclick="checkTF(false, event)">❌ Брехня</button><button class="btn" style="background:var(--correct); color:white; font-size:1.3rem;" onclick="checkTF(true, event)">✅ Правда</button></div>
+            </div>
+            <div class="result-screen" id="tf-result"><h2 style="font-size: 2rem;">Готово! ⚖️</h2><div class="result-score" id="tf-final-score">10/10</div><button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="startTrueFalse()">Ще раз</button><button class="btn" style="width: 100%;" onclick="showSection('home')">В меню</button></div>
+        </div>
+
+        <div id="sprint" class="section">
+            <div id="sprint-active" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="status-bar"><span style="color:var(--primary); font-size:1.2rem;">⏱️ <span id="sprint-time-text">60</span>с</span><span style="font-size:1.2rem;">⭐ <span id="sprint-score-text">0</span></span></div>
+                <div class="timer-container"><div class="timer-fill" id="sprint-bar"></div></div>
+                <div class="question-box" id="sprint-question">Word</div>
+                <div class="options-grid" id="sprint-options"></div>
+            </div>
+            <div class="result-screen" id="sprint-result">
+                <h2 style="font-size: 2rem;">Час вийшов! ⏱️</h2><div class="result-score" id="sprint-final-score">0</div>
+                <p class="hint" style="margin-bottom: 30px;" id="sprint-record-msg">Твій результат</p>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="startSprint()">Спробувати ще раз</button>
+                <button class="btn" style="width: 100%;" onclick="showSection('home')">В меню</button>
+            </div>
+        </div>
+
+        <div id="hangman" class="section">
+            <div id="hm-active" style="display: flex; flex-direction: column; height: 100%;">
+                <div class="status-bar"><span id="hm-counter">Слово 1</span><span class="hm-lives" id="hm-lives-text">❤️❤️❤️❤️❤️</span></div>
+                <div class="question-box" style="margin-bottom: 30px;" id="hm-question">Дерево</div>
+                <div class="hm-slots" id="hm-slots"></div>
+                <div class="hm-keyboard" id="hm-keyboard"></div>
+            </div>
+            <div class="result-screen" id="hm-result">
+                <h2 style="font-size: 2rem;" id="hm-result-title">Молодець!</h2>
+                <div class="result-score" style="font-size: 2rem; color: #111827; margin: 20px 0;" id="hm-final-word">Word</div>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="startHangman()">Наступне слово</button>
+                <button class="btn" style="width: 100%;" onclick="showSection('home')">В меню</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- ПОВНА БАЗА СЛІВ (56 слів) ---
+    const baseVocabulary = [
+        { en: "Grass", uk: "Трава" }, { en: "Tree", uk: "Дерево" }, { en: "Flower", uk: "Квітка" }, { en: "Stick", uk: "Палиця" },
+        { en: "Sun", uk: "Сонце" }, { en: "Moon", uk: "Місяць" }, { en: "Star", uk: "Зірка" }, { en: "Cloud", uk: "Хмара" },
+        { en: "Talk", uk: "Розмовляти" }, { en: "Speak", uk: "Говорити" }, { en: "Love", uk: "Любити" }, { en: "Tell", uk: "Розповідати" },
+        { en: "Joke", uk: "Жарт" }, { en: "Kiss", uk: "Цілувати" }, { en: "Smile", uk: "Посмішка" }, { en: "Eyes", uk: "Очі" },
+        { en: "Hug", uk: "Обіймати" }, { en: "Salt", uk: "Сіль" }, { en: "Small", uk: "Маленький" }, { en: "Big", uk: "Великий" },
+        { en: "Let's", uk: "Давай" }, { en: "About", uk: "Про" }, { en: "Something", uk: "Щось" }, { en: "Buy", uk: "Купувати" },
+        { en: "Sell", uk: "Продавати" }, { en: "Sold", uk: "Продано" }, { en: "Sink", uk: "Тонути" }, { en: "Think", uk: "Думати" },
+        { en: "I am", uk: "Я (є)" }, { en: "We are", uk: "Ми (є)" }, { en: "You are", uk: "Ти (є)" }, { en: "They are", uk: "Вони (є)" },
+        { en: "He is", uk: "Він (є)" }, { en: "She is", uk: "Вона (є)" }, { en: "It is", uk: "Воно (є)" }, { en: "Cool", uk: "Крутий" },
+        { en: "Good", uk: "Хороший" }, { en: "Kind", uk: "Добрий" }, { en: "Cold", uk: "Холодний" }, { en: "Hot", uk: "Гарячий" },
+        { en: "Children", uk: "Діти" }, { en: "Family", uk: "Сім'я" }, { en: "Mirror", uk: "Дзеркало" }, { en: "Error", uk: "Помилка" },
+        { en: "See", uk: "Бачити" }, { en: "Watch", uk: "Спостерігати" }, { en: "Look", uk: "Дивитися" }, { en: "Phone", uk: "Телефон" },
+        { en: "House", uk: "Будинок" }, { en: "Flat", uk: "Квартира" }, { en: "Bed", uk: "Ліжко" }, { en: "Bad", uk: "Поганий" },
+        { en: "Bedroom", uk: "Спальня" }, { en: "Sky", uk: "Небо" }, { en: "Sweet", uk: "Солодкий" }, { en: "Cute", uk: "Милий" }
+    ];
+
+    // Окремий масив для "Спелінгу" та "Hangman" (тільки слова з букв A-Z, без пробілів і апострофів)
+    const spellVocabulary = baseVocabulary.filter(w => /^[a-zA-Z]+$/.test(w.en));
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+
+    // --- ГЛОБАЛЬНІ ЗМІННІ ---
+    let sprintTimerInterval = null;
+    let bestSprintScore = 0;
+    try { bestSprintScore = localStorage.getItem('sprintRecord') || 0; } catch(e) {}
+    document.getElementById('sprint-badge').textContent = `Рекорд: ${bestSprintScore}`;
+
+    // --- ДОПОМІЖНІ ФУНКЦІЇ ---
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function fireParticles(x, y, isCorrect) {
+        const emoji = isCorrect ? '💖' : '💔';
+        const particleCount = isCorrect ? 25 : 15; 
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle'; 
+            particle.textContent = emoji;
+            particle.style.left = x + 'px'; 
+            particle.style.top = y + 'px';
+            
+            const scaleFactor = Math.random() * 0.9 + 0.6;
+            particle.style.fontSize = (28 * scaleFactor) + 'px';
+
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 120 + 40; 
+            
+            particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+            particle.style.setProperty('--ty', Math.sin(angle) * distance - 30 + 'px');
+            
+            const duration = Math.random() * 0.4 + 0.6; 
+            particle.style.animationDuration = duration + 's';
+
+            document.body.appendChild(particle);
+            setTimeout(() => particle.remove(), duration * 1000);
+        }
+    }
+
+    function showSection(sectionId) {
+        clearInterval(sprintTimerInterval); 
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+        
+        if(sectionId === 'home') document.getElementById('sprint-badge').textContent = `Рекорд: ${bestSprintScore}`;
+        if(sectionId === 'dictionary') renderDictionary('en-uk');
+    }
+
+    // --- 0. ІНТЕРАКТИВНИЙ СЛОВНИК ---
+    function renderDictionary(mode) {
+        document.getElementById('btn-dict-en').className = mode === 'en-uk' ? 'btn btn-primary' : 'btn';
+        document.getElementById('btn-dict-uk').className = mode === 'uk-en' ? 'btn btn-primary' : 'btn';
+        
+        const grid = document.getElementById('dict-grid');
+        grid.innerHTML = '';
+        
+        let sorted = [...baseVocabulary].sort((a,b) => a.en.localeCompare(b.en));
+        
+        sorted.forEach(word => {
+            let frontText = mode === 'en-uk' ? word.en : word.uk;
+            let backText = mode === 'en-uk' ? word.uk : word.en;
+            
+            let card = document.createElement('div');
+            card.className = 'dict-card';
+            card.innerHTML = `
+                <div class="dict-card-inner">
+                    <div class="dict-face">${frontText}</div>
+                    <div class="dict-face dict-back">${backText}</div>
+                </div>
+            `;
+            // Переворот картки при натисканні
+            card.onclick = () => card.classList.toggle('flipped');
+            grid.appendChild(card);
+        });
+    }
+
+    // --- 1. КАРТКИ ---
+    let fcIndex = 0, currentFcMode = 'en-uk', currentFlashcards = []; 
+    function startFlashcards(mode) {
+        currentFcMode = mode; fcIndex = 0; currentFlashcards = shuffleArray(baseVocabulary); 
+        showSection('flashcards'); updateFlashcard();
+    }
+    function updateFlashcard() {
+        const card = document.getElementById('flashcard'); card.classList.remove('is-flipped');
+        setTimeout(() => {
+            let word = currentFlashcards[fcIndex];
+            document.getElementById('fc-front').textContent = currentFcMode === 'en-uk' ? word.en : word.uk;
+            document.getElementById('fc-back').textContent = currentFcMode === 'en-uk' ? word.uk : word.en;
+            document.getElementById('fc-counter').textContent = `Картка ${fcIndex + 1}/${currentFlashcards.length}`;
+        }, 150);
+    }
+    function flipCard() { document.getElementById('flashcard').classList.toggle('is-flipped'); }
+    function nextCard() { fcIndex = (fcIndex + 1) % currentFlashcards.length; updateFlashcard(); }
+    function prevCard() { fcIndex = (fcIndex - 1 + currentFlashcards.length) % currentFlashcards.length; updateFlashcard(); }
+
+    // --- 2. КВІЗ ---
+    let quizType = 'uk-en', quizQ = [], qIndex = 0, quizScore = 0, quizAns = false;
+    function startQuiz(type) {
+        quizType = type; quizQ = shuffleArray(baseVocabulary).slice(0, 20); // 20 питань
+        qIndex = 0; quizScore = 0;
+        showSection('quiz'); document.getElementById('quiz-active').style.display = 'flex'; document.getElementById('quiz-result').style.display = 'none';
+        loadQuizQuestion();
+    }
+    function restartQuiz() { startQuiz(quizType); }
+    function loadQuizQuestion() {
+        quizAns = false; document.getElementById('btn-next-quiz').style.display = 'none';
+        let word = quizQ[qIndex];
+        document.getElementById('quiz-counter').textContent = `Питання ${qIndex + 1}/${quizQ.length}`;
+        document.getElementById('quiz-score').textContent = quizScore;
+        document.getElementById('quiz-question').textContent = quizType === 'uk-en' ? `"${word.uk}" англійською:` : `"${word.en}" переклад:`;
+
+        let opts = [word, ...shuffleArray(baseVocabulary.filter(w => w.en !== word.en)).slice(0, 3)]; opts = shuffleArray(opts);
+        const cont = document.getElementById('quiz-options'); cont.innerHTML = '';
+        opts.forEach(opt => {
+            let btn = document.createElement('button'); btn.className = 'option-btn';
+            btn.textContent = quizType === 'uk-en' ? opt.en : opt.uk;
+            btn.onclick = (e) => checkQuizAns(btn, opt.en === word.en, e);
+            cont.appendChild(btn);
+        });
+    }
+    function checkQuizAns(btn, isCorrect, e) {
+        if (quizAns) return; quizAns = true;
+        const rect = btn.getBoundingClientRect();
+        fireParticles(e.clientX || rect.left+rect.width/2, e.clientY || rect.top+rect.height/2, isCorrect);
+        document.querySelectorAll('#quiz-options .option-btn').forEach(b => {
+            b.disabled = true;
+            if (b.textContent === (quizType === 'uk-en' ? quizQ[qIndex].en : quizQ[qIndex].uk)) b.classList.add('correct');
+            else if (b === btn && !isCorrect) b.classList.add('wrong');
+        });
+        if (isCorrect) quizScore++;
+        document.getElementById('quiz-score').textContent = quizScore;
+        document.getElementById('btn-next-quiz').style.display = 'block';
+    }
+    function nextQuizQuestion() {
+        qIndex++;
+        if (qIndex < quizQ.length) loadQuizQuestion();
+        else { document.getElementById('quiz-active').style.display = 'none'; document.getElementById('quiz-result').style.display = 'flex'; document.getElementById('final-score').textContent = `${quizScore}/${quizQ.length}`; }
+    }
+
+    // --- 3. ЗНАЙДИ ПАРУ ---
+    let matchFound = 0, matchErr = 0, matchSel = null, matchLocked = false;
+    function startMatchGame() {
+        showSection('match'); document.getElementById('match-columns').style.display = 'flex'; document.getElementById('match-result').style.display = 'none';
+        matchFound = 0; matchErr = 0; updateMatchStat();
+        let words = shuffleArray(baseVocabulary).slice(0, 6);
+        let uk = shuffleArray(words.map((w,i)=>({t:w.uk, id:i, l:'uk'})));
+        let en = shuffleArray(words.map((w,i)=>({t:w.en, id:i, l:'en'})));
+        const cUk = document.getElementById('match-col-uk'); cUk.innerHTML = '';
+        const cEn = document.getElementById('match-col-en'); cEn.innerHTML = '';
+        const createBtn = (c) => {
+            let b = document.createElement('button'); b.className = 'match-btn'; b.textContent = c.t; b.dataset.id = c.id; b.dataset.lang = c.l;
+            b.onclick = (e) => matchClick(b, e); return b;
+        };
+        uk.forEach(c => cUk.appendChild(createBtn(c))); en.forEach(c => cEn.appendChild(createBtn(c)));
+    }
+    function matchClick(btn, e) {
+        if(matchLocked || btn.classList.contains('selected') || btn.classList.contains('correct')) return;
+        if(!matchSel) { btn.classList.add('selected'); matchSel = btn; }
+        else {
+            btn.classList.add('selected'); matchLocked = true;
+            const r = btn.getBoundingClientRect(); const x = e.clientX||r.left+r.width/2; const y = e.clientY||r.top+r.height/2;
+            if(btn.dataset.id === matchSel.dataset.id && btn.dataset.lang !== matchSel.dataset.lang) {
+                fireParticles(x, y, true);
+                btn.classList.replace('selected','correct'); matchSel.classList.replace('selected','correct');
+                matchSel = null; matchFound++; updateMatchStat(); matchLocked = false;
+                if(matchFound === 6) setTimeout(()=>{ document.getElementById('match-columns').style.display='none'; document.getElementById('match-result').style.display='flex'; document.getElementById('match-final-score').textContent=`${matchErr} помилок`; }, 500);
+            } else {
+                fireParticles(x, y, false);
+                btn.classList.replace('selected','wrong'); matchSel.classList.replace('selected','wrong');
+                matchErr++; updateMatchStat();
+                let b1 = btn, b2 = matchSel; matchSel = null;
+                setTimeout(()=>{ b1.classList.remove('wrong','selected'); b2.classList.remove('wrong','selected'); matchLocked = false; }, 600);
+            }
+        }
+    }
+    function updateMatchStat() { document.getElementById('match-counter').textContent=`Пари: ${matchFound}/6`; document.getElementById('match-errors').textContent=matchErr; }
+
+    // --- 4. SPELLING (ЗБЕРИ СЛОВО) ---
+    let spellQ = [], sIndex = 0, spellScore = 0, spellTarget = "", spellCurrent = [], spellLetters = [];
+    function startSpelling() {
+        showSection('spelling'); document.getElementById('spell-active').style.display = 'flex'; document.getElementById('spell-result').style.display = 'none';
+        spellQ = shuffleArray(spellVocabulary).slice(0, 10); sIndex = 0; spellScore = 0; loadSpelling();
+    }
+    function loadSpelling() {
+        document.getElementById('spell-counter').textContent = `Слово ${sIndex + 1}/${spellQ.length}`;
+        document.getElementById('spell-score').textContent = spellScore;
+        let wordObj = spellQ[sIndex]; spellTarget = wordObj.en.toUpperCase();
+        document.getElementById('spell-question').textContent = wordObj.uk;
+        spellCurrent = Array(spellTarget.length).fill(null);
+        spellLetters = shuffleArray(spellTarget.split('').map((l, i) => ({ letter: l, id: i })));
+        renderSpelling();
+    }
+    function renderSpelling() {
+        const slotsCont = document.getElementById('spell-slots'); slotsCont.innerHTML = '';
+        spellCurrent.forEach((l, i) => {
+            let slot = document.createElement('div'); slot.className = `spell-slot ${l ? 'filled' : ''}`; slot.textContent = l ? l.letter : "";
+            slot.onclick = () => { if(l) { spellCurrent[i] = null; renderSpelling(); } };
+            slotsCont.appendChild(slot);
+        });
+        const lettersCont = document.getElementById('spell-letters'); lettersCont.innerHTML = '';
+        spellLetters.forEach(item => {
+            let btn = document.createElement('button'); btn.className = 'letter-btn'; btn.textContent = item.letter;
+            if(spellCurrent.find(x => x && x.id === item.id)) btn.classList.add('hidden');
+            else btn.onclick = () => { let emptyIdx = spellCurrent.findIndex(x => x === null); if(emptyIdx !== -1) { spellCurrent[emptyIdx] = item; renderSpelling(); if(!spellCurrent.includes(null)) checkSpelling(); } };
+            lettersCont.appendChild(btn);
+        });
+    }
+    function checkSpelling() {
+        let formedWord = spellCurrent.map(x => x.letter).join('');
+        const slotsCont = document.getElementById('spell-slots');
+        const rect = slotsCont.getBoundingClientRect(); const x = rect.left + rect.width/2; const y = rect.top + rect.height/2;
+        if (formedWord === spellTarget) {
+            fireParticles(x, y, true); spellScore++;
+            setTimeout(() => {
+                sIndex++; if (sIndex < spellQ.length) loadSpelling();
+                else { document.getElementById('spell-active').style.display = 'none'; document.getElementById('spell-result').style.display = 'flex'; document.getElementById('spell-final-score').textContent = `${spellScore}/${spellQ.length}`; }
+            }, 800);
+        } else {
+            fireParticles(x, y, false); slotsCont.style.animation = "shake 0.4s";
+            setTimeout(() => { slotsCont.style.animation = ""; spellCurrent.fill(null); renderSpelling(); }, 500);
+        }
+    }
+
+    // --- 5. ПРАВДА ЧИ БРЕХНЯ ---
+    let tfQ = [], tfIndex = 0, tfScore = 0, tfIsTrue = false, tfLocked = false;
+    function startTrueFalse() {
+        showSection('truefalse'); document.getElementById('tf-active').style.display = 'flex'; document.getElementById('tf-result').style.display = 'none';
+        tfQ = shuffleArray(baseVocabulary).slice(0, 15); tfIndex = 0; tfScore = 0; loadTrueFalse();
+    }
+    function loadTrueFalse() {
+        tfLocked = false; document.getElementById('tf-counter').textContent = `Слово ${tfIndex + 1}/${tfQ.length}`; document.getElementById('tf-score').textContent = tfScore;
+        let wordObj = tfQ[tfIndex]; tfIsTrue = Math.random() > 0.5;
+        let displayUk = wordObj.uk;
+        if (!tfIsTrue) { let otherWords = baseVocabulary.filter(w => w.en !== wordObj.en); displayUk = otherWords[Math.floor(Math.random() * otherWords.length)].uk; }
+        document.getElementById('tf-en').textContent = wordObj.en; document.getElementById('tf-uk').textContent = displayUk; document.getElementById('tf-card').style.transform = "scale(1)";
+    }
+    function checkTF(userGuess, e) {
+        if(tfLocked) return; tfLocked = true;
+        let isCorrect = (userGuess === tfIsTrue); fireParticles(e.clientX, e.clientY, isCorrect);
+        document.getElementById('tf-card').style.transform = isCorrect ? "scale(1.05)" : "scale(0.95)";
+        if (isCorrect) tfScore++;
+        setTimeout(() => { tfIndex++; if (tfIndex < tfQ.length) loadTrueFalse(); else { document.getElementById('tf-active').style.display = 'none'; document.getElementById('tf-result').style.display = 'flex'; document.getElementById('tf-final-score').textContent = `${tfScore}/${tfQ.length}`; } }, 500);
+    }
+
+    // --- 6. СПРИНТ НА ЧАС ---
+    let sprintTime = 60, sprintScore = 0, sprintQ = [];
+    function startSprint() {
+        showSection('sprint'); document.getElementById('sprint-active').style.display = 'flex'; document.getElementById('sprint-result').style.display = 'none';
+        sprintTime = 60; sprintScore = 0; sprintQ = shuffleArray(baseVocabulary); updateSprintUI();
+        clearInterval(sprintTimerInterval);
+        sprintTimerInterval = setInterval(() => { sprintTime--; updateSprintUI(); if(sprintTime <= 0) endSprint(); }, 1000);
+        loadSprintQuestion();
+    }
+    function updateSprintUI() {
+        document.getElementById('sprint-time-text').textContent = sprintTime; document.getElementById('sprint-score-text').textContent = sprintScore;
+        let bar = document.getElementById('sprint-bar'); bar.style.width = Math.max(0, (sprintTime / 60) * 100) + "%";
+        if(sprintTime < 15) bar.classList.add('low'); else bar.classList.remove('low');
+    }
+    function loadSprintQuestion() {
+        let word = sprintQ[Math.floor(Math.random() * sprintQ.length)];
+        document.getElementById('sprint-question').textContent = word.uk;
+        let opts = [word, ...shuffleArray(baseVocabulary.filter(w => w.en !== word.en)).slice(0, 3)]; opts = shuffleArray(opts);
+        const cont = document.getElementById('sprint-options'); cont.innerHTML = '';
+        opts.forEach(opt => {
+            let btn = document.createElement('button'); btn.className = 'option-btn'; btn.textContent = opt.en;
+            btn.onclick = (e) => {
+                const rect = btn.getBoundingClientRect(); fireParticles(e.clientX || rect.left+rect.width/2, e.clientY || rect.top+rect.height/2, opt.en === word.en);
+                if (opt.en === word.en) { sprintScore++; sprintTime = Math.min(sprintTime + 2, 60); } else { sprintTime = Math.max(sprintTime - 3, 0); }
+                updateSprintUI(); if(sprintTime > 0) loadSprintQuestion(); else endSprint();
+            };
+            cont.appendChild(btn);
+        });
+    }
+    function endSprint() {
+        clearInterval(sprintTimerInterval);
+        document.getElementById('sprint-active').style.display = 'none';
+        document.getElementById('sprint-result').style.display = 'flex';
+        document.getElementById('sprint-final-score').textContent = sprintScore;
+        if (sprintScore > bestSprintScore) {
+            bestSprintScore = sprintScore; 
+            try { localStorage.setItem('sprintRecord', bestSprintScore); } catch(e) {}
+            document.getElementById('sprint-record-msg').textContent = "🎉 Новий рекорд швидкості!";
+        } else {
+            document.getElementById('sprint-record-msg').textContent = `Рекорд залишається: ${bestSprintScore}`;
+        }
+    }
+
+    // --- 7. ВРЯТУЙ СЕРДЕЧКО (HANGMAN) ---
+    let hmWords = [], hmIndex = 0, hmLives = 5, hmTarget = "", hmGuessed = new Set();
+    function startHangman() {
+        showSection('hangman'); document.getElementById('hm-active').style.display = 'flex'; document.getElementById('hm-result').style.display = 'none';
+        hmWords = shuffleArray(spellVocabulary); hmIndex = 0; loadHangman();
+    }
+    function loadHangman() {
+        let wordObj = hmWords[hmIndex]; hmTarget = wordObj.en.toUpperCase(); hmLives = 5; hmGuessed.clear();
+        document.getElementById('hm-counter').textContent = `Слово ${hmIndex + 1}`; document.getElementById('hm-question').textContent = wordObj.uk;
+        updateHmLivesUI(); renderHmSlots(); renderHmKeyboard();
+    }
+    function updateHmLivesUI() {
+        let hearts = ""; for(let i=0; i<5; i++) hearts += i < hmLives ? "❤️" : "🖤";
+        document.getElementById('hm-lives-text').textContent = hearts;
+    }
+    function renderHmSlots() {
+        const slotsCont = document.getElementById('hm-slots'); slotsCont.innerHTML = ''; let won = true;
+        for(let char of hmTarget) {
+            let slot = document.createElement('div'); slot.className = 'hm-slot';
+            if(hmGuessed.has(char)) { slot.textContent = char; } else { slot.textContent = ""; won = false; }
+            slotsCont.appendChild(slot);
+        }
+        if(won) endHangman(true);
+    }
+    function renderHmKeyboard() {
+        const kbCont = document.getElementById('hm-keyboard'); kbCont.innerHTML = '';
+        alphabet.forEach(letter => {
+            let btn = document.createElement('button'); btn.className = 'hm-key'; btn.textContent = letter;
+            btn.onclick = (e) => guessHmLetter(letter, btn, e);
+            kbCont.appendChild(btn);
+        });
+    }
+    function guessHmLetter(letter, btn, e) {
+        if(hmLives <= 0 || btn.classList.contains('disabled')) return;
+        btn.classList.add('disabled'); hmGuessed.add(letter);
+        const rect = btn.getBoundingClientRect(); const x = e ? e.clientX : rect.left + rect.width/2; const y = e ? e.clientY : rect.top + rect.height/2;
+        if(hmTarget.includes(letter)) { btn.classList.add('correct'); fireParticles(x, y, true); renderHmSlots(); }
+        else { fireParticles(x, y, false); hmLives--; updateHmLivesUI(); if(hmLives === 0) endHangman(false); }
+    }
+    function endHangman(isWin) {
+        setTimeout(() => {
+            document.getElementById('hm-active').style.display = 'none'; document.getElementById('hm-result').style.display = 'flex';
+            document.getElementById('hm-result-title').textContent = isWin ? "Врятовано! 💖" : "Розбито... 💔";
+            document.getElementById('hm-final-word').textContent = hmTarget;
+            hmIndex = (hmIndex + 1) % hmWords.length;
+        }, 600);
+    }
+</script>
+</body>
+</html>
