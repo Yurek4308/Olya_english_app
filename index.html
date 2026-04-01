@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -189,7 +189,7 @@
             <div class="menu-list">
                 <div class="menu-card" onclick="showSection('dictionary')">
                     <div class="icon-box bg-gray">📖</div>
-                    <div class="menu-text"><div class="menu-title">Словник-картки</div><div class="menu-desc">Усі 56 слів для повторення</div></div>
+                    <div class="menu-text"><div class="menu-title">Словник-картки</div><div class="menu-desc">Усі 76 слів для повторення</div></div>
                 </div>
                 <div class="menu-card" onclick="showSection('flashcards-menu')">
                     <div class="icon-box bg-blue">🗂️</div>
@@ -326,7 +326,7 @@
 </div>
 
 <script>
-    // --- ПОВНА БАЗА СЛІВ (56 слів) ---
+    // --- ПОВНА БАЗА СЛІВ (76 слів) ---
     const baseVocabulary = [
         { en: "Grass", uk: "Трава" }, { en: "Tree", uk: "Дерево" }, { en: "Flower", uk: "Квітка" }, { en: "Stick", uk: "Палиця" },
         { en: "Sun", uk: "Сонце" }, { en: "Moon", uk: "Місяць" }, { en: "Star", uk: "Зірка" }, { en: "Cloud", uk: "Хмара" },
@@ -341,7 +341,12 @@
         { en: "Children", uk: "Діти" }, { en: "Family", uk: "Сім'я" }, { en: "Mirror", uk: "Дзеркало" }, { en: "Error", uk: "Помилка" },
         { en: "See", uk: "Бачити" }, { en: "Watch", uk: "Спостерігати" }, { en: "Look", uk: "Дивитися" }, { en: "Phone", uk: "Телефон" },
         { en: "House", uk: "Будинок" }, { en: "Flat", uk: "Квартира" }, { en: "Bed", uk: "Ліжко" }, { en: "Bad", uk: "Поганий" },
-        { en: "Bedroom", uk: "Спальня" }, { en: "Sky", uk: "Небо" }, { en: "Sweet", uk: "Солодкий" }, { en: "Cute", uk: "Милий" }
+        { en: "Bedroom", uk: "Спальня" }, { en: "Sky", uk: "Небо" }, { en: "Sweet", uk: "Солодкий" }, { en: "Cute", uk: "Милий" },
+        { en: "Eat", uk: "Їсти" }, { en: "Drink", uk: "Пити" }, { en: "Go", uk: "Йти" }, { en: "Come", uk: "Приходити" },
+        { en: "Want", uk: "Хотіти" }, { en: "Need", uk: "Потребувати" }, { en: "Like", uk: "Подобатися" }, { en: "Make", uk: "Робити" },
+        { en: "Take", uk: "Брати" }, { en: "Give", uk: "Давати" }, { en: "Miss", uk: "Сумувати" }, { en: "Care", uk: "Піклуватися" },
+        { en: "Trust", uk: "Довіряти" }, { en: "Feel", uk: "Відчувати" }, { en: "Touch", uk: "Торкатися" }, { en: "Hold", uk: "Тримати" },
+        { en: "Close", uk: "Близько" }, { en: "Together", uk: "Разом" }, { en: "Forever", uk: "Назавжди" }, { en: "Beautiful", uk: "Красива" }
     ];
 
     // Окремий масив для "Спелінгу" та "Hangman" (тільки слова з букв A-Z, без пробілів і апострофів)
