@@ -91,7 +91,7 @@
         .dict-search-input { flex: 1; padding: 14px 16px; border-radius: 16px; border: 2px solid #e5e7eb; font-size: 1.05rem; outline: none; transition: 0.2s; background: var(--card-bg); color: var(--text-main); font-weight: 600;}
         .dict-search-input:focus { border-color: var(--primary); }
         .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 30px; flex: 1; }
-        .dict-card { height: 140px; perspective: 1000px; cursor: pointer; } /* Збільшена висота для великих кнопок */
+        .dict-card { height: 140px; perspective: 1000px; cursor: pointer; } 
         .dict-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.4s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .dict-card.flipped .dict-card-inner { transform: rotateY(180deg); }
         .dict-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 16px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); padding: 5px; color: var(--text-main); transition: 0.3s;}
@@ -128,12 +128,12 @@
         .const-word:active { transform: scale(0.9); }
         .const-word.hidden { opacity: 0; pointer-events: none; transform: scale(0); }
 
-        /* EASTER EGG OVERLAY */
-        #easter-egg { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(253, 242, 248, 0.95); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;}
-        .dark #easter-egg { background: rgba(15, 23, 42, 0.95); }
-        .ee-heart { font-size: 8rem; animation: heartbeat 1s infinite alternate; filter: drop-shadow(0 10px 20px rgba(236, 72, 153, 0.5));}
-        .ee-text { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-top: 20px; line-height: 1.2;}
-        @keyframes heartbeat { from { transform: scale(1); } to { transform: scale(1.2); } }
+        /* EASTER EGG OVERLAY WITH FOTO */
+        #easter-egg { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(253, 242, 248, 0.98); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;}
+        .dark #easter-egg { background: rgba(15, 23, 42, 0.98); }
+        .ee-photo { width: 80%; max-width: 300px; height: auto; border-radius: 24px; border: 5px solid white; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.5); margin-bottom: 20px;}
+        .dark .ee-photo { border-color: #1e293b; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
+        .ee-text { font-size: 1.8rem; font-weight: 800; color: var(--text-main); margin-top: 10px; line-height: 1.3;}
 
         /* OTHERS */
         .timer-container { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; margin-bottom: 15px; overflow: hidden; } .dark .timer-container { background: #334155; } .timer-fill { height: 100%; background: var(--correct); width: 100%; transition: width 1s linear, background-color 0.3s; } .timer-fill.low { background: var(--wrong); }
@@ -150,8 +150,8 @@
     <div class="toast" id="toast">🏆 <span id="toast-msg">Досягнення!</span></div>
 
     <div id="easter-egg" onclick="this.style.display='none'">
-        <div class="ee-heart">💖</div>
-        <div class="ee-text">Я ТЕБЕ ТЕЖ ДУЖЕ СИЛЬНО КОХАЮ! 🥰</div>
+        <img src="foto.jpg" alt="Моє кохання" class="ee-photo">
+        <div class="ee-text">кохаю тебе до нестями моя найкраща дівчинка 😊❤️‍🔥❤️‍🔥❤️‍🔥</div>
     </div>
 
     <header>
@@ -462,7 +462,7 @@
         if(id === 'dictionary') { document.getElementById('dict-search').value = ''; renderDictionary(); }
     }
 
-    // --- 0. DICTIONARY (WITH EASTER EGG) ---
+    // --- 0. DICTIONARY (WITH EASTER EGG AND YOUR FOTO/TEXT) ---
     let dictMode = 'en-uk'; function setDictMode(m) { dictMode = m; renderDictionary(); }
     function renderDictionary() {
         document.getElementById('btn-dict-en').className = dictMode === 'en-uk' ? 'btn btn-primary' : 'btn';
