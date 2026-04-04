@@ -6,9 +6,9 @@
     <title>English Learning App</title>
     <style>
         :root {
-            --primary: #ec4899; /* Змінив головний колір на більш ніжний рожевий */
+            --primary: #ec4899; 
             --primary-hover: #db2777;
-            --bg: #fdf2f8; /* Легкий рожевий відтінок фону */
+            --bg: #fdf2f8; 
             --card-bg: #ffffff;
             --text-main: #1f2937;
             --text-muted: #6b7280;
@@ -73,7 +73,7 @@
         .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; flex: 1; overflow-y: auto; }
         .options-grid.grid-2 { display: grid; grid-template-columns: 1fr 1fr; }
         .option-btn { padding: 16px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; font-size: 1.1rem; font-weight: 700; text-align: left; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: 0.1s; color: var(--text-main); display: flex; align-items: center; justify-content: center;}
-        .options-grid.grid-2 .option-btn { font-size: 2.5rem; padding: 20px; } /* For Emoji Quiz */
+        .options-grid.grid-2 .option-btn { font-size: 2.5rem; padding: 20px; } 
         .option-btn.correct { background: var(--correct) !important; color: white !important; border-color: var(--correct) !important; }
         .option-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: var(--wrong) !important; }
         .option-btn:active { transform: scale(0.96); }
@@ -91,13 +91,18 @@
         .dict-search-input { flex: 1; padding: 14px 16px; border-radius: 16px; border: 2px solid #e5e7eb; font-size: 1.05rem; outline: none; transition: 0.2s; background: var(--card-bg); color: var(--text-main); font-weight: 600;}
         .dict-search-input:focus { border-color: var(--primary); }
         .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 30px; flex: 1; }
-        .dict-card { height: 110px; perspective: 1000px; cursor: pointer; }
+        .dict-card { height: 140px; perspective: 1000px; cursor: pointer; } /* Збільшена висота для великих кнопок */
         .dict-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.4s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
         .dict-card.flipped .dict-card-inner { transform: rotateY(180deg); }
         .dict-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 16px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); padding: 5px; color: var(--text-main); transition: 0.3s;}
         .dict-back { transform: rotateY(180deg); color: var(--primary); background: #fdf2f8;}
         .dark .dict-back { background: #1e293b; color: var(--primary); border: 1px solid var(--primary); }
         .dict-emoji { font-size: 1.8rem; margin-bottom: 2px;}
+
+        /* ВЕЛИКІ КНОПКИ АУДІО В СЛОВНИКУ */
+        .dict-audio-btn { background: var(--bg); border: 2px solid var(--primary); border-radius: 12px; padding: 10px 18px; font-size: 1.4rem; cursor: pointer; transition: 0.1s; margin: 0 5px; color: var(--text-main); display: inline-flex; align-items: center; justify-content: center;}
+        .dark .dict-audio-btn { background: #0f172a; border-color: #3b82f6; }
+        .dict-audio-btn:active { transform: scale(0.85); background: var(--primary); color: white;}
 
         .achiev-list { display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-bottom: 20px;}
         .achiev-card { display: flex; align-items: center; background: var(--card-bg); padding: 15px; border-radius: 16px; opacity: 0.5; filter: grayscale(1); transition: 0.4s; box-shadow: 0 2px 8px rgba(0,0,0,0.03);}
@@ -130,7 +135,7 @@
         .ee-text { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-top: 20px; line-height: 1.2;}
         @keyframes heartbeat { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-        /* OTHERS (Sprint, Match, Spelling, etc. preserved and compressed) */
+        /* OTHERS */
         .timer-container { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; margin-bottom: 15px; overflow: hidden; } .dark .timer-container { background: #334155; } .timer-fill { height: 100%; background: var(--correct); width: 100%; transition: width 1s linear, background-color 0.3s; } .timer-fill.low { background: var(--wrong); }
         .match-columns { display: flex; gap: 12px; flex: 1; overflow-y: auto; padding-bottom: 20px; } .match-col { flex: 1; display: flex; flex-direction: column; gap: 12px; } .match-btn { padding: 12px; background: var(--card-bg); border: 2px solid #e5e7eb; border-radius: 16px; font-size: 1.05rem; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-main); min-height: 70px; display: flex; align-items: center; justify-content: center; transition: 0.1s; } .dark .match-btn { border-color: #334155; } .match-btn.selected { border-color: var(--primary); background: #fdf2f8; color: var(--primary); transform: scale(0.96); } .dark .match-btn.selected { background: #1e293b; border-color: var(--primary); } .match-btn.correct { opacity: 0; visibility: hidden; transform: scale(0.8); transition: all 0.3s ease-out; pointer-events: none; } .match-btn.wrong { border-color: var(--wrong); background: #fee2e2; color: var(--wrong); animation: shake 0.4s; }
         .spell-slots { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; } .spell-slot { width: 45px; height: 55px; border-bottom: 4px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: var(--primary); cursor: pointer; text-transform: uppercase; } .spell-slot.filled { border-bottom-color: var(--primary); } .spell-letters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; } .letter-btn { width: 50px; height: 50px; background: var(--card-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.1s; text-transform: uppercase; color: var(--text-main); } .letter-btn:active { transform: scale(0.9); } .letter-btn.hidden { opacity: 0; pointer-events: none; transform: scale(0); }
@@ -337,7 +342,16 @@
 
     const spellVocabulary = baseVocabulary.filter(w => /^[a-zA-Z]+$/.test(w.en));
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
-    const compliments = ["Ти сьогодні неймовірна! ✨", "Моя найрозумніша дівчинка 🥰", "Пишаюся тобою ❤️", "Твоя посмішка - найкраща 😍", "Твоя наполегливість вражає! 🚀", "Кохаю тебе безмежно 💖"];
+    
+    // ДОДАНІ УСІ ТВОЇ КОМПЛІМЕНТИ
+    const compliments = [
+        "Ти сьогодні неймовірна! ✨", "Моя найрозумніша дівчинка 🥰", "Пишаюся тобою ❤️", 
+        "Твоя посмішка - найкраща 😍", "Твоя наполегливість вражає! 🚀", "Кохаю тебе безмежно 💖",
+        "Кохаю тебе дужче🤗🤗🤗", "Моя манюня😊❤️", "Моє серденько ❤️❤️❤️",
+        "Моя най най най най краща 🥰🥰🥰", "Кохаю тебе кицюня😘😘😘", 
+        "Все для моєї солоденької🫶🫶🫶", "Ти така тю тю тю тю красунечка😍😍😍",
+        "Ти моє найбільше натхнення 🌸", "З тобою кожен день особливий ✨", "Моя солодка квіточка 🌷"
+    ];
 
     // --- СТАН ДОДАТКУ ---
     let totalXP = parseInt(localStorage.getItem('totalXP')) || 0;
@@ -593,7 +607,7 @@
 
     let fcI=0, fcM='en-uk', fcArr=[];
     function startFlashcards(m) { fcM=m; fcI=0; fcArr=shuffleArray(baseVocabulary); showSection('flashcards'); updFc(); }
-    function updFc() { const c=document.getElementById('flashcard'); c.classList.remove('is-flipped'); setTimeout(()=>{ let w=fcArr[fcI]; document.getElementById('fc-front').innerHTML=`<div style="font-size:3rem;">${w.em}</div>`+(fcM==='en-uk'?w.en:w.uk); document.getElementById('fc-back').innerHTML=`<div style="font-size:3rem;">${w.em}</div>`+(fcM==='en-uk'?w.uk:w.en); document.getElementById('fc-counter').textContent=`Картка ${fcI+1}/${fcArr.length}`; },150); }
+    function updFc() { const c=document.getElementById('flashcard'); c.classList.remove('is-flipped'); setTimeout(()=>{ let w=fcArr[fcI]; document.getElementById('fc-front').innerHTML=`<div style="font-size:3rem; margin-bottom:10px;">${w.em}</div>`+(fcM==='en-uk'?w.en:w.uk); document.getElementById('fc-back').innerHTML=`<div style="font-size:3rem; margin-bottom:10px;">${w.em}</div>`+(fcM==='en-uk'?w.uk:w.en); document.getElementById('fc-counter').textContent=`Картка ${fcI+1}/${fcArr.length}`; },150); }
     function flipCard() { document.getElementById('flashcard').classList.toggle('is-flipped'); }
     function nextCard() { fcI=(fcI+1)%fcArr.length; updFc(); }
     function prevCard() { fcI=(fcI-1+fcArr.length)%fcArr.length; updFc(); }
