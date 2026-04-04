@@ -1,7 +1,7 @@
 {
   "name": "English with Love",
   "short_name": "EngLove",
-  "start_url": "./english_app.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fdf2f8",
   "theme_color": "#ec4899",
