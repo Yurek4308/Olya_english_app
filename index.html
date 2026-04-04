@@ -2,7 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>English App</title>
     
     <link rel="manifest" href="manifest.json">
@@ -27,14 +27,14 @@
         body { background-color: #e5e7eb; display: flex; justify-content: center; min-height: 100vh; overflow: hidden; }
         .app-container { width: 100%; max-width: 480px; background-color: var(--bg); display: flex; flex-direction: column; height: 100vh; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; transition: 0.3s; }
 
-        header { background-color: var(--header-bg); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10; transition: 0.3s; }
+        header { background-color: var(--header-bg); color: white; padding: calc(12px + env(safe-area-inset-top)) 20px 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10; transition: 0.3s; }
         .header-actions { display: flex; gap: 8px; }
         .header-btn { background: rgba(255, 255, 255, 0.2); border: none; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s;}
         .header-btn:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.9); }
         .header-btn.text { border-radius: 20px; width: auto; padding: 6px 14px; font-size: 0.9rem; }
         
         .toast { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); background: var(--card-bg); color: var(--text-main); padding: 12px 20px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px; font-weight: 700; z-index: 9999; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 90%; border: 2px solid var(--primary); text-align: center; justify-content: center;}
-        .toast.show { top: 20px; }
+        .toast.show { top: calc(20px + env(safe-area-inset-top)); }
 
         .user-stats { display: flex; gap: 10px; padding: 10px 20px; background: var(--card-bg); border-bottom: 1px solid rgba(0,0,0,0.05); justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); z-index: 5; transition: 0.3s; flex-shrink: 0;}
         .stat-badge { font-size: 1rem; font-weight: 800; background: var(--bg); padding: 6px 16px; border-radius: 20px; color: var(--text-main); display: flex; align-items: center; gap: 6px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); transition: 0.3s;}
@@ -410,7 +410,7 @@
 
     let sQ=[], sIdx=0, sSco=0, sTar="", sCur=[], sLet=[];
     function startSpelling() { const voc = getVocab().filter(w => /^[a-zA-Z]+$/.test(w.en)); if(voc.length === 0){ alert("У цій категорії немає підходящих слів для спелінгу (без пробілів)!"); return;} showSection('spelling'); document.getElementById('spell-active').style.display='flex'; document.getElementById('spell-result').style.display='none'; sQ=shuffleArray(voc).slice(0, Math.min(10, voc.length)); sIdx=0; sSco=0; loadS(); }
-    function loadS() { document.getElementById('spell-counter').textContent=`Слово ${sIdx+1}/${sQ.length}`; document.getElementById('spell-score').textContent=sSco; let w=sQ[sIdx]; sTar=w.en.toUpperCase(); document.getElementById('spell-question').textContent=w.em+" "+w.uk; sCur=Array(sTar.length).fill(null); sLet=shuffleArray(sTar.split('').map((l,i)=>({l,id:i}))); rndS(); }
+    function loadS() { document.getElementById('spell-counter').textContent=`Слово ${sIdx+1}/${sQ.length}`; document.getElementById('spell-score').textContent=sSco; let w=sQ[sIdx]; sTar=w.en.toUpperCase(); document.getElementById('spell-question').textContent=w.em+" "+w.uk; sCur=Array(sTar.length).fill(null); sLet=shuffleArray(sTar.split('').map((l,i)=>({l,id:i}))); rendS(); }
     function rendS() { const c1=document.getElementById('spell-slots'); c1.innerHTML=''; sCur.forEach((l,i)=>{ let s=document.createElement('div'); s.className=`spell-slot ${l?'filled':''}`; s.textContent=l?l.l:""; s.onclick=()=>{if(l){sCur[i]=null; rendS();}}; c1.appendChild(s);}); const c2=document.getElementById('spell-letters'); c2.innerHTML=''; sLet.forEach(i=>{ let b=document.createElement('button'); b.className='letter-btn'; b.textContent=i.l; if(sCur.find(x=>x&&x.id===i.id)) b.classList.add('hidden'); else b.onclick=()=>{ let ei=sCur.findIndex(x=>x===null); if(ei!==-1){sCur[ei]=i; rendS(); if(!sCur.includes(null)) chkS();} }; c2.appendChild(b);}); }
     function chkS() { let fw=sCur.map(x=>x.l).join(''); const sc=document.getElementById('spell-slots'); const r=sc.getBoundingClientRect(); const cx=r.left+r.width/2, cy=r.top+r.height/2; if(fw===sTar){ fireParticles(cx, cy, true); sSco++; addXP(2); setTimeout(()=>{sIdx++; if(sIdx<sQ.length)loadS(); else{document.getElementById('spell-active').style.display='none'; document.getElementById('spell-result').style.display='flex'; document.getElementById('spell-final-score').textContent=sSco+"/"+sQ.length; gameFinished(sSco===sQ.length);}},800); } else{ fireParticles(cx, cy, false); trackMistake(sQ[sIdx]); sc.style.animation="shake 0.4s"; setTimeout(()=>{sc.style.animation=""; sCur.fill(null); rendS();},500); } }
 
