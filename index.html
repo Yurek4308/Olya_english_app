@@ -49,7 +49,6 @@
         .welcome-title { font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; transition: 0.2s;}
         .welcome-subtitle { font-size: 1rem; color: var(--primary); font-weight: 600; line-height: 1.4; margin: 0 auto; font-style: italic;}
         
-        /* СТИЛІ ДЛЯ НОВИХ ДЕННИХ ЦІЛЕЙ */
         .daily-goals-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; flex-shrink: 0; }
         .daily-goal { background: var(--card-bg); padding: 12px 15px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: 0.2s; display: flex; flex-direction: column;}
         .daily-goal.completed { border: 2px solid var(--correct); background: #f0fdf4; }
@@ -118,7 +117,7 @@
         .result-score { font-size: 4rem; font-weight: 800; color: var(--primary); margin: 10px 0 30px; transition: 0.2s;}
 
         .search-wrap { display: flex; gap: 10px; margin-bottom: 15px; } .dict-search-input { flex: 1; padding: 14px 16px; border-radius: 16px; border: 2px solid #e5e7eb; font-size: 1.05rem; outline: none; transition: 0.2s; background: var(--card-bg); color: var(--text-main); font-weight: 600;} .dict-search-input:focus { border-color: var(--primary); } .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 30px; flex: 1; } .dict-card { height: 140px; perspective: 1000px; cursor: pointer; }  .dict-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.3s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; } .dict-card.flipped .dict-card-inner { transform: rotateY(180deg); } .dict-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 16px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); padding: 5px; color: var(--text-main);} .dict-back { transform: rotateY(180deg); color: var(--primary); background: #fdf2f8;} .dark .dict-back { background: #1e293b; color: var(--primary); border: 1px solid var(--primary); } .dict-emoji { font-size: 1.8rem; margin-bottom: 2px;} .dict-audio-btn { background: var(--bg); border: 2px solid var(--primary); border-radius: 12px; padding: 10px 18px; font-size: 1.4rem; cursor: pointer; transition: 0.1s; margin: 0 5px; color: var(--text-main); display: inline-flex; align-items: center; justify-content: center;} .dark .dict-audio-btn { background: #0f172a; border-color: #3b82f6; } .dict-audio-btn:active { transform: scale(0.85); background: var(--primary); color: white;}
-        .tf-container { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;} .tf-card { position: absolute; background: var(--card-bg); width: 100%; max-width: 300px; height: 300px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; text-align: center; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color: var(--text-main); transition: transform 0.15s ease-out, background-color 0.2s; cursor: grab; user-select: none; touch-action: none;} .tf-card:active { cursor: grabbing; } .tf-equals { color: var(--primary); margin: 15px 0; font-size: 2.5rem; } .tf-hint { position: absolute; top: -30px; width: 100%; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); opacity: 0.5;}
+        .tf-container { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;} .tf-card { absolute; background: var(--card-bg); width: 100%; max-width: 300px; height: 300px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; text-align: center; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color: var(--text-main); transition: transform 0.15s ease-out, background-color 0.2s; cursor: grab; user-select: none; touch-action: none;} .tf-card:active { cursor: grabbing; } .tf-equals { color: var(--primary); margin: 15px 0; font-size: 2.5rem; } .tf-hint { position: absolute; top: -30px; width: 100%; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); opacity: 0.5;}
         .const-target { background: var(--bg); min-height: 80px; border-radius: 16px; border: 2px dashed #cbd5e1; display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; margin-bottom: 20px; align-items: center; justify-content: center; transition: 0.2s;} .dark .const-target { border-color: #475569; } .const-target.correct { border-color: var(--correct); background: rgba(16, 185, 129, 0.1); border-style: solid;} .const-words { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: auto;} .const-word { background: var(--card-bg); color: var(--text-main); font-weight: 700; font-size: 1.1rem; padding: 10px 18px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; transition: 0.1s; user-select: none;} .const-word:active { transform: scale(0.9); } .const-word.hidden { opacity: 0; pointer-events: none; transform: scale(0); }
         .timer-container { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; margin-bottom: 15px; overflow: hidden; flex-shrink: 0;} .dark .timer-container { background: #334155; } .timer-fill { height: 100%; background: var(--correct); width: 100%; transition: width 1s linear, background-color 0.2s; } .timer-fill.low { background: var(--wrong); }
         .match-columns { display: flex; gap: 12px; flex: 1; overflow-y: auto; padding-bottom: 20px; } .match-col { flex: 1; display: flex; flex-direction: column; gap: 12px; } .match-btn { padding: 12px; background: var(--card-bg); border: 2px solid #e5e7eb; border-radius: 16px; font-size: 1.05rem; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-main); min-height: 70px; display: flex; align-items: center; justify-content: center; transition: 0.1s; } .dark .match-btn { border-color: #334155; } .match-btn.selected { border-color: var(--primary); background: #fdf2f8; color: var(--primary); transform: scale(0.95); } .dark .match-btn.selected { background: #1e293b; border-color: var(--primary); } .match-btn.correct { opacity: 0; visibility: hidden; transform: scale(0.8); transition: all 0.2s ease-out; pointer-events: none; } .match-btn.wrong { border-color: var(--wrong); background: #fee2e2; color: var(--wrong); animation: shake 0.3s; }
@@ -185,15 +184,15 @@
 
             <div class="daily-goals-container">
                 <div class="daily-goal" id="goal-1">
-                    <div class="daily-goal-top"><span id="dg1-title">🎮 Легке завдання</span> <span class="goal-reward" id="dg1-rew">+5 🌟</span></div>
+                    <div class="daily-goal-top"><span id="dg1-title">🎮 Easy: Завдання</span> <span class="goal-reward" id="dg1-rew">+5 🌟</span></div>
                     <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg1-bar"></div></div>
                 </div>
                 <div class="daily-goal" id="goal-2">
-                    <div class="daily-goal-top"><span id="dg2-title">🧩 Середнє завдання</span> <span class="goal-reward" id="dg2-rew">+10 🌟</span></div>
+                    <div class="daily-goal-top"><span id="dg2-title">🧩 Mid: Завдання</span> <span class="goal-reward" id="dg2-rew">+10 🌟</span></div>
                     <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg2-bar"></div></div>
                 </div>
                 <div class="daily-goal" id="goal-3">
-                    <div class="daily-goal-top"><span id="dg3-title">🔥 Важке завдання</span> <span class="goal-reward" id="dg3-rew">+20 🌟</span></div>
+                    <div class="daily-goal-top"><span id="dg3-title">🔥 Hard: Завдання</span> <span class="goal-reward" id="dg3-rew">+20 🌟</span></div>
                     <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg3-bar"></div></div>
                 </div>
             </div>
@@ -292,8 +291,6 @@
         </div>
 
         <div id="quiz-menu" class="section"><div class="welcome-header"><h1 class="welcome-title">Квіз 🎯</h1></div><div class="menu-list"><div class="menu-card" style="flex-direction:row; text-align:left;" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue" style="margin-bottom:0; margin-right:15px;">🇺🇦</div><div class="menu-text"><div class="menu-title">Укр ➡️ Англ</div></div></div><div class="menu-card" style="flex-direction:row; text-align:left;" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow" style="margin-bottom:0; margin-right:15px;">🇬🇧</div><div class="menu-text"><div class="menu-title">Англ ➡️ Укр</div></div></div></div></div>
-        <div id="flashcards-menu" class="section"><div class="welcome-header"><h1 class="welcome-title">Картки 🗂️</h1></div><div class="menu-list"><div class="menu-card" style="flex-direction:row; text-align:left;" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue" style="margin-bottom:0; margin-right:15px;">🇬🇧</div><div class="menu-text"><div class="menu-title">Англ ➡️ Укр</div></div></div><div class="menu-card" style="flex-direction:row; text-align:left;" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow" style="margin-bottom:0; margin-right:15px;">🇺🇦</div><div class="menu-text"><div class="menu-title">Укр ➡️ Англ</div></div></div></div></div>
-
         <div id="emoji-quiz" class="section"><div id="emoji-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="emoji-counter">Питання 1</span><span>⭐ <span id="emoji-score">0</span></span></div><div class="question-box" style="font-size: 5rem; padding: 40px 20px;" id="emoji-question">🌍</div><div class="options-grid grid-2" id="emoji-options"></div><button class="btn btn-primary" id="btn-next-emoji" style="display:none; width: 100%; margin-top: auto;" onclick="nextEmoji()">Далі</button></div><div class="result-screen" id="emoji-result"><h2 style="font-size: 2rem;">Емодзі майстер! 🤩</h2><div class="result-score" id="emoji-final">20/20</div><button class="btn btn-primary" style="width: 100%;" onclick="showSection('home')">В меню</button></div></div>
         <div id="constructor" class="section"><div id="const-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="const-counter">Фраза 1</span><span>⭐ <span id="const-score">0</span></span></div><div class="question-box" style="font-size: 1.3rem; margin-bottom: 30px;" id="const-question">Українська фраза</div><div class="const-target" id="const-target"></div><div class="const-words" id="const-words"></div><button class="btn btn-primary" id="btn-next-const" style="display:none; width: 100%; margin-top: auto;" onclick="nextConst()">Далі</button></div><div class="result-screen" id="const-result"><h2 style="font-size: 2rem;">Ти просто геній! 🧩</h2><div class="result-score" id="const-final">5/5</div><button class="btn btn-primary" style="width: 100%;" onclick="showSection('home')">В меню</button></div></div>
         <div id="truefalse" class="section"><div id="tf-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="tf-counter">Слово 1</span><span>⭐ <span id="tf-score">0</span></span></div><div class="tf-container" id="tf-container"><div class="tf-hint">👈 Брехня | Правда 👉</div><div class="tf-card" id="tf-card"><span id="tf-en">Cloud</span><span class="tf-equals">=</span><span id="tf-uk">Сонце</span></div></div><div class="controls" style="margin-top: auto;"><button class="btn" style="background:var(--wrong); color:white;" onclick="checkTfSwipe(false)">❌ Брехня</button><button class="btn" style="background:var(--correct); color:white;" onclick="checkTfSwipe(true)">✅ Правда</button></div></div><div class="result-screen" id="tf-result"><h2 style="font-size: 2rem;">Готово! ⚖️</h2><div class="result-score" id="tf-final-score">10/10</div><button class="btn btn-primary" style="width: 100%;" onclick="showSection('home')">В меню</button></div></div>
@@ -303,7 +300,6 @@
         <div id="spelling" class="section"><div id="spell-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="spell-counter">Слово 1</span><span>⭐ <span id="spell-score">0</span></span></div><div class="question-box" style="margin-bottom: 40px;" id="spell-question">Дерево</div><div class="spell-slots" id="spell-slots"></div><div class="spell-letters" id="spell-letters"></div></div><div class="result-screen" id="spell-result"><h2 style="font-size: 2rem;">Молодець! 🔠</h2><div class="result-score" id="spell-final-score">10/10</div><button class="btn btn-primary" style="width: 100%;" onclick="showSection('home')">В меню</button></div></div>
         <div id="sprint" class="section"><div id="sprint-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span>⏱️ <span id="sprint-time-text">60</span>с</span><span>⭐ <span id="sprint-score-text">0</span></span></div><div class="timer-container"><div class="timer-fill" id="sprint-bar"></div></div><div class="question-box" id="sprint-question">Word</div><div class="options-grid" id="sprint-options"></div></div><div class="result-screen" id="sprint-result"><h2 style="font-size: 2rem;">Час вийшов!</h2><div class="result-score" id="sprint-final-score">0</div><button class="btn btn-primary" style="width: 100%;" onclick="startSprint()">Ще раз</button><button class="btn" style="width: 100%; margin-top:10px;" onclick="showSection('home')">В меню</button></div></div>
         <div id="hangman" class="section"><div id="hm-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="hm-counter">Слово 1</span><span class="hm-lives" id="hm-lives-text">❤️❤️❤️❤️❤️</span></div><div class="question-box" id="hm-question">Word</div><div class="hm-slots" id="hm-slots"></div><div class="hm-keyboard" id="hm-keyboard"></div></div><div class="result-screen" id="hm-result"><h2 style="font-size: 2rem;" id="hm-result-title">Молодець!</h2><div class="result-score" id="hm-final-word">Word</div><button class="btn btn-primary" style="width: 100%;" onclick="startHangman()">Наступне</button><button class="btn" style="width: 100%; margin-top:10px;" onclick="showSection('home')">В меню</button></div></div>
-        <div id="flashcards" class="section"><div class="status-bar"><span id="fc-counter">Картка 1</span><span style="color:var(--primary);">Натисни</span></div><div class="flashcard-container" onclick="flipCard()"><div class="flashcard" id="flashcard"><div class="flashcard-face" id="fc-front">Word</div><div class="flashcard-face flashcard-back" id="fc-back">Слово</div></div></div><div class="controls"><button class="btn" onclick="prevCard()">Назад</button><button class="btn btn-primary" onclick="nextCard()">Наступна</button></div></div>
 
     </div>
 </div>
@@ -361,19 +357,19 @@
 
     const goalPool = {
         easy: [
-            { id: 'games_2', title: "🎮 Розім'ятися (2 гри)", target: 2, rew: 5, type: 'games' },
-            { id: 'flash_10', title: "🗂️ Гортати картки (10 разів)", target: 10, rew: 5, type: 'flash' },
-            { id: 'emoji_5', title: "🤩 Емодзі-знавець (5 шт)", target: 5, rew: 5, type: 'emoji' }
+            { id: 'games_2', title: "🎮 Easy: Зіграти 2 будь-які гри", target: 2, rew: 5, type: 'games' },
+            { id: 'flash_10', title: "🗂️ Easy: Погортати 10 карток", target: 10, rew: 5, type: 'flash' },
+            { id: 'emoji_5', title: "🤩 Easy: Вгадати 5 емодзі", target: 5, rew: 5, type: 'emoji' }
         ],
         medium: [
-            { id: 'pairs_12', title: "🔗 Майстер пар (12 пар)", target: 12, rew: 10, type: 'pairs' },
-            { id: 'quiz_80', title: "🎯 Квіз-профі (16 балів)", target: 16, rew: 10, type: 'quiz_score' },
-            { id: 'spell_5', title: "🔠 Спелінг (5 слів)", target: 5, rew: 10, type: 'spell' }
+            { id: 'pairs_12', title: "🔗 Mid: З'єднати 12 пар", target: 12, rew: 10, type: 'pairs' },
+            { id: 'quiz_80', title: "🎯 Mid: Квіз (16+ правильних)", target: 16, rew: 10, type: 'quiz_score' },
+            { id: 'spell_5', title: "🔠 Mid: Спелінг (написати 5 слів)", target: 5, rew: 10, type: 'spell' }
         ],
         hard: [
-            { id: 'sprint_25', title: "⚡ Спринт-ракета (25+ балів)", target: 25, rew: 20, type: 'sprint' },
-            { id: 'perfect_quiz', title: "👑 Без помилок (Квіз 20/20)", target: 20, rew: 25, type: 'perfect' },
-            { id: 'hangman_clean', title: "❤️‍🩹 Живуча (Шибениця без втрат)", target: 1, rew: 20, type: 'clean_hm' }
+            { id: 'sprint_25', title: "⚡ Hard: Спринт (набрати 25+)", target: 25, rew: 20, type: 'sprint' },
+            { id: 'perfect_quiz', title: "👑 Hard: Квіз взагалі без помилок", target: 20, rew: 25, type: 'perfect' },
+            { id: 'hangman_clean', title: "❤️‍🩹 Hard: Шибениця (зберегти всі ❤️)", target: 1, rew: 20, type: 'clean_hm' }
         ]
     };
 
@@ -419,6 +415,16 @@
         const today = new Date().toDateString();
         document.getElementById('compliment-text').textContent = compliments[Math.floor(Math.random() * compliments.length)];
         
+        // Гарантоване створення нових цілей, якщо їх ще немає в пам'яті (щоб уникнути пустоти)
+        if (!dailyGoals || !dailyGoals[0]) {
+            dailyGoals = [
+                goalPool.easy[Math.floor(Math.random() * goalPool.easy.length)],
+                goalPool.medium[Math.floor(Math.random() * goalPool.medium.length)],
+                goalPool.hard[Math.floor(Math.random() * goalPool.hard.length)]
+            ];
+            localStorage.setItem('dailyGoals', JSON.stringify(dailyGoals));
+        }
+
         if (lastLogin !== today) {
             const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
             if (lastLogin === yesterday.toDateString()) { currentStreak++; } else if (lastLogin !== '') { currentStreak = 1; } else { currentStreak = 1; }
@@ -475,7 +481,7 @@
         document.getElementById('mistakes-count').textContent = mistakeWords.length;
         document.getElementById('inv-count').textContent = inventory.length;
 
-        if (dailyGoals) {
+        if (dailyGoals && dailyGoals.length === 3) {
             document.getElementById('dg1-title').textContent = dailyGoals[0].title;
             document.getElementById('dg1-rew').textContent = `+${dailyGoals[0].rew} 🌟`;
             document.getElementById('dg1-bar').style.width = Math.min(100, (dailyProg[dailyGoals[0].type]/dailyGoals[0].target)*100) + "%";
@@ -525,8 +531,8 @@
         else { alert("Невірний код!"); }
     }
 
-    function exportProgress() { const d = { totalXP, currentStreak, bestSprint, dailyProg, mistakeWords, inventory, achievs, usedCodes, lastLogin }; const s = btoa(unescape(encodeURIComponent(JSON.stringify(d)))); navigator.clipboard.writeText(s).then(()=>alert("Код скопійовано! Надішли Юрі 📩")).catch(()=>prompt("Скопіюй вручну:", s)); }
-    function importProgress() { const s = prompt("Встав код прогресу сюди:"); if(!s) return; try { const d = JSON.parse(decodeURIComponent(escape(atob(s)))); if(d.totalXP !== undefined) { localStorage.setItem('totalXP', d.totalXP); localStorage.setItem('streak', d.currentStreak); localStorage.setItem('sprintRecord', d.bestSprint); localStorage.setItem('dailyProg', JSON.stringify(d.dailyProg)); localStorage.setItem('userMistakes', JSON.stringify(d.mistakeWords)); localStorage.setItem('userInventory', JSON.stringify(d.inventory)); localStorage.setItem('achievs', JSON.stringify(d.achievs)); localStorage.setItem('usedCodes', JSON.stringify(d.usedCodes)); localStorage.setItem('lastLogin', d.lastLogin); alert("Прогрес відновлено!"); location.reload(); } } catch(e){alert("Помилка коду!");} }
+    function exportProgress() { const d = { totalXP, currentStreak, bestSprint, dailyProg, mistakeWords, inventory, achievs, usedCodes, lastLogin, dailyGoals }; const s = btoa(unescape(encodeURIComponent(JSON.stringify(d)))); navigator.clipboard.writeText(s).then(()=>alert("Код скопійовано! Надішли Юрі 📩")).catch(()=>prompt("Скопіюй вручну:", s)); }
+    function importProgress() { const s = prompt("Встав код прогресу сюди:"); if(!s) return; try { const d = JSON.parse(decodeURIComponent(escape(atob(s)))); if(d.totalXP !== undefined) { localStorage.setItem('totalXP', d.totalXP); localStorage.setItem('streak', d.currentStreak); localStorage.setItem('sprintRecord', d.bestSprint); localStorage.setItem('dailyProg', JSON.stringify(d.dailyProg)); localStorage.setItem('userMistakes', JSON.stringify(d.mistakeWords)); localStorage.setItem('userInventory', JSON.stringify(d.inventory)); localStorage.setItem('achievs', JSON.stringify(d.achievs)); localStorage.setItem('usedCodes', JSON.stringify(d.usedCodes)); localStorage.setItem('lastLogin', d.lastLogin); if(d.dailyGoals) localStorage.setItem('dailyGoals', JSON.stringify(d.dailyGoals)); alert("Прогрес відновлено!"); location.reload(); } } catch(e){alert("Помилка коду!");} }
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSFX(correct) { if(audioCtx.state === 'suspended') audioCtx.resume(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); if(correct) { osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(1046.5, audioCtx.currentTime + 0.15); gain.gain.setValueAtTime(0.1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4); osc.start(); osc.stop(audioCtx.currentTime + 0.4); } else { osc.type = 'square'; osc.frequency.setValueAtTime(150, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(100, audioCtx.currentTime + 0.2); gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2); osc.start(); osc.stop(audioCtx.currentTime + 0.2); } }
@@ -594,6 +600,7 @@
     let quizQ=[], qIdx=0, qScore=0, qType='uk-en', isMist=false;
     function startMistakesMode() { if(mistakeWords.length===0){ showToast("Помилок немає! ❤️"); return; } qType='uk-en'; isMist=true; quizQ=shuffleArray(mistakeWords); qIdx=0; qScore=0; showSection('quiz'); document.getElementById('quiz-result').style.display='none'; document.getElementById('quiz-active').style.display='flex'; loadQuiz(); }
     function startQuiz(t) { const voc = getVocab(); if(voc.length<4){alert("Замало слів!"); return;} qType=t; isMist=false; quizQ=shuffleArray(voc).slice(0,20); qIdx=0; qScore=0; showSection('quiz'); document.getElementById('quiz-result').style.display='none'; document.getElementById('quiz-active').style.display='flex'; loadQuiz(); }
+    function restartQuiz() { if(isMist) startMistakesMode(); else startQuiz(qType); }
     function loadQuiz() { document.getElementById('btn-next-quiz').style.display='none'; let w=quizQ[qIdx]; document.getElementById('quiz-counter').textContent=`Питання ${qIdx+1}/${quizQ.length}`; document.getElementById('quiz-score').textContent=qScore; document.getElementById('quiz-question').innerHTML=`<div style="font-size:3rem;margin-bottom:10px;">${w.em}</div>`+(qType==='uk-en'?w.uk:w.en); const opts=shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('quiz-options'); g.innerHTML=''; opts.forEach(o=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=qType==='uk-en'?o.en:o.uk; b.onclick=(e)=>{ const c=o.en===w.en; fireParticles(e.clientX, e.clientY, c); if(c){b.classList.add('correct'); qScore++; addXP(1); if(isMist)removeMistake(w);}else{b.classList.add('wrong'); trackMistake(w); document.querySelectorAll('.option-btn').forEach(btn=>{if(btn.textContent===(qType==='uk-en'?w.en:w.uk))btn.classList.add('correct');});} document.querySelectorAll('.option-btn').forEach(btn=>btn.disabled=true); document.getElementById('btn-next-quiz').style.display='block'; }; g.appendChild(b); }); }
     function nextQuizQuestion() { qIdx++; if(qIdx<quizQ.length) loadQuiz(); else{ document.getElementById('quiz-active').style.display='none'; document.getElementById('quiz-result').style.display='flex'; document.getElementById('final-score').textContent=qScore+"/"+quizQ.length; gameFinished(qScore===quizQ.length && !isMist, 'quiz_score', qScore); } }
 
