@@ -49,10 +49,13 @@
         .welcome-title { font-size: 2.2rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px; transition: 0.2s;}
         .welcome-subtitle { font-size: 1rem; color: var(--primary); font-weight: 600; line-height: 1.4; margin: 0 auto; font-style: italic;}
         
-        .daily-goal { background: var(--card-bg); padding: 15px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.2s; flex-shrink: 0;}
-        .daily-goal-top { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 700; color: var(--text-main); font-size: 0.9rem;}
-        .daily-bar-bg { width: 100%; height: 10px; background: var(--bg); border-radius: 10px; overflow: hidden; }
-        .daily-bar-fill { height: 100%; background: var(--correct); width: 0%; transition: width 0.3s ease-out; }
+        .daily-goals-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; flex-shrink: 0; }
+        .daily-goal { background: var(--card-bg); padding: 12px 15px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: 0.2s; display: flex; flex-direction: column;}
+        .daily-goal.completed { opacity: 0.7; }
+        .daily-goal-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 700; color: var(--text-main); font-size: 0.85rem; align-items: center;}
+        .daily-bar-bg { width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; }
+        .daily-bar-fill { height: 100%; background: var(--correct); width: 0%; transition: width 0.4s ease-out; }
+        .goal-reward { color: var(--primary); font-weight: 800; font-size: 0.8rem; background: var(--bg); padding: 2px 8px; border-radius: 10px; }
 
         .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 5px 20px 15px 20px; margin: 0 -20px 15px -20px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; flex-shrink: 0; }
         .category-scroll::-webkit-scrollbar { display: none; }
@@ -113,7 +116,7 @@
         .result-score { font-size: 4rem; font-weight: 800; color: var(--primary); margin: 10px 0 30px; transition: 0.2s;}
 
         .search-wrap { display: flex; gap: 10px; margin-bottom: 15px; } .dict-search-input { flex: 1; padding: 14px 16px; border-radius: 16px; border: 2px solid #e5e7eb; font-size: 1.05rem; outline: none; transition: 0.2s; background: var(--card-bg); color: var(--text-main); font-weight: 600;} .dict-search-input:focus { border-color: var(--primary); } .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 30px; flex: 1; } .dict-card { height: 140px; perspective: 1000px; cursor: pointer; }  .dict-card-inner { width: 100%; height: 100%; position: relative; transition: transform 0.3s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; } .dict-card.flipped .dict-card-inner { transform: rotateY(180deg); } .dict-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 16px; font-weight: 800; font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.03); padding: 5px; color: var(--text-main);} .dict-back { transform: rotateY(180deg); color: var(--primary); background: #fdf2f8;} .dark .dict-back { background: #1e293b; color: var(--primary); border: 1px solid var(--primary); } .dict-emoji { font-size: 1.8rem; margin-bottom: 2px;} .dict-audio-btn { background: var(--bg); border: 2px solid var(--primary); border-radius: 12px; padding: 10px 18px; font-size: 1.4rem; cursor: pointer; transition: 0.1s; margin: 0 5px; color: var(--text-main); display: inline-flex; align-items: center; justify-content: center;} .dark .dict-audio-btn { background: #0f172a; border-color: #3b82f6; } .dict-audio-btn:active { transform: scale(0.85); background: var(--primary); color: white;}
-        .tf-container { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;} .tf-card { position: absolute; background: var(--card-bg); width: 100%; max-width: 300px; height: 300px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; text-align: center; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color: var(--text-main); transition: transform 0.15s ease-out, background-color 0.2s; cursor: grab; user-select: none; touch-action: none;} .tf-card:active { cursor: grabbing; } .tf-equals { color: var(--primary); margin: 15px 0; font-size: 2.5rem; } .tf-hint { position: absolute; top: -30px; width: 100%; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); opacity: 0.5;}
+        .tf-container { position: relative; flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;} .tf-card { absolute; background: var(--card-bg); width: 100%; max-width: 300px; height: 300px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; text-align: center; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); color: var(--text-main); transition: transform 0.15s ease-out, background-color 0.2s; cursor: grab; user-select: none; touch-action: none;} .tf-card:active { cursor: grabbing; } .tf-equals { color: var(--primary); margin: 15px 0; font-size: 2.5rem; } .tf-hint { position: absolute; top: -30px; width: 100%; text-align: center; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); opacity: 0.5;}
         .const-target { background: var(--bg); min-height: 80px; border-radius: 16px; border: 2px dashed #cbd5e1; display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; margin-bottom: 20px; align-items: center; justify-content: center; transition: 0.2s;} .dark .const-target { border-color: #475569; } .const-target.correct { border-color: var(--correct); background: rgba(16, 185, 129, 0.1); border-style: solid;} .const-words { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: auto;} .const-word { background: var(--card-bg); color: var(--text-main); font-weight: 700; font-size: 1.1rem; padding: 10px 18px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; transition: 0.1s; user-select: none;} .const-word:active { transform: scale(0.9); } .const-word.hidden { opacity: 0; pointer-events: none; transform: scale(0); }
         .timer-container { width: 100%; height: 12px; background: #e5e7eb; border-radius: 10px; margin-bottom: 15px; overflow: hidden; flex-shrink: 0;} .dark .timer-container { background: #334155; } .timer-fill { height: 100%; background: var(--correct); width: 100%; transition: width 1s linear, background-color 0.2s; } .timer-fill.low { background: var(--wrong); }
         .match-columns { display: flex; gap: 12px; flex: 1; overflow-y: auto; padding-bottom: 20px; } .match-col { flex: 1; display: flex; flex-direction: column; gap: 12px; } .match-btn { padding: 12px; background: var(--card-bg); border: 2px solid #e5e7eb; border-radius: 16px; font-size: 1.05rem; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-main); min-height: 70px; display: flex; align-items: center; justify-content: center; transition: 0.1s; } .dark .match-btn { border-color: #334155; } .match-btn.selected { border-color: var(--primary); background: #fdf2f8; color: var(--primary); transform: scale(0.95); } .dark .match-btn.selected { background: #1e293b; border-color: var(--primary); } .match-btn.correct { opacity: 0; visibility: hidden; transform: scale(0.8); transition: all 0.2s ease-out; pointer-events: none; } .match-btn.wrong { border-color: var(--wrong); background: #fee2e2; color: var(--wrong); animation: shake 0.3s; }
@@ -178,9 +181,19 @@
                 <p class="welcome-subtitle" id="compliment-text">Ти сьогодні неймовірна! ✨</p>
             </div>
 
-            <div class="daily-goal">
-                <div class="daily-goal-top"><span>Денна ціль: Грати</span> <span id="dg-text">0/3</span></div>
-                <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg-bar"></div></div>
+            <div class="daily-goals-container">
+                <div class="daily-goal" id="goal-1">
+                    <div class="daily-goal-top"><span>🎮 Розім'ятися <span id="dg1-text">0/2</span></span> <span class="goal-reward">+5 🌟</span></div>
+                    <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg1-bar"></div></div>
+                </div>
+                <div class="daily-goal" id="goal-2">
+                    <div class="daily-goal-top"><span>🧩 Дослідниця (Знайти пари) <span id="dg2-text">0/10</span></span> <span class="goal-reward">+10 🌟</span></div>
+                    <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg2-bar"></div></div>
+                </div>
+                <div class="daily-goal" id="goal-3">
+                    <div class="daily-goal-top"><span>⚡ Експертка (Спринт) <span id="dg3-text">0/15</span></span> <span class="goal-reward">+15 🌟</span></div>
+                    <div class="daily-bar-bg"><div class="daily-bar-fill" id="dg3-bar"></div></div>
+                </div>
             </div>
 
             <div class="category-scroll" id="cat-filters">
@@ -288,7 +301,6 @@
         <div id="spelling" class="section"><div id="spell-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="spell-counter">Слово 1</span><span>⭐ <span id="spell-score">0</span></span></div><div class="question-box" style="margin-bottom: 40px;" id="spell-question">Дерево</div><div class="spell-slots" id="spell-slots"></div><div class="spell-letters" id="spell-letters"></div></div><div class="result-screen" id="spell-result"><h2 style="font-size: 2rem;">Молодець! 🔠</h2><div class="result-score" id="spell-final-score">10/10</div><button class="btn btn-primary" style="width: 100%;" onclick="showSection('home')">В меню</button></div></div>
         <div id="sprint" class="section"><div id="sprint-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span>⏱️ <span id="sprint-time-text">60</span>с</span><span>⭐ <span id="sprint-score-text">0</span></span></div><div class="timer-container"><div class="timer-fill" id="sprint-bar"></div></div><div class="question-box" id="sprint-question">Word</div><div class="options-grid" id="sprint-options"></div></div><div class="result-screen" id="sprint-result"><h2 style="font-size: 2rem;">Час вийшов!</h2><div class="result-score" id="sprint-final-score">0</div><button class="btn btn-primary" style="width: 100%;" onclick="startSprint()">Ще раз</button><button class="btn" style="width: 100%; margin-top:10px;" onclick="showSection('home')">В меню</button></div></div>
         <div id="hangman" class="section"><div id="hm-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="hm-counter">Слово 1</span><span class="hm-lives" id="hm-lives-text">❤️❤️❤️❤️❤️</span></div><div class="question-box" id="hm-question">Word</div><div class="hm-slots" id="hm-slots"></div><div class="hm-keyboard" id="hm-keyboard"></div></div><div class="result-screen" id="hm-result"><h2 style="font-size: 2rem;" id="hm-result-title">Молодець!</h2><div class="result-score" id="hm-final-word">Word</div><button class="btn btn-primary" style="width: 100%;" onclick="startHangman()">Наступне</button><button class="btn" style="width: 100%; margin-top:10px;" onclick="showSection('home')">В меню</button></div></div>
-        <div id="flashcards" class="section"><div class="status-bar"><span id="fc-counter">Картка 1</span><span style="color:var(--primary);">Натисни</span></div><div class="flashcard-container" onclick="flipCard()"><div class="flashcard" id="flashcard"><div class="flashcard-face" id="fc-front">Word</div><div class="flashcard-face flashcard-back" id="fc-back">Слово</div></div></div><div class="controls"><button class="btn" onclick="prevCard()">Назад</button><button class="btn btn-primary" onclick="nextCard()">Наступна</button></div></div>
 
     </div>
 </div>
@@ -344,11 +356,43 @@
         { id: 'hug', name: 'Безлімітні обійми на день', price: 150, icon: '🫂' }
     ];
 
+    // ОПТИМІЗОВАНЕ ЗАВАНТАЖЕННЯ ГОЛОСІВ ДЛЯ iOS/Android
+    let synthVoices = [];
+    function loadVoices() {
+        synthVoices = window.speechSynthesis.getVoices();
+    }
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices();
+    }
+
+    function speak(text, accent, event) {
+        if(event) event.stopPropagation();
+        if (!('speechSynthesis' in window)) { alert("Твій браузер не підтримує озвучку :("); return; }
+        
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        const langCode = accent === 'us' ? 'en-US' : 'en-GB';
+        utterance.lang = langCode;
+        utterance.rate = 0.85;
+
+        // Шукаємо найкращий голос для акценту (на iOS це часто "Samantha" або "Daniel")
+        if (synthVoices.length > 0) {
+            let voice = synthVoices.find(v => v.lang === langCode && (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Daniel")));
+            if (!voice) voice = synthVoices.find(v => v.lang === langCode); // Беремо будь-який підходящий
+            if (voice) utterance.voice = voice;
+        }
+        window.speechSynthesis.speak(utterance);
+    }
+
     let totalXP = parseInt(localStorage.getItem('totalXP')) || 0; let currentStreak = parseInt(localStorage.getItem('streak')) || 0;
     let lastLogin = localStorage.getItem('lastLogin') || ''; let bestSprint = parseInt(localStorage.getItem('sprintRecord')) || 0;
-    let mistakeWords = JSON.parse(localStorage.getItem('userMistakes')) || []; let gamesToday = parseInt(localStorage.getItem('gamesToday')) || 0;
+    let mistakeWords = JSON.parse(localStorage.getItem('userMistakes')) || []; 
     let inventory = JSON.parse(localStorage.getItem('userInventory')) || []; let achievs = JSON.parse(localStorage.getItem('achievs')) || {};
     let usedCodes = JSON.parse(localStorage.getItem('usedCodes')) || [];
+
+    // НОВА СИСТЕМА ДЕННИХ ЦІЛЕЙ
+    let dailyProgress = JSON.parse(localStorage.getItem('dailyProgress')) || { games: 0, pairs: 0, sprint: 0, g1Done: false, g2Done: false, g3Done: false };
 
     let currentCat = 'all'; function getVocab() { return currentCat === 'all' ? baseVocabulary : baseVocabulary.filter(w => w.c === currentCat); }
     function setCat(c, el) { currentCat = c; document.querySelectorAll('.cat-chip').forEach(chip => chip.classList.remove('active')); el.classList.add('active'); }
@@ -357,17 +401,71 @@
 
     function initGamification() {
         const today = new Date().toDateString(); document.getElementById('compliment-text').textContent = compliments[Math.floor(Math.random() * compliments.length)];
-        if (lastLogin !== today) { const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); if (lastLogin === yesterday.toDateString()) { currentStreak++; } else if (lastLogin !== '') { currentStreak = 1; } else { currentStreak = 1; } lastLogin = today; gamesToday = 0; localStorage.setItem('streak', currentStreak); localStorage.setItem('lastLogin', lastLogin); localStorage.setItem('gamesToday', 0); }
+        if (lastLogin !== today) { 
+            const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); 
+            if (lastLogin === yesterday.toDateString()) { currentStreak++; } else if (lastLogin !== '') { currentStreak = 1; } else { currentStreak = 1; } 
+            lastLogin = today; 
+            dailyProgress = { games: 0, pairs: 0, sprint: 0, g1Done: false, g2Done: false, g3Done: false }; // Скидаємо цілі
+            localStorage.setItem('streak', currentStreak); localStorage.setItem('lastLogin', lastLogin); 
+            saveDaily();
+        }
         if(currentStreak >= 3) checkAchiev('streak3'); const hour = new Date().getHours(); if(hour >= 22 || hour < 4) checkAchiev('owl');
         updateUI(); renderShop(); renderInventory(); renderAchievs();
     }
 
+    function saveDaily() { localStorage.setItem('dailyProgress', JSON.stringify(dailyProgress)); }
+
     function addXP(amount) { totalXP += amount; localStorage.setItem('totalXP', totalXP); updateUI(); }
-    function gameFinished(perfect = false) { gamesToday++; localStorage.setItem('gamesToday', gamesToday); if(gamesToday === 3) { fireParticles(window.innerWidth/2, window.innerHeight/2, true); addXP(20); showToast("Денна ціль виконана! +20⭐"); } checkAchiev('first_blood'); if(perfect) checkAchiev('perfect'); updateUI(); }
+    
+    // ОНОВЛЕНА ФУНКЦІЯ ЗАВЕРШЕННЯ ГРИ (З ЦІЛЯМИ)
+    function gameFinished(perfect = false, type = 'general', score = 0) { 
+        dailyProgress.games++;
+        
+        if(type === 'match') dailyProgress.pairs += score;
+        if(type === 'sprint' && score > dailyProgress.sprint) dailyProgress.sprint = score;
+
+        // Перевірка цілі 1 (Ігри)
+        if(!dailyProgress.g1Done && dailyProgress.games >= 2) {
+            dailyProgress.g1Done = true; addXP(5); showToast("Ціль 'Розім'ятися' виконана! +5⭐"); fireParticles(window.innerWidth/2, window.innerHeight/2, true);
+        }
+        // Перевірка цілі 2 (Пари)
+        if(!dailyProgress.g2Done && dailyProgress.pairs >= 10) {
+            dailyProgress.g2Done = true; addXP(10); showToast("Ціль 'Дослідниця' виконана! +10⭐"); fireParticles(window.innerWidth/2, window.innerHeight/2, true);
+        }
+        // Перевірка цілі 3 (Спринт)
+        if(!dailyProgress.g3Done && dailyProgress.sprint >= 15) {
+            dailyProgress.g3Done = true; addXP(15); showToast("Ціль 'Експертка' виконана! +15⭐"); fireParticles(window.innerWidth/2, window.innerHeight/2, true);
+        }
+
+        saveDaily();
+        checkAchiev('first_blood'); if(perfect) checkAchiev('perfect'); updateUI(); 
+    }
+
     function checkAchiev(id) { if(!achievs[id]) { achievs[id] = true; localStorage.setItem('achievs', JSON.stringify(achievs)); showToast(`🏆 Досягнення: ${achievList[id].title}`); renderAchievs(); } }
     function showToast(msg) { const t = document.getElementById('toast'); document.getElementById('toast-msg').textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
-    function updateUI() { document.getElementById('xp-count').textContent = totalXP; document.getElementById('streak-count').textContent = currentStreak; document.getElementById('sprint-badge').textContent = bestSprint; document.getElementById('mistakes-count').textContent = mistakeWords.length; document.getElementById('dg-text').textContent = `${Math.min(gamesToday, 3)}/3`; document.getElementById('dg-bar').style.width = `${Math.min(gamesToday, 3) / 3 * 100}%`; document.getElementById('inv-count').textContent = inventory.length; renderShop(); }
+    function updateUI() { 
+        document.getElementById('xp-count').textContent = totalXP; 
+        document.getElementById('streak-count').textContent = currentStreak; 
+        document.getElementById('sprint-badge').textContent = bestSprint; 
+        document.getElementById('mistakes-count').textContent = mistakeWords.length; 
+        document.getElementById('inv-count').textContent = inventory.length; 
+
+        // Оновлення прогрес-барів цілей
+        document.getElementById('dg1-text').textContent = `${Math.min(dailyProgress.games, 2)}/2`;
+        document.getElementById('dg1-bar').style.width = `${Math.min(dailyProgress.games, 2) / 2 * 100}%`;
+        if(dailyProgress.g1Done) document.getElementById('goal-1').classList.add('completed');
+
+        document.getElementById('dg2-text').textContent = `${Math.min(dailyProgress.pairs, 10)}/10`;
+        document.getElementById('dg2-bar').style.width = `${Math.min(dailyProgress.pairs, 10) / 10 * 100}%`;
+        if(dailyProgress.g2Done) document.getElementById('goal-2').classList.add('completed');
+
+        document.getElementById('dg3-text').textContent = `${Math.min(dailyProgress.sprint, 15)}/15`;
+        document.getElementById('dg3-bar').style.width = `${Math.min(dailyProgress.sprint, 15) / 15 * 100}%`;
+        if(dailyProgress.g3Done) document.getElementById('goal-3').classList.add('completed');
+
+        renderShop(); 
+    }
 
     function renderShop() { 
         const c = document.getElementById('shop-list'); 
@@ -415,7 +513,7 @@
     }
 
     function exportProgress() {
-        const data = { totalXP, currentStreak, bestSprint, gamesToday, mistakeWords, inventory, achievs, usedCodes, lastLogin };
+        const data = { totalXP, currentStreak, bestSprint, dailyProgress, mistakeWords, inventory, achievs, usedCodes, lastLogin };
         const str = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
         navigator.clipboard.writeText(str).then(() => { alert("Код скопійовано! Надішли Юрі 📩"); }).catch(() => { prompt("Скопіюй вручну:", str); });
     }
@@ -426,7 +524,7 @@
         try {
             const data = JSON.parse(decodeURIComponent(escape(atob(str))));
             if(data.totalXP !== undefined) {
-                localStorage.setItem('totalXP', data.totalXP); localStorage.setItem('streak', data.currentStreak); localStorage.setItem('sprintRecord', data.bestSprint); localStorage.setItem('gamesToday', data.gamesToday); localStorage.setItem('userMistakes', JSON.stringify(data.mistakeWords)); localStorage.setItem('userInventory', JSON.stringify(data.inventory)); localStorage.setItem('achievs', JSON.stringify(data.achievs)); localStorage.setItem('usedCodes', JSON.stringify(data.usedCodes)); localStorage.setItem('lastLogin', data.lastLogin);
+                localStorage.setItem('totalXP', data.totalXP); localStorage.setItem('streak', data.currentStreak); localStorage.setItem('sprintRecord', data.bestSprint); localStorage.setItem('dailyProgress', JSON.stringify(data.dailyProgress)); localStorage.setItem('userMistakes', JSON.stringify(data.mistakeWords)); localStorage.setItem('userInventory', JSON.stringify(data.inventory)); localStorage.setItem('achievs', JSON.stringify(data.achievs)); localStorage.setItem('usedCodes', JSON.stringify(data.usedCodes)); localStorage.setItem('lastLogin', data.lastLogin);
                 alert("Прогрес відновлено!"); location.reload();
             }
         } catch(e) { alert("Помилка!"); }
@@ -470,16 +568,6 @@
 
     let dictMode = 'en-uk'; function setDictMode(m) { dictMode = m; renderDictionary(); }
     function renderDictionary() { document.getElementById('btn-dict-en').className = dictMode === 'en-uk' ? 'btn btn-primary' : 'btn'; document.getElementById('btn-dict-uk').className = dictMode === 'uk-en' ? 'btn btn-primary' : 'btn'; const grid = document.getElementById('dict-grid'); grid.innerHTML = ''; const q = document.getElementById('dict-search').value.toLowerCase().trim(); if(q === 'love' || q === 'кохаю' || q === 'люблю') { document.getElementById('easter-egg').style.display='flex'; checkAchiev('love'); document.getElementById('dict-search').value=''; return; } let list = baseVocabulary.filter(w => w.en.toLowerCase().includes(q) || w.uk.toLowerCase().includes(q)); list.sort((a,b) => a.en.localeCompare(b.en)).forEach(w => { const c = document.createElement('div'); c.className = 'dict-card'; const f = document.createElement('div'); f.className = 'dict-face'; const b = document.createElement('div'); b.className = 'dict-face dict-back'; const buildEn = (el) => { el.innerHTML = `<div class="dict-emoji">${w.em}</div><div>${w.en}</div><div style="margin-top:auto;"><button class="dict-audio-btn" onclick="speak('${w.en}', 'us', event)">🇺🇸</button> <button class="dict-audio-btn" onclick="speak('${w.en}', 'uk', event)">🇬🇧</button></div>`; }; if(dictMode === 'en-uk') { buildEn(f); b.innerHTML = `<div class="dict-emoji">${w.em}</div><div>${w.uk}</div>`; } else { f.innerHTML = `<div class="dict-emoji">${w.em}</div><div>${w.uk}</div>`; buildEn(b); } c.innerHTML = `<div class="dict-card-inner"></div>`; c.firstChild.appendChild(f); c.firstChild.appendChild(b); c.onclick = () => c.classList.toggle('flipped'); grid.appendChild(c); }); }
-    
-    function speak(t, l, e) { 
-        if(e) e.stopPropagation(); 
-        const lang = l === 'us' ? 'en-US' : 'en-GB';
-        const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${lang}&q=${encodeURIComponent(t)}`;
-        const audio = new Audio(url);
-        audio.play().catch(err => {
-            const u = new SpeechSynthesisUtterance(t); u.lang = lang; u.rate=0.85; window.speechSynthesis.speak(u);
-        });
-    }
 
     let emoQ=[], eIdx=0, eScore=0, eAns=false;
     function startEmojiQuiz() { const voc = getVocab(); if(voc.length<4){alert("Замало слів!"); return;} emoQ = shuffleArray(voc).slice(0, 15); eIdx=0; eScore=0; showSection('emoji-quiz'); document.getElementById('emoji-active').style.display='flex'; document.getElementById('emoji-result').style.display='none'; loadEmo(); }
@@ -507,14 +595,14 @@
 
     let mFound=0, mErr=0, mSel=null, mLock=false;
     function startMatchGame() { const voc = getVocab(); if(voc.length<6){alert("Замало слів!"); return;} showSection('match'); mFound=0; mErr=0; document.getElementById('match-columns').style.display='flex'; document.getElementById('match-result').style.display='none'; updM(); let words=shuffleArray(voc).slice(0,6); const cUk=document.getElementById('match-col-uk'), cEn=document.getElementById('match-col-en'); cUk.innerHTML=''; cEn.innerHTML=''; shuffleArray(words.map((w,i)=>({t:w.uk,id:i,l:'uk',w}))).forEach(c=>createMB(c,cUk)); shuffleArray(words.map((w,i)=>({t:w.en,id:i,l:'en',w}))).forEach(c=>createMB(c,cEn)); }
-    function createMB(c, p) { const b=document.createElement('button'); b.className='match-btn'; b.textContent=c.t; b.onclick=(e)=>{ if(mLock||b.classList.contains('correct'))return; if(b===mSel){b.classList.remove('selected'); mSel=null; return;} if(!mSel){b.classList.add('selected'); mSel=b; b.dataset.id=c.id; b.dataset.lang=c.l; b.word=c.w;} else if(mSel.dataset.lang===c.l){mSel.classList.remove('selected'); b.classList.add('selected'); mSel=b; b.dataset.id=c.id; b.dataset.lang=c.l; b.word=c.w;} else{ mLock=true; b.classList.add('selected'); const cor=mSel.dataset.id==c.id; fireParticles(e.clientX, e.clientY, cor); if(cor){b.classList.add('correct'); mSel.classList.add('correct'); mFound++; addXP(1); updM(); mSel=null; mLock=false; if(mFound===6)setTimeout(()=>{document.getElementById('match-columns').style.display='none'; document.getElementById('match-result').style.display='flex'; document.getElementById('match-final-score').textContent=mErr+" помилок"; gameFinished(mErr===0);},400);} else{b.classList.add('wrong'); mSel.classList.add('wrong'); mErr++; trackMistake(c.w); updM(); let s1=b,s2=mSel; mSel=null; setTimeout(()=>{s1.classList.remove('wrong','selected'); s2.classList.remove('wrong','selected'); mLock=false;},300);} } }; p.appendChild(b); }
+    function createMB(c, p) { const b=document.createElement('button'); b.className='match-btn'; b.textContent=c.t; b.onclick=(e)=>{ if(mLock||b.classList.contains('correct'))return; if(b===mSel){b.classList.remove('selected'); mSel=null; return;} if(!mSel){b.classList.add('selected'); mSel=b; b.dataset.id=c.id; b.dataset.lang=c.l; b.word=c.w;} else if(mSel.dataset.lang===c.l){mSel.classList.remove('selected'); b.classList.add('selected'); mSel=b; b.dataset.id=c.id; b.dataset.lang=c.l; b.word=c.w;} else{ mLock=true; b.classList.add('selected'); const cor=mSel.dataset.id==c.id; fireParticles(e.clientX, e.clientY, cor); if(cor){b.classList.add('correct'); mSel.classList.add('correct'); mFound++; addXP(1); updM(); mSel=null; mLock=false; if(mFound===6)setTimeout(()=>{document.getElementById('match-columns').style.display='none'; document.getElementById('match-result').style.display='flex'; document.getElementById('match-final-score').textContent=mErr+" помилок"; gameFinished(mErr===0, 'match', mFound);},400);} else{b.classList.add('wrong'); mSel.classList.add('wrong'); mErr++; trackMistake(c.w); updM(); let s1=b,s2=mSel; mSel=null; setTimeout(()=>{s1.classList.remove('wrong','selected'); s2.classList.remove('wrong','selected'); mLock=false;},300);} } }; p.appendChild(b); }
     function updM() { document.getElementById('match-counter').textContent=`Пари: ${mFound}/6`; document.getElementById('match-errors').textContent=mErr; }
 
     let sprTime=60, sprScore=0, sprQ=[], sprLock=false;
     function startSprint() { const voc = getVocab(); if(voc.length<4){alert("Замало слів!"); return;} showSection('sprint'); document.getElementById('sprint-active').style.display='flex'; document.getElementById('sprint-result').style.display='none'; sprTime=60; sprScore=0; sprQ=shuffleArray(voc); updSpr(); clearInterval(sprintTimerInterval); sprintTimerInterval=setInterval(()=>{sprTime--; updSpr(); if(sprTime<=0) endSpr();},1000); loadSpr(); }
     function updSpr() { document.getElementById('sprint-time-text').textContent=sprTime; document.getElementById('sprint-score-text').textContent=sprScore; let b=document.getElementById('sprint-bar'); b.style.width=Math.max(0,(sprTime/60)*100)+"%"; if(sprTime<15) b.classList.add('low'); else b.classList.remove('low'); }
     function loadSpr() { sprLock = false; let w=sprQ[Math.floor(Math.random()*sprQ.length)]; document.getElementById('sprint-question').innerHTML=`<div style="font-size:3rem;">${w.em}</div>`+w.uk; const o=shuffleArray([w,...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const c=document.getElementById('sprint-options'); c.innerHTML=''; o.forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=opt.en; b.onclick=(e)=>{ if(sprLock) return; sprLock = true; const cor=opt.en===w.en; fireParticles(e.clientX, e.clientY, cor); if(cor){sprScore++; addXP(1); sprTime=Math.min(sprTime+1,60);}else{sprTime=Math.max(sprTime-2,0); trackMistake(w);} updSpr(); if(sprTime>0) setTimeout(loadSpr, 150); else endSpr(); }; c.appendChild(b); }); }
-    function endSpr() { clearInterval(sprintTimerInterval); document.getElementById('sprint-active').style.display='none'; document.getElementById('sprint-result').style.display='flex'; document.getElementById('sprint-final-score').textContent=sprScore; if(sprScore>bestSprint){bestSprint=sprScore; localStorage.setItem('sprintRecord',bestSprint); document.getElementById('sprint-badge').textContent=bestSprint; checkAchiev('speed');} gameFinished(); }
+    function endSpr() { clearInterval(sprintTimerInterval); document.getElementById('sprint-active').style.display='none'; document.getElementById('sprint-result').style.display='flex'; document.getElementById('sprint-final-score').textContent=sprScore; if(sprScore>bestSprint){bestSprint=sprScore; localStorage.setItem('sprintRecord',bestSprint); document.getElementById('sprint-badge').textContent=bestSprint; checkAchiev('speed');} gameFinished(false, 'sprint', sprScore); }
 
     let sQ=[], sIdx=0, sSco=0, sTar="", sCur=[], sLet=[], spellLock=false;
     function startSpelling() { const voc = getVocab().filter(w => /^[a-zA-Z]+$/.test(w.en)); if(voc.length === 0){ alert("Немає слів!"); return;} showSection('spelling'); document.getElementById('spell-active').style.display='flex'; document.getElementById('spell-result').style.display='none'; sQ=shuffleArray(voc).slice(0, 10); sIdx=0; sSco=0; loadS(); }
@@ -532,8 +620,7 @@
 
     let lstQ=[], lstI=0, lstS=0, cLw="", lstLock=false;
     function startListening() { const voc = getVocab(); if(voc.length<4){alert("Замало слів!"); return;} lstQ=shuffleArray(voc).slice(0,15); lstI=0; lstS=0; showSection('listening'); document.getElementById('listen-active').style.display='flex'; document.getElementById('listen-result').style.display='none'; loadLst(); }
-    function loadLst() { lstLock = false; document.getElementById('btn-next-listen').style.display='none'; let w=lstQ[lstI]; cLw=w.en; document.getElementById('listen-counter').textContent=`Питання ${lstI+1}/15`; document.getElementById('listen-score').textContent=lstS; const o=shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('listen-options'); g.innerHTML=''; o.forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=opt.uk; b.onclick=(e)=>{ if(lstLock) return; lstLock = true; const c=opt.en===w.en; fireParticles(e.clientX, e.clientY, c); document.querySelectorAll('#listen-options .option-btn').forEach(x=>{ x.disabled=true; if(x.textContent===w.uk) x.classList.add('correct'); else if(x===b&&!c) x.classList.add('wrong'); }); if(c){lstS++; addXP(1);} else trackMistake(w); document.getElementById('btn-next-listen').style.display='block'; }; g.appendChild(b); }); setTimeout(()=>playWordAudio('us'), 300); }
-    function playWordAudio(a) { speak(cLw, a); }
+    function loadLst() { lstLock = false; document.getElementById('btn-next-listen').style.display='none'; let w=lstQ[lstI]; cLw=w.en; document.getElementById('listen-counter').textContent=`Питання ${lstI+1}/15`; document.getElementById('listen-score').textContent=lstS; const o=shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('listen-options'); g.innerHTML=''; o.forEach(opt=>{ const b=document.createElement('button'); b.className='option-btn'; b.textContent=opt.uk; b.onclick=(e)=>{ if(lstLock) return; lstLock = true; const c=opt.en===w.en; fireParticles(e.clientX, e.clientY, c); document.querySelectorAll('#listen-options .option-btn').forEach(x=>{ x.disabled=true; if(x.textContent===w.uk) x.classList.add('correct'); else if(x===b&&!c) x.classList.add('wrong'); }); if(c){lstS++; addXP(1);} else trackMistake(w); document.getElementById('btn-next-listen').style.display='block'; }; g.appendChild(b); }); setTimeout(()=>speak(cLw, 'us'), 300); }
     function nextListenQuestion() { lstI++; if(lstI<15) loadLst(); else{ document.getElementById('listen-active').style.display='none'; document.getElementById('listen-result').style.display='flex'; document.getElementById('listen-final-score').textContent=lstS+"/15"; gameFinished(lstS===15); } }
 
     let fcI=0, fcM='en-uk', fcArr=[];
