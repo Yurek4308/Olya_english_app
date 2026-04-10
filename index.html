@@ -582,7 +582,61 @@
     function nextCard(){fcI=(fcI+1)%fcArr.length; updFc();}
     function prevCard(){fcI=(fcI-1+fcArr.length)%fcArr.length; updFc();}
 
-      // --- ЕМОДЗІ КВІЗ ---
+       // ==========================================
+    // 🎮 БЛОК УСІХ ІГОР (ІДЕАЛЬНО НАЛАШТОВАНИЙ)
+    // ==========================================
+
+    // --- 1. КВІЗ ТА РЕЖИМ ПОМИЛОК (З кнопкою "Далі") ---
+    let quizQ = [], qIdx = 0, qScore = 0, qType = 'uk-en', isMist = false;
+    function startMistakesMode() {
+        if (mistakeWords.length === 0) { showToast("Помилок немає! ❤️"); return; }
+        qType = 'uk-en'; isMist = true; quizQ = shuffleArray([...mistakeWords]); qIdx = 0; qScore = 0;
+        showSection('quiz'); document.getElementById('quiz-result').style.display = 'none'; document.getElementById('quiz-active').style.display = 'flex'; loadQuiz();
+    }
+    function startQuiz(t) {
+        const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
+        qType = t; isMist = false; quizQ = shuffleArray([...voc]).slice(0, 20); qIdx = 0; qScore = 0;
+        showSection('quiz'); document.getElementById('quiz-result').style.display = 'none'; document.getElementById('quiz-active').style.display = 'flex'; loadQuiz();
+    }
+    function loadQuiz() {
+        document.getElementById('btn-next-quiz').style.display = 'none';
+        let w = quizQ[qIdx];
+        document.getElementById('quiz-counter').textContent = `${qIdx + 1}/${quizQ.length}`;
+        document.getElementById('quiz-score').textContent = qScore;
+        document.getElementById('quiz-question').innerHTML = `<div style="font-size:3rem;margin-bottom:10px;">${w.em}</div>` + (qType === 'uk-en' ? w.uk : w.en);
+        
+        const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
+        const g = document.getElementById('quiz-options'); g.innerHTML = '';
+        
+        opts.forEach(o => {
+            const b = document.createElement('button'); b.className = 'option-btn'; b.textContent = qType === 'uk-en' ? o.en : o.uk;
+            b.onclick = (e) => {
+                const c = (o.en === w.en); fireParticles(e.clientX, e.clientY, c);
+                document.querySelectorAll('#quiz-options .option-btn').forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.textContent === (qType === 'uk-en' ? w.en : w.uk)) btn.classList.add('correct');
+                });
+                
+                if (c) {
+                    b.classList.add('correct'); qScore++; addXP(1); registerCorrect();
+                    if (isMist) { // Видаляємо з помилок, якщо відповіли правильно!
+                        mistakeWords = mistakeWords.filter(x => x.en !== w.en);
+                        localStorage.setItem('userMistakes', JSON.stringify(mistakeWords)); updateUI();
+                    }
+                } else {
+                    b.classList.add('wrong'); registerMistake(w); // ДОДАЄМО СЛОВО В ПОМИЛКИ
+                }
+                document.getElementById('btn-next-quiz').style.display = 'block';
+            };
+            g.appendChild(b);
+        });
+    }
+    function nextQuizQuestion() {
+        qIdx++; if (qIdx < quizQ.length) loadQuiz();
+        else { document.getElementById('quiz-active').style.display = 'none'; document.getElementById('quiz-result').style.display = 'flex'; document.getElementById('final-score').textContent = qScore + "/" + quizQ.length; gameFinished(qScore === quizQ.length && !isMist, 'quiz_score', qScore); }
+    }
+
+    // --- 2. ЕМОДЗІ КВІЗ (З кнопкою "Далі") ---
     let emoQ = [], eIdx = 0, eScore = 0, eAns = false;
     function startEmojiQuiz() {
         const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
@@ -615,7 +669,40 @@
     }
     function nextEmoji() { eIdx++; if (eIdx < emoQ.length) loadEmo(); else { document.getElementById('emoji-active').style.display = 'none'; document.getElementById('emoji-result').style.display = 'flex'; document.getElementById('emoji-final').textContent = eScore + "/" + emoQ.length; gameFinished(eScore === emoQ.length, 'emoji', eScore); } }
 
-    // --- КОНСТРУКТОР РЕЧЕНЬ ---
+    // --- 3. АУДІЮВАННЯ (З кнопкою "Далі") ---
+    let lstQ = [], lstI = 0, lstS = 0, cLw = "", lstLock = false;
+    function startListening() {
+        const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
+        lstQ = shuffleArray([...voc]).slice(0, 15); lstI = 0; lstS = 0;
+        showSection('listening'); document.getElementById('listen-result').style.display = 'none'; document.getElementById('listen-active').style.display = 'flex'; loadLst();
+    }
+    function playWordAudio(a, e) { speak(cLw, a, e); }
+    function loadLst() {
+        lstLock = false; document.getElementById('btn-next-listen').style.display = 'none';
+        let w = lstQ[lstI]; cLw = w.en;
+        document.getElementById('listen-counter').textContent = `${lstI + 1}/15`; document.getElementById('listen-score').textContent = lstS;
+        const o = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
+        const g = document.getElementById('listen-options'); g.innerHTML = '';
+        o.forEach(opt => {
+            const b = document.createElement('button'); b.className = 'option-btn'; b.textContent = opt.uk;
+            b.onclick = (e) => {
+                if (lstLock) return; lstLock = true;
+                const c = opt.en === w.en; fireParticles(e.clientX, e.clientY, c);
+                document.querySelectorAll('#listen-options .option-btn').forEach(x => {
+                    x.disabled = true;
+                    if (x.textContent === w.uk) x.classList.add('correct');
+                    else if (x === b && !c) x.classList.add('wrong');
+                });
+                if (c) { lstS++; addXP(1); registerCorrect(); } else registerMistake(w);
+                document.getElementById('btn-next-listen').style.display = 'block';
+            };
+            g.appendChild(b);
+        });
+        setTimeout(() => speak(cLw, 'us', null), 300);
+    }
+    function nextListenQuestion() { lstI++; if (lstI < 15) loadLst(); else { document.getElementById('listen-active').style.display = 'none'; document.getElementById('listen-result').style.display = 'flex'; document.getElementById('listen-final-score').textContent = lstS + "/15"; gameFinished(lstS === 15, 'listening', 1); } }
+
+    // --- 4. КОНСТРУКТОР РЕЧЕНЬ (З кнопкою "Далі") ---
     let constQ = [], cIdx = 0, cScore = 0, cAns = [], constLock = false;
     function startConstructor() {
         constQ = shuffleArray([...sentences]).slice(0, 5); cIdx = 0; cScore = 0;
@@ -649,7 +736,7 @@
                 setTimeout(() => { document.getElementById('btn-next-const').style.display = 'block'; }, 250);
             } else {
                 fireParticles(r.left + r.width / 2, r.top + r.height / 2, false);
-                registerMistake(null); // Штраф за помилку в реченні
+                registerMistake(null); // Штрафна дія за помилку
                 t.style.animation = "shake 0.3s";
                 setTimeout(() => { t.style.animation = ""; cAns.forEach(x => x.b.classList.remove('hidden')); cAns = []; constLock = false; renderConstTarget(fT, sentenceObj); }, 400);
             }
@@ -657,157 +744,198 @@
     }
     function nextConst() { cIdx++; if (cIdx < 5) loadConst(); else { document.getElementById('const-active').style.display = 'none'; document.getElementById('const-result').style.display = 'flex'; document.getElementById('const-final').textContent = cScore + "/5"; gameFinished(cScore === 5, 'constructor', 1); } }
 
-    // --- АУДІЮВАННЯ ---
-    let lstQ = [], lstI = 0, lstS = 0, cLw = "", lstLock = false;
-    function startListening() {
+    // --- 5. TRUE/FALSE СВАЙП (Динамічно, Автоперемикання) ---
+    let tfQ = [], tfIdx = 0, tfScore = 0, tfTrue = false, tfLock = false;
+    function startTrueFalse() {
         const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
-        lstQ = shuffleArray([...voc]).slice(0, 15); lstI = 0; lstS = 0;
-        showSection('listening'); document.getElementById('listen-result').style.display = 'none'; document.getElementById('listen-active').style.display = 'flex'; loadLst();
+        tfQ = shuffleArray([...voc]).slice(0, 15); tfIdx = 0; tfScore = 0;
+        showSection('truefalse'); document.getElementById('tf-result').style.display = 'none'; document.getElementById('tf-active').style.display = 'flex'; loadTfSwipe();
     }
-    function playWordAudio(a, e) { speak(cLw, a, e); }
-    function loadLst() {
-        lstLock = false; document.getElementById('btn-next-listen').style.display = 'none';
-        let w = lstQ[lstI]; cLw = w.en;
-        document.getElementById('listen-counter').textContent = `${lstI + 1}/15`; document.getElementById('listen-score').textContent = lstS;
-        const o = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
-        const g = document.getElementById('listen-options'); g.innerHTML = '';
-        o.forEach(opt => {
-            const b = document.createElement('button'); b.className = 'option-btn'; b.textContent = opt.uk;
-            b.onclick = (e) => {
-                if (lstLock) return; lstLock = true;
-                const c = opt.en === w.en; fireParticles(e.clientX, e.clientY, c);
-                document.querySelectorAll('#listen-options .option-btn').forEach(x => {
-                    x.disabled = true;
-                    if (x.textContent === w.uk) x.classList.add('correct');
-                    else if (x === b && !c) x.classList.add('wrong');
-                });
-                if (c) { lstS++; addXP(1); registerCorrect(); } else registerMistake(w);
-                document.getElementById('btn-next-listen').style.display = 'block';
-            };
-            g.appendChild(b);
-        });
-        setTimeout(() => speak(cLw, 'us', null), 300);
+    function loadTfSwipe() {
+        tfLock = false; document.getElementById('tf-counter').textContent = `${tfIdx + 1}/15`; document.getElementById('tf-score').textContent = tfScore;
+        let w = tfQ[tfIdx]; tfTrue = Math.random() > 0.5; let dUk = w.uk;
+        if (!tfTrue) { let o = baseVocabulary.filter(x => x.en !== w.en); dUk = o[Math.floor(Math.random() * o.length)].uk; }
+        const card = document.getElementById('tf-card');
+        card.innerHTML = `<div style="font-size:4rem;margin-bottom:10px;">${w.em}</div><span>${w.en}</span><span style="color:var(--primary); margin:15px 0;">=</span><span>${dUk}</span>`;
+        card.style.transform = "translate(0px, 0px) rotate(0deg)"; card.style.opacity = "1"; card.style.background = "var(--card-bg)"; setupSwipe(card);
     }
-    function nextListenQuestion() { lstI++; if (lstI < 15) loadLst(); else { document.getElementById('listen-active').style.display = 'none'; document.getElementById('listen-result').style.display = 'flex'; document.getElementById('listen-final-score').textContent = lstS + "/15"; gameFinished(lstS === 15, 'listening', 1); } }
-
-    // --- TRUE/FALSE СВАЙП ---
-    let tfQ=[],tfIdx=0,tfScore=0,tfTrue=false,tfLock=false;
-    function startTrueFalse(){const voc=getVocab(); if(voc.length<4){alert("Замало слів!"); return;} tfQ=shuffleArray(voc).slice(0,15); tfIdx=0; tfScore=0; showSection('truefalse'); document.getElementById('tf-result').style.display='none'; document.getElementById('tf-active').style.display='flex'; loadTfSwipe();}
-    function loadTfSwipe(){tfLock=false; document.getElementById('tf-counter').textContent=`${tfIdx+1}/15`; document.getElementById('tf-score').textContent=tfScore; let w=tfQ[tfIdx]; tfTrue=Math.random()>0.5; let dUk=w.uk; if(!tfTrue){let o=baseVocabulary.filter(x=>x.en!==w.en); dUk=o[Math.floor(Math.random()*o.length)].uk;} const card=document.getElementById('tf-card'); card.innerHTML=`<div style="font-size:4rem;margin-bottom:10px;">${w.em}</div><span>${w.en}</span><span style="color:var(--primary); margin:15px 0;">=</span><span>${dUk}</span>`; card.style.transform="translate(0px, 0px) rotate(0deg)"; card.style.opacity="1"; card.style.background="var(--card-bg)"; setupSwipe(card);}
-    function setupSwipe(card){let sX=0,sY=0,cX=0; card.ontouchstart=e=>{sX=e.touches[0].clientX; sY=e.touches[0].clientY; card.style.transition='none';}; card.ontouchmove=e=>{if(tfLock)return; const dx=e.touches[0].clientX-sX; const dy=e.touches[0].clientY-sY; if(Math.abs(dx)>Math.abs(dy)){e.preventDefault(); cX=dx; card.style.transform=`translate(${dx}px, ${dy}px) rotate(${dx/15}deg)`;}}; card.ontouchend=e=>{if(tfLock)return; card.style.transition='transform 0.2s, opacity 0.2s'; if(cX>100){checkTfSwipe(true); card.style.transform=`translate(1000px, 0) rotate(30deg)`; card.style.opacity="0";}else if(cX<-100){checkTfSwipe(false); card.style.transform=`translate(-1000px, 0) rotate(-30deg)`; card.style.opacity="0";}else{card.style.transform="translate(0,0) rotate(0)"; cX=0;}};}
-    function checkTfSwipe(g){if(tfLock)return; tfLock=true; const c=g===tfTrue; const card=document.getElementById('tf-card'); const r=card.getBoundingClientRect(); card.style.background=c?"var(--correct)":"var(--wrong)"; fireParticles(r.left+r.width/2,r.top+r.height/2,c); if(c){tfScore++; addXP(1); registerCorrect();}else{registerMistake(tfQ[tfIdx]);} setTimeout(()=>{tfIdx++; if(tfIdx<15)loadTfSwipe(); else{document.getElementById('tf-active').style.display='none'; document.getElementById('tf-result').style.display='flex'; document.getElementById('tf-final-score').textContent=tfScore+"/15"; gameFinished(tfScore===15,'swipe',1);}},250);}
-
-    // --- КВІЗ ТА ПОМИЛКИ ---
-        // --- КВІЗ ТА ПОМИЛКИ ---
-    let quizQ = [], qIdx = 0, qScore = 0, qType = 'uk-en', isMist = false;
-
-    function startMistakesMode() {
-        if (mistakeWords.length === 0) { showToast("Помилок немає! ❤️"); return; }
-        qType = 'uk-en'; isMist = true; quizQ = shuffleArray([...mistakeWords]); qIdx = 0; qScore = 0;
-        showSection('quiz');
-        document.getElementById('quiz-result').style.display = 'none';
-        document.getElementById('quiz-active').style.display = 'flex';
-        loadQuiz();
+    function setupSwipe(card) {
+        let sX = 0, sY = 0, cX = 0;
+        card.ontouchstart = e => { sX = e.touches[0].clientX; sY = e.touches[0].clientY; card.style.transition = 'none'; };
+        card.ontouchmove = e => {
+            if (tfLock) return; const dx = e.touches[0].clientX - sX; const dy = e.touches[0].clientY - sY;
+            if (Math.abs(dx) > Math.abs(dy)) { e.preventDefault(); cX = dx; card.style.transform = `translate(${dx}px, ${dy}px) rotate(${dx / 15}deg)`; }
+        };
+        card.ontouchend = e => {
+            if (tfLock) return; card.style.transition = 'transform 0.2s, opacity 0.2s';
+            if (cX > 100) { checkTfSwipe(true); card.style.transform = `translate(1000px, 0) rotate(30deg)`; card.style.opacity = "0"; }
+            else if (cX < -100) { checkTfSwipe(false); card.style.transform = `translate(-1000px, 0) rotate(-30deg)`; card.style.opacity = "0"; }
+            else { card.style.transform = "translate(0,0) rotate(0)"; cX = 0; }
+        };
+    }
+    function checkTfSwipe(g) {
+        if (tfLock) return; tfLock = true; const c = g === tfTrue;
+        const card = document.getElementById('tf-card'); const r = card.getBoundingClientRect();
+        card.style.background = c ? "var(--correct)" : "var(--wrong)"; fireParticles(r.left + r.width / 2, r.top + r.height / 2, c);
+        if (c) { tfScore++; addXP(1); registerCorrect(); } else { registerMistake(tfQ[tfIdx]); }
+        setTimeout(() => {
+            tfIdx++;
+            if (tfIdx < 15) loadTfSwipe(); else { document.getElementById('tf-active').style.display = 'none'; document.getElementById('tf-result').style.display = 'flex'; document.getElementById('tf-final-score').textContent = tfScore + "/15"; gameFinished(tfScore === 15, 'swipe', 1); }
+        }, 300);
     }
 
-    function startQuiz(t) {
-        const voc = getVocab();
-        if (voc.length < 4) { alert("Замало слів!"); return; }
-        qType = t; isMist = false; quizQ = shuffleArray([...voc]).slice(0, 20); qIdx = 0; qScore = 0;
-        showSection('quiz');
-        document.getElementById('quiz-result').style.display = 'none';
-        document.getElementById('quiz-active').style.display = 'flex';
-        loadQuiz();
+    // --- 6. ПАРА (Динамічно) ---
+    let mFound = 0, mErr = 0, mSel = null, mLock = false;
+    function startMatchGame() {
+        const voc = getVocab(); if (voc.length < 6) { alert("Замало слів!"); return; }
+        showSection('match'); mFound = 0; mErr = 0; document.getElementById('match-result').style.display = 'none'; document.getElementById('match-columns').style.display = 'flex'; updM();
+        let wds = shuffleArray([...voc]).slice(0, 6);
+        const cUk = document.getElementById('match-col-uk'), cEn = document.getElementById('match-col-en'); cUk.innerHTML = ''; cEn.innerHTML = '';
+        shuffleArray(wds.map((w, i) => ({ t: w.uk, id: i, l: 'uk', w }))).forEach(c => createMB(c, cUk));
+        shuffleArray(wds.map((w, i) => ({ t: w.en, id: i, l: 'en', w }))).forEach(c => createMB(c, cEn));
     }
-
-    function loadQuiz() {
-        document.getElementById('btn-next-quiz').style.display = 'none'; // Ховаємо кнопку "Далі"
-        let w = quizQ[qIdx];
-        document.getElementById('quiz-counter').textContent = `${qIdx + 1}/${quizQ.length}`;
-        document.getElementById('quiz-score').textContent = qScore;
-        document.getElementById('quiz-question').innerHTML = `<div style="font-size:3rem;margin-bottom:10px;">${w.em}</div>` + (qType === 'uk-en' ? w.uk : w.en);
-        
-        const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
-        const g = document.getElementById('quiz-options');
-        g.innerHTML = '';
-        
-        opts.forEach(o => {
-            const b = document.createElement('button');
-            b.className = 'option-btn';
-            b.textContent = qType === 'uk-en' ? o.en : o.uk;
-            
-            b.onclick = (e) => {
-                const c = (o.en === w.en);
-                fireParticles(e.clientX, e.clientY, c);
-                
-                // Блокуємо всі кнопки і показуємо правильну
-                document.querySelectorAll('#quiz-options .option-btn').forEach(btn => {
-                    btn.disabled = true;
-                    if (btn.textContent === (qType === 'uk-en' ? w.en : w.uk)) btn.classList.add('correct');
-                });
-                
-                if (c) {
-                    b.classList.add('correct');
-                    qScore++; addXP(1); registerCorrect();
-                    if (isMist) {
-                        // Якщо ми в режимі помилок і відповіли правильно - видаляємо слово!
-                        mistakeWords = mistakeWords.filter(x => x.en !== w.en);
-                        localStorage.setItem('userMistakes', JSON.stringify(mistakeWords));
-                        updateUI();
-                    }
+    function createMB(c, p) {
+        const b = document.createElement('button'); b.className = 'match-btn'; b.textContent = c.t;
+        b.onclick = (e) => {
+            if (mLock || b.classList.contains('correct')) return;
+            if (b === mSel) { b.classList.remove('selected'); mSel = null; return; }
+            if (!mSel) { b.classList.add('selected'); mSel = b; b.dataset.id = c.id; b.dataset.lang = c.l; b.word = c.w; }
+            else if (mSel.dataset.lang === c.l) { mSel.classList.remove('selected'); b.classList.add('selected'); mSel = b; b.dataset.id = c.id; b.dataset.lang = c.l; b.word = c.w; }
+            else {
+                mLock = true; b.classList.add('selected'); const cor = mSel.dataset.id == c.id;
+                fireParticles(e.clientX, e.clientY, cor);
+                if (cor) {
+                    b.classList.add('correct'); mSel.classList.add('correct'); mFound++; addXP(1); registerCorrect(); updM(); mSel = null; mLock = false;
+                    if (mFound === 6) setTimeout(() => { document.getElementById('match-columns').style.display = 'none'; document.getElementById('match-result').style.display = 'flex'; gameFinished(mErr === 0, 'pairs', mFound); }, 400);
                 } else {
-                    b.classList.add('wrong');
-                    registerMistake(w); // ДОДАЄМО СЛОВО В ПОМИЛКИ
+                    b.classList.add('wrong'); mSel.classList.add('wrong'); mErr++; registerMistake(c.w); updM();
+                    let s1 = b, s2 = mSel; mSel = null;
+                    setTimeout(() => { s1.classList.remove('wrong', 'selected'); s2.classList.remove('wrong', 'selected'); mLock = false; }, 300);
                 }
-                
-                document.getElementById('btn-next-quiz').style.display = 'block'; // ПОКАЗУЄМО КНОПКУ ДАЛІ
-            };
-            g.appendChild(b);
+            }
+        }; p.appendChild(b);
+    }
+    function updM() { document.getElementById('match-counter').textContent = `Пари: ${mFound}/6`; }
+
+    // --- 7. СПРИНТ (Динамічно, на час) ---
+    let sprTime = 60, sprScore = 0, sprQ = [], sprLock = false;
+    function startSprint() {
+        const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
+        showSection('sprint'); document.getElementById('sprint-result').style.display = 'none'; document.getElementById('sprint-active').style.display = 'flex';
+        sprTime = 60; sprScore = 0; sprQ = shuffleArray([...voc]); updSpr();
+        clearInterval(sprintTimerInterval); sprintTimerInterval = setInterval(() => { sprTime--; updSpr(); if (sprTime <= 0) endSpr(); }, 1000); loadSpr();
+    }
+    function updSpr() { document.getElementById('sprint-time-text').textContent = sprTime; document.getElementById('sprint-score-text').textContent = sprScore; let b = document.getElementById('sprint-bar'); b.style.width = Math.max(0, (sprTime / 60) * 100) + "%"; if (sprTime < 15) b.classList.add('low'); else b.classList.remove('low'); }
+    function loadSpr() {
+        sprLock = false; let w = sprQ[Math.floor(Math.random() * sprQ.length)];
+        document.getElementById('sprint-question').innerHTML = `<div style="font-size:3rem;">${w.em}</div>` + w.uk;
+        const o = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
+        const c = document.getElementById('sprint-options'); c.innerHTML = '';
+        o.forEach(opt => {
+            const b = document.createElement('button'); b.className = 'option-btn'; b.textContent = opt.en;
+            b.onclick = (e) => {
+                if (sprLock) return; sprLock = true; const cor = opt.en === w.en;
+                fireParticles(e.clientX, e.clientY, cor);
+                if (cor) { sprScore++; addXP(1); registerCorrect(); sprTime = Math.min(sprTime + 1, 60); }
+                else { sprTime = Math.max(sprTime - 2, 0); registerMistake(w); }
+                updSpr();
+                if (sprTime > 0) setTimeout(loadSpr, 150); else endSpr();
+            }; c.appendChild(b);
         });
     }
+    function endSpr() { clearInterval(sprintTimerInterval); document.getElementById('sprint-active').style.display = 'none'; document.getElementById('sprint-result').style.display = 'flex'; document.getElementById('sprint-final-score').textContent = sprScore; if (sprScore > bestSprint) { bestSprint = sprScore; localStorage.setItem('sprintRecord', bestSprint); document.getElementById('sprint-badge').textContent = bestSprint; } gameFinished(false, 'sprint', sprScore); }
 
-    function nextQuizQuestion() {
-        qIdx++;
-        if (qIdx < quizQ.length) loadQuiz();
-        else {
-            document.getElementById('quiz-active').style.display = 'none';
-            document.getElementById('quiz-result').style.display = 'flex';
-            document.getElementById('final-score').textContent = qScore + "/" + quizQ.length;
-            gameFinished(qScore === quizQ.length && !isMist, 'quiz_score', qScore);
+    // --- 8. СПЕЛІНГ (Динамічно) ---
+    let sQ = [], sIdx = 0, sSco = 0, sTar = "", sCur = [], sLet = [], spellLock = false;
+    function startSpelling() {
+        const voc = getVocab().filter(w => /^[a-zA-Z]+$/.test(w.en)); if (voc.length === 0) { alert("Немає слів!"); return; }
+        showSection('spelling'); document.getElementById('spell-result').style.display = 'none'; document.getElementById('spell-active').style.display = 'flex';
+        sQ = shuffleArray([...voc]).slice(0, 10); sIdx = 0; sSco = 0; loadS();
+    }
+    function loadS() {
+        spellLock = false; document.getElementById('spell-counter').textContent = `${sIdx + 1}/${sQ.length}`; document.getElementById('spell-score').textContent = sSco;
+        let w = sQ[sIdx]; sTar = w.en.toUpperCase();
+        document.getElementById('spell-question').textContent = w.em + " " + w.uk;
+        sCur = Array(sTar.length).fill(null); sLet = shuffleArray(sTar.split('').map((l, i) => ({ l, id: i }))); rendS();
+    }
+    function rendS() {
+        const c1 = document.getElementById('spell-slots'); c1.innerHTML = '';
+        sCur.forEach((l, i) => {
+            let s = document.createElement('div'); s.className = `spell-slot ${l ? 'filled' : ''}`; s.textContent = l ? l.l : "";
+            s.onclick = () => { if (l && !spellLock) { sCur[i] = null; rendS(); } }; c1.appendChild(s);
+        });
+        const c2 = document.getElementById('spell-letters'); c2.innerHTML = '';
+        sLet.forEach(i => {
+            let b = document.createElement('button'); b.className = 'letter-btn'; b.textContent = i.l;
+            if (sCur.find(x => x && x.id === i.id)) b.classList.add('hidden');
+            else b.onclick = () => { if (spellLock) return; let ei = sCur.findIndex(x => x === null); if (ei !== -1) { sCur[ei] = i; rendS(); if (!sCur.includes(null)) chkS(); } };
+            c2.appendChild(b);
+        });
+    }
+    function chkS() {
+        spellLock = true; let fw = sCur.map(x => x.l).join('');
+        const sc = document.getElementById('spell-slots'); const r = sc.getBoundingClientRect();
+        if (fw === sTar) {
+            fireParticles(r.left + r.width / 2, r.top + r.height / 2, true); sSco++; addXP(2); registerCorrect();
+            setTimeout(() => { sIdx++; if (sIdx < sQ.length) loadS(); else { document.getElementById('spell-active').style.display = 'none'; document.getElementById('spell-result').style.display = 'flex'; document.getElementById('spell-final-score').textContent = sSco + "/" + sQ.length; gameFinished(sSco === sQ.length, 'spell', sSco); } }, 400);
+        } else {
+            fireParticles(r.left + r.width / 2, r.top + r.height / 2, false); registerMistake(sQ[sIdx]);
+            sc.style.animation = "shake 0.3s"; setTimeout(() => { sc.style.animation = ""; sCur.fill(null); spellLock = false; rendS(); }, 400);
         }
     }
 
-  
-    // --- ПАРА ---
-    let mFound=0,mErr=0,mSel=null,mLock=false;
-    function startMatchGame(){const voc=getVocab(); if(voc.length<6){alert("Замало слів!"); return;} showSection('match'); mFound=0; mErr=0; document.getElementById('match-result').style.display='none'; document.getElementById('match-columns').style.display='flex'; updM(); let wds=shuffleArray(voc).slice(0,6); const cUk=document.getElementById('match-col-uk'),cEn=document.getElementById('match-col-en'); cUk.innerHTML=''; cEn.innerHTML=''; shuffleArray(wds.map((w,i)=>({t:w.uk,id:i,l:'uk',w}))).forEach(c=>createMB(c,cUk)); shuffleArray(wds.map((w,i)=>({t:w.en,id:i,l:'en',w}))).forEach(c=>createMB(c,cEn));}
-    function createMB(c,p){const b=document.createElement('button'); b.className='match-btn'; b.textContent=c.t; b.onclick=(e)=>{if(mLock||b.classList.contains('correct'))return; if(b===mSel){b.classList.remove('selected'); mSel=null; return;} if(!mSel){b.classList.add('selected'); mSel=b; b.dataset.id=c.id; b.dataset.lang=c.l; b.word=c.w;}else if(mSel.dataset.lang===c.l){mSel.classList.remove('selected'); b.classList.add('selected'); mSel=b; b.dataset.id=c.id; b.dataset.lang=c.l; b.word=c.w;}else{mLock=true; b.classList.add('selected'); const cor=mSel.dataset.id==c.id; fireParticles(e.clientX,e.clientY,cor); if(cor){b.classList.add('correct'); mSel.classList.add('correct'); mFound++; addXP(1); registerCorrect(); updM(); mSel=null; mLock=false; if(mFound===6)setTimeout(()=>{document.getElementById('match-columns').style.display='none'; document.getElementById('match-result').style.display='flex'; gameFinished(mErr===0,'pairs',mFound);},400);}else{b.classList.add('wrong'); mSel.classList.add('wrong'); mErr++; registerMistake(c.w); updM(); let s1=b,s2=mSel; mSel=null; setTimeout(()=>{s1.classList.remove('wrong','selected'); s2.classList.remove('wrong','selected'); mLock=false;},300);}}}; p.appendChild(b);}
-    function updM(){document.getElementById('match-counter').textContent=`Пари: ${mFound}/6`;}
+    // --- 9. ШИБЕНИЦЯ (Динамічно) ---
+    let hmQ = [], hmI = 0, hmLiv = 5, hmT = "", hmG = new Set(), hmLock = false;
+    function startHangman() {
+        const voc = getVocab().filter(w => /^[a-zA-Z]+$/.test(w.en)); if (voc.length === 0) { alert("Немає слів!"); return; }
+        showSection('hangman'); document.getElementById('hm-result').style.display = 'none'; document.getElementById('hm-active').style.display = 'flex';
+        hmQ = shuffleArray([...voc]); hmI = 0; loadHm();
+    }
+    function loadHm() {
+        hmLock = false; let w = hmQ[hmI]; hmT = w.en.toUpperCase(); hmLiv = 5; hmG.clear();
+        document.getElementById('hm-counter').textContent = `Слово ${hmI + 1}`; document.getElementById('hm-question').textContent = w.em + " " + w.uk;
+        updHm(); rndHmS(); rndHmK();
+    }
+    function updHm() { let h = ""; for (let i = 0; i < 5; i++) h += i < hmLiv ? "❤️" : "🖤"; document.getElementById('hm-lives-text').textContent = h; }
+    function rndHmS() {
+        const c = document.getElementById('hm-slots'); c.innerHTML = ''; let w = true;
+        for (let ch of hmT) { let s = document.createElement('div'); s.className = 'hm-slot'; if (hmG.has(ch)) s.textContent = ch; else { s.textContent = ""; w = false; } c.appendChild(s); }
+        if (w && !hmLock) { hmLock = true; addXP(3); registerCorrect(); endHm(true); }
+    }
+    function rndHmK() {
+        const c = document.getElementById('hm-keyboard'); c.innerHTML = '';
+        alphabet.forEach(l => {
+            let b = document.createElement('button'); b.className = 'hm-key'; b.textContent = l;
+            b.onclick = (e) => {
+                if (hmLiv <= 0 || b.classList.contains('disabled') || hmLock) return;
+                b.classList.add('disabled'); hmG.add(l);
+                if (hmT.includes(l)) { b.classList.add('correct'); fireParticles(e.clientX, e.clientY, true); rndHmS(); }
+                else { fireParticles(e.clientX, e.clientY, false); hmLiv--; registerMistake(hmQ[hmI]); updHm(); if (hmLiv === 0) { hmLock = true; endHm(false); } }
+            }; c.appendChild(b);
+        });
+    }
+    function endHm(w) { if (w && hmLiv === 1) checkAchiev('survivor'); setTimeout(() => { document.getElementById('hm-active').style.display = 'none'; document.getElementById('hm-result').style.display = 'flex'; document.getElementById('hm-result-title').textContent = w ? "Врятовано! 💖" : "Розбито... 💔"; document.getElementById('hm-final-word').textContent = hmT; hmI++; gameFinished(w && hmLiv === 5, 'hangman', 1); }, 600); }
 
-    // --- СПРИНТ ---
-    let sprTime=60,sprScore=0,sprQ=[],sprLock=false;
-    function startSprint(){const voc=getVocab(); if(voc.length<4){alert("Замало слів!"); return;} showSection('sprint'); document.getElementById('sprint-result').style.display='none'; document.getElementById('sprint-active').style.display='flex'; sprTime=60; sprScore=0; sprQ=shuffleArray(voc); updSpr(); clearInterval(sprintTimerInterval); sprintTimerInterval=setInterval(()=>{sprTime--; updSpr(); if(sprTime<=0)endSpr();},1000); loadSpr();}
-    function updSpr(){document.getElementById('sprint-time-text').textContent=sprTime; document.getElementById('sprint-score-text').textContent=sprScore; let b=document.getElementById('sprint-bar'); b.style.width=Math.max(0,(sprTime/60)*100)+"%"; if(sprTime<15)b.classList.add('low'); else b.classList.remove('low');}
-    function loadSpr(){sprLock=false; let w=sprQ[Math.floor(Math.random()*sprQ.length)]; document.getElementById('sprint-question').innerHTML=`<div style="font-size:3rem;">${w.em}</div>`+w.uk; const o=shuffleArray([w,...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const c=document.getElementById('sprint-options'); c.innerHTML=''; o.forEach(opt=>{const b=document.createElement('button'); b.className='option-btn'; b.textContent=opt.en; b.onclick=(e)=>{if(sprLock)return; sprLock=true; const cor=opt.en===w.en; fireParticles(e.clientX,e.clientY,cor); if(cor){sprScore++; addXP(1); registerCorrect(); sprTime=Math.min(sprTime+1,60);}else{sprTime=Math.max(sprTime-2,0); registerMistake(w);} updSpr(); if(sprTime>0)setTimeout(loadSpr,150); else endSpr();}; c.appendChild(b);});}
-    function endSpr(){clearInterval(sprintTimerInterval); document.getElementById('sprint-active').style.display='none'; document.getElementById('sprint-result').style.display='flex'; document.getElementById('sprint-final-score').textContent=sprScore; if(sprScore>bestSprint){bestSprint=sprScore; localStorage.setItem('sprintRecord',bestSprint); document.getElementById('sprint-badge').textContent=bestSprint;} gameFinished(false,'sprint',sprScore);}
+    // --- 10. ФЛЕШ-КАРТКИ ---
+    let fcI = 0, fcM = 'en-uk', fcArr = [];
+    function startFlashcards(m) { fcM = m; fcI = 0; fcArr = shuffleArray(getVocab()); showSection('flashcards'); updFc(); }
+    function updFc() {
+        const c = document.getElementById('flashcard'); c.classList.remove('flipped');
+        setTimeout(() => {
+            let w = fcArr[fcI];
+            document.getElementById('fc-front').innerHTML = `<div style="font-size:3rem; margin-bottom:10px;">${w.em}</div>` + (fcM === 'en-uk' ? w.en : w.uk);
+            document.getElementById('fc-back').innerHTML = `<div style="font-size:3rem; margin-bottom:10px;">${w.em}</div>` + (fcM === 'en-uk' ? w.uk : w.en);
+            document.getElementById('fc-counter').textContent = `${fcI + 1}/${fcArr.length}`;
+        }, 150);
+    }
+    function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); dailyProg.flash++; checkGoals(); }
+    function nextCard() { fcI = (fcI + 1) % fcArr.length; updFc(); }
+    function prevCard() { fcI = (fcI - 1 + fcArr.length) % fcArr.length; updFc(); }
 
-    // --- СПЕЛІНГ ---
-    let sQ=[],sIdx=0,sSco=0,sTar="",sCur=[],sLet=[],spellLock=false;
-    function startSpelling(){const voc=getVocab().filter(w=>/^[a-zA-Z]+$/.test(w.en)); if(voc.length===0){alert("Немає слів!"); return;} showSection('spelling'); document.getElementById('spell-result').style.display='none'; document.getElementById('spell-active').style.display='flex'; sQ=shuffleArray(voc).slice(0,10); sIdx=0; sSco=0; loadS();}
-    function loadS(){spellLock=false; document.getElementById('spell-counter').textContent=`${sIdx+1}/${sQ.length}`; document.getElementById('spell-score').textContent=sSco; let w=sQ[sIdx]; sTar=w.en.toUpperCase(); document.getElementById('spell-question').textContent=w.em+" "+w.uk; sCur=Array(sTar.length).fill(null); sLet=shuffleArray(sTar.split('').map((l,i)=>({l,id:i}))); rendS();}
-    function rendS(){const c1=document.getElementById('spell-slots'); c1.innerHTML=''; sCur.forEach((l,i)=>{let s=document.createElement('div'); s.className=`spell-slot ${l?'filled':''}`; s.textContent=l?l.l:""; s.onclick=()=>{if(l&&!spellLock){sCur[i]=null; rendS();}}; c1.appendChild(s);}); const c2=document.getElementById('spell-letters'); c2.innerHTML=''; sLet.forEach(i=>{let b=document.createElement('button'); b.className='letter-btn'; b.textContent=i.l; if(sCur.find(x=>x&&x.id===i.id))b.classList.add('hidden'); else b.onclick=()=>{if(spellLock)return; let ei=sCur.findIndex(x=>x===null); if(ei!==-1){sCur[ei]=i; rendS(); if(!sCur.includes(null))chkS();}}; c2.appendChild(b);});}
-    function chkS(){spellLock=true; let fw=sCur.map(x=>x.l).join(''); const sc=document.getElementById('spell-slots'); const r=sc.getBoundingClientRect(); if(fw===sTar){fireParticles(r.left+r.width/2,r.top+r.height/2,true); sSco++; addXP(2); registerCorrect(); setTimeout(()=>{sIdx++; if(sIdx<sQ.length)loadS(); else{document.getElementById('spell-active').style.display='none'; document.getElementById('spell-result').style.display='flex'; document.getElementById('spell-final-score').textContent=sSco+"/"+sQ.length; gameFinished(sSco===sQ.length,'spell',sSco);}},400);}else{fireParticles(r.left+r.width/2,r.top+r.height/2,false); registerMistake(sQ[sIdx]); sc.style.animation="shake 0.3s"; setTimeout(()=>{sc.style.animation=""; sCur.fill(null); spellLock=false; rendS();},400);}}
-
-    // --- ШИБЕНИЦЯ ---
-    let hmQ=[],hmI=0,hmLiv=5,hmT="",hmG=new Set(),hmLock=false;
-    function startHangman(){const voc=getVocab().filter(w=>/^[a-zA-Z]+$/.test(w.en)); if(voc.length===0){alert("Немає слів!"); return;} showSection('hangman'); document.getElementById('hm-result').style.display='none'; document.getElementById('hm-active').style.display='flex'; hmQ=shuffleArray(voc); hmI=0; loadHm();}
-    function loadHm(){hmLock=false; let w=hmQ[hmI]; hmT=w.en.toUpperCase(); hmLiv=5; hmG.clear(); document.getElementById('hm-counter').textContent=`Слово ${hmI+1}`; document.getElementById('hm-question').textContent=w.em+" "+w.uk; updHm(); rndHmS(); rndHmK();}
-    function updHm(){let h=""; for(let i=0;i<5;i++)h+=i<hmLiv?"❤️":"🖤"; document.getElementById('hm-lives-text').textContent=h;}
-    function rndHmS(){const c=document.getElementById('hm-slots'); c.innerHTML=''; let w=true; for(let ch of hmT){let s=document.createElement('div'); s.className='hm-slot'; if(hmG.has(ch))s.textContent=ch; else{s.textContent=""; w=false;} c.appendChild(s);} if(w&&!hmLock){hmLock=true; addXP(3); registerCorrect(); endHm(true);}}
-    function rndHmK(){const c=document.getElementById('hm-keyboard'); c.innerHTML=''; alphabet.forEach(l=>{let b=document.createElement('button'); b.className='hm-key'; b.textContent=l; b.onclick=(e)=>{if(hmLiv<=0||b.classList.contains('disabled')||hmLock)return; b.classList.add('disabled'); hmG.add(l); if(hmT.includes(l)){b.classList.add('correct'); fireParticles(e.clientX,e.clientY,true); rndHmS();}else{fireParticles(e.clientX,e.clientY,false); hmLiv--; registerMistake(null); updHm(); if(hmLiv===0){hmLock=true; trackMistake(hmQ[hmI]); endHm(false);}}}; c.appendChild(b);});}
-    function endHm(w){if(w&&hmLiv===1)checkAchiev('survivor'); setTimeout(()=>{document.getElementById('hm-active').style.display='none'; document.getElementById('hm-result').style.display='flex'; document.getElementById('hm-result-title').textContent=w?"Врятовано! 💖":"Розбито... 💔"; document.getElementById('hm-final-word').textContent=hmT; hmI++; gameFinished(w&&hmLiv===5,'hangman',1);},500);}
-
+    // ЗАПУСК ДОДАТКУ
     window.onload = initGamification;
+
+    
 </script>
 </body>
 </html>
