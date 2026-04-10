@@ -489,11 +489,9 @@
         if(ok){usedCodes.push(code); localStorage.setItem('usedCodes',JSON.stringify(usedCodes)); localStorage.setItem('userInventory',JSON.stringify(inventory)); updateUI(); renderInventory(); alert("Код прийнято!");} else{alert("Невірний код!");}
     }
 </script>
+       // ==========================================
+    // 🎡 ЛОГІКА РУЛЕТКИ (БЕЗ ТЕКСТУ + ЛЕГЕНДА)
     // ==========================================
-    // 🕹️ ФІНАЛЬНИЙ БЛОК: РУЛЕТКА ТА УСІ ІГРИ
-    // ==========================================
-
-    // --- 1. РУЛЕТКА ---
     let spinLock = false;
     const wheelPrizes = [
         { c: '#ff0055', t: 'xp', v: 500, msg: 'ДЖЕКПОТ! 500 🌟 + Масаж!', n: 'Масаж (ДЖЕКПОТ)', i: '💆‍♀️' },
@@ -510,18 +508,18 @@
 
     function setupWheelLegend() {
         const leg = document.getElementById('wheel-legend');
-        leg.innerHTML = '';
-        // Показуємо унікальні призи в легенді
+        if (!leg) return;
+        leg.innerHTML = '<div style="text-align:center; width:100%; margin-bottom:10px; font-size:0.8rem; color:var(--text-muted);">ЩО МОЖЕ ВИПАСТИ:</div>';
         const displayPrizes = [
-            {c:'#ff0055', desc: 'Джекпот (500 🌟 + Масаж)'},
-            {c:'#a855f7', desc: 'Кіндер-сюрприз 🍫'},
-            {c:'#3b82f6', desc: 'Приз +100 🌟'},
-            {c:'#10b981', desc: 'Приз +50 🌟'},
-            {c:'#f59e0b', desc: 'Приз +20 🌟'},
-            {c:'#94a3b8', desc: 'Сектор 0 (Пусто)'}
+            {c:'#ff0055', d: 'Джекпот (500 🌟 + Масаж)'},
+            {c:'#a855f7', d: 'Кіндер-сюрприз 🍫'},
+            {c:'#3b82f6', d: 'Приз +100 🌟'},
+            {c:'#10b981', d: 'Приз +50 🌟'},
+            {c:'#f59e0b', d: 'Приз +20 🌟'},
+            {c:'#94a3b8', d: 'Сектор 0 (Пусто)'}
         ];
         displayPrizes.forEach(p => {
-            leg.innerHTML += `<div class="legend-item"><div style="width:20px; height:20px; background:${p.c}; border-radius:4px; margin-right:10px;"></div><span>${p.desc}</span></div>`;
+            leg.innerHTML += `<div class="legend-item"><div style="width:16px; height:16px; background:${p.c}; border-radius:4px; margin-right:10px; border:1px solid rgba(0,0,0,0.1);"></div><span style="font-size:0.9rem;">${p.d}</span></div>`;
         });
     }
 
@@ -531,15 +529,15 @@
         addXP(-50); spinLock = true;
         const wheel = document.getElementById('spin-wheel');
         const r = Math.random(); let pIdx;
-        if (r < 0.01) pIdx = 0; // 1% Джекпот
-        else if (r < 0.10) pIdx = 1; // 9% Кіндер
-        else if (r < 0.20) pIdx = 2; // 10% 100xp
-        else if (r < 0.35) pIdx = 3; // 15% 50xp
-        else if (r < 0.65) pIdx = [4, 6, 8][Math.floor(Math.random() * 3)]; // 30% 20xp
-        else pIdx = [5, 7, 9][Math.floor(Math.random() * 2)]; // 35% 0
+        if (r < 0.01) pIdx = 0; 
+        else if (r < 0.10) pIdx = 1; 
+        else if (r < 0.20) pIdx = 2; 
+        else if (r < 0.35) pIdx = 3; 
+        else if (r < 0.65) pIdx = [4, 6, 8][Math.floor(Math.random() * 3)]; 
+        else pIdx = [5, 7, 9][Math.floor(Math.random() * 3)];
 
         const targetDeg = (pIdx * 36) + 18;
-        const spins = 8;
+        const spins = 10;
         const currentRot = parseFloat(wheel.dataset.rotation || 0);
         const nextRot = currentRot + (360 - (currentRot % 360)) + (360 * spins) + (360 - targetDeg);
         wheel.style.transform = `rotate(${nextRot}deg)`;
@@ -551,20 +549,22 @@
             else {
                 inventory.push({ id: 'wheel_gift', name: p.n, price: 0, icon: p.i, uid: Date.now() });
                 localStorage.setItem('userInventory', JSON.stringify(inventory));
-                alert(p.msg); renderInventory(); updateUI();
+                alert(p.msg); renderInventory();
             }
             if (pIdx === 0) checkAchiev('lucky_bastard');
-            spinLock = false;
-        }, 4000);
+            spinLock = false; updateUI();
+        }, 4100);
     }
 
-    // --- 2. СЛОВНИК ---
+    // ==========================================
+    // 📖 ЛОГІКА СЛОВНИКА
+    // ==========================================
     function renderDictionary() {
         const grid = document.getElementById('dict-grid');
-        grid.innerHTML = '';
+        if(!grid) return; grid.innerHTML = '';
         const searchVal = document.getElementById('dict-search').value.toLowerCase().trim();
         
-        if (searchVal === 'love') { document.getElementById('easter-egg').style.display = 'flex'; checkAchiev('love'); return; }
+        if (searchVal === 'love' || searchVal === 'кохаю') { document.getElementById('easter-egg').style.display = 'flex'; checkAchiev('love'); return; }
 
         let filtered = baseVocabulary.filter(w => {
             const matchSearch = w.en.toLowerCase().includes(searchVal) || w.uk.toLowerCase().includes(searchVal);
@@ -573,21 +573,20 @@
         });
 
         filtered.sort((a,b) => a.en.localeCompare(b.en)).forEach(w => {
-            const card = document.createElement('div');
-            card.className = 'dict-card';
+            const card = document.createElement('div'); card.className = 'dict-card';
             card.innerHTML = `
                 <div class="dict-card-inner">
                     <div class="dict-face">
                         <div style="font-size:2rem; margin-bottom:5px;">${w.em}</div>
-                        <div style="font-weight:900; font-size:1.1rem;">${w.en}</div>
-                        <div style="margin-top:auto; display:flex; gap:5px;">
-                            <button class="btn bg-blue" style="padding:5px 10px; font-size:0.8rem;" onclick="speak('${w.en}','us',event)">🇺🇸</button>
-                            <button class="btn bg-yellow" style="padding:5px 10px; font-size:0.8rem;" onclick="speak('${w.en}','uk',event)">🇬🇧</button>
+                        <div style="font-weight:900;">${w.en}</div>
+                        <div style="margin-top:auto; display:flex; gap:8px;">
+                            <button class="btn bg-blue" style="padding:6px 12px; font-size:0.8rem;" onclick="speak('${w.en}','us',event)">🇺🇸</button>
+                            <button class="btn bg-yellow" style="padding:6px 12px; font-size:0.8rem;" onclick="speak('${w.en}','uk',event)">🇬🇧</button>
                         </div>
                     </div>
                     <div class="dict-face dict-back">
                         <div style="font-size:1.8rem;">${w.em}</div>
-                        <div style="font-weight:900;">${w.uk}</div>
+                        <div style="font-weight:900; color:var(--primary);">${w.uk}</div>
                     </div>
                 </div>`;
             card.onclick = () => { card.classList.toggle('flipped'); dailyProg.flash++; checkGoals(); };
@@ -595,17 +594,19 @@
         });
     }
 
-    // --- 3. ЛОГІКА ІГОР (З КНОПКАМИ ДАЛІ ТА ПОМИЛКАМИ) ---
+    // ==========================================
+    // 🎯 ЛОГІКА ІГОР (КВІЗ, ЕМОДЗІ, СПЕЛІНГ)
+    // ==========================================
     let quizQ = [], qIdx = 0, qScore = 0, qType = 'uk-en', isMist = false;
 
     function startQuiz(mode) {
-        const voc = getVocab(); if (voc.length < 5) return alert("Мало слів!");
+        const voc = getVocab(); if (voc.length < 5) return alert("Замало слів у цій категорії!");
         qType = mode; isMist = false; quizQ = shuffleArray([...voc]).slice(0, 15); qIdx = 0; qScore = 0;
         showSection('quiz'); document.getElementById('quiz-result').style.display='none'; document.getElementById('quiz-active').style.display='flex'; loadQuiz();
     }
 
     function startMistakesMode() {
-        if (mistakeWords.length === 0) return showToast("Немає помилок! ❤️");
+        if (mistakeWords.length === 0) return showToast("Помилок немає! Красуня ❤️");
         qType = 'uk-en'; isMist = true; quizQ = shuffleArray([...mistakeWords]); qIdx = 0; qScore = 0;
         showSection('quiz'); document.getElementById('quiz-result').style.display='none'; document.getElementById('quiz-active').style.display='flex'; loadQuiz();
     }
@@ -615,7 +616,7 @@
         let w = quizQ[qIdx];
         document.getElementById('quiz-counter').textContent = `${qIdx+1}/${quizQ.length}`;
         document.getElementById('quiz-score').textContent = qScore;
-        document.getElementById('quiz-question').innerHTML = `<div style="font-size:3rem;">${w.em}</div>${qType === 'uk-en' ? w.uk : w.en}`;
+        document.getElementById('quiz-question').innerHTML = `<div style="font-size:3rem; margin-bottom:10px;">${w.em}</div>${qType === 'uk-en' ? w.uk : w.en}`;
         const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
         const g = document.getElementById('quiz-options'); g.innerHTML = '';
         opts.forEach(o => {
@@ -627,19 +628,32 @@
                     btn.disabled = true;
                     if (btn.textContent === (qType === 'uk-en' ? w.en : w.uk)) btn.classList.add('correct');
                 });
-                if (isCor) { qScore++; addXP(1); registerCorrect(); if(isMist) { mistakeWords = mistakeWords.filter(x => x.en !== w.en); localStorage.setItem('userMistakes', JSON.stringify(mistakeWords)); } }
-                else { b.classList.add('wrong'); registerMistake(w); }
+                if (isCor) { 
+                    qScore++; addXP(1); registerCorrect();
+                    if(isMist) { mistakeWords = mistakeWords.filter(x => x.en !== w.en); localStorage.setItem('userMistakes', JSON.stringify(mistakeWords)); }
+                } else { 
+                    b.classList.add('wrong'); registerMistake(w); 
+                }
                 document.getElementById('btn-next-quiz').style.display = 'block';
             };
             g.appendChild(b);
         });
     }
 
-    function nextQuizQuestion() { qIdx++; if (qIdx < quizQ.length) loadQuiz(); else { document.getElementById('quiz-active').style.display='none'; document.getElementById('quiz-result').style.display='flex'; document.getElementById('final-score').textContent = `${qScore}/${quizQ.length}`; gameFinished(qScore === quizQ.length, 'quiz_score', qScore); } }
+    function nextQuizQuestion() { 
+        qIdx++; if (qIdx < quizQ.length) loadQuiz(); 
+        else { 
+            document.getElementById('quiz-active').style.display='none'; document.getElementById('quiz-result').style.display='flex'; 
+            document.getElementById('final-score').textContent = `${qScore}/${quizQ.length}`; gameFinished(qScore === quizQ.length, 'quiz_score', qScore); 
+        } 
+    }
 
     // --- ЕМОДЗІ РЕЖИМ ---
     let emoQ = [], eIdx = 0, eSco = 0, eLock = false;
-    function startEmojiQuiz() { emoQ = shuffleArray([...baseVocabulary]).slice(0, 10); eIdx = 0; eSco = 0; showSection('emoji-quiz'); document.getElementById('emoji-result').style.display='none'; document.getElementById('emoji-active').style.display='flex'; loadEmo(); }
+    function startEmojiQuiz() { 
+        const voc = getVocab(); emoQ = shuffleArray([...voc]).slice(0, 10); eIdx = 0; eSco = 0; 
+        showSection('emoji-quiz'); document.getElementById('emoji-result').style.display='none'; document.getElementById('emoji-active').style.display='flex'; loadEmo(); 
+    }
     function loadEmo() {
         eLock = false; document.getElementById('btn-next-emoji').style.display = 'none';
         let w = emoQ[eIdx];
@@ -661,16 +675,17 @@
     }
     function nextEmoji() { eIdx++; if (eIdx < 10) loadEmo(); else { document.getElementById('emoji-active').style.display='none'; document.getElementById('emoji-result').style.display='flex'; document.getElementById('emoji-final').textContent = `${eSco}/10`; gameFinished(); } }
 
-    // --- СПЕЛІНГ (ВЕЛИКА КЛАВІАТУРА) ---
+    // --- СПЕЛІНГ (КЛАВІАТУРА) ---
     let sQ = [], sIdx = 0, sSco = 0, sTar = "", sCur = [], sLet = [], spellLock = false;
     function startSpelling() {
-        sQ = shuffleArray(baseVocabulary.filter(x => x.en.length < 10)).slice(0, 5); sIdx = 0; sSco = 0;
+        const voc = getVocab().filter(x => !x.en.includes(" "));
+        sQ = shuffleArray([...voc]).slice(0, 5); sIdx = 0; sSco = 0;
         showSection('spelling'); document.getElementById('spell-result').style.display='none'; document.getElementById('spell-active').style.display='flex'; loadSpell();
     }
     function loadSpell() {
         spellLock = false; sTar = sQ[sIdx].en.toUpperCase(); sCur = Array(sTar.length).fill(null);
         sLet = shuffleArray(sTar.split('').map((l, idx) => ({ l, id: idx })));
-        document.getElementById('spell-question').textContent = sQ[sIdx].uk;
+        document.getElementById('spell-question').innerHTML = `<div style="font-size:3rem; margin-bottom:10px;">${sQ[sIdx].em}</div>${sQ[sIdx].uk}`;
         document.getElementById('spell-counter').textContent = `${sIdx+1}/5`;
         renderSpell();
     }
@@ -687,45 +702,12 @@
     }
     function checkSpell() {
         spellLock = true; const word = sCur.map(x => x.l).join('');
-        if (word === sTar) { sSco++; addXP(2); registerCorrect(); setTimeout(() => { sIdx++; if (sIdx < 5) loadSpell(); else { document.getElementById('spell-active').style.display='none'; document.getElementById('spell-result').style.display='flex'; document.getElementById('spell-final-score').textContent = sSco + "/5"; gameFinished(); } }, 600); }
-        else { registerMistake(sQ[sIdx]); setTimeout(() => { sCur = Array(sTar.length).fill(null); spellLock = false; renderSpell(); }, 600); }
+        if (word === sTar) { 
+            sSco++; addXP(2); registerCorrect(); 
+            setTimeout(() => { sIdx++; if (sIdx < 5) loadSpell(); else { document.getElementById('spell-active').style.display='none'; document.getElementById('spell-result').style.display='flex'; document.getElementById('spell-final-score').textContent = sSco + "/5"; gameFinished(); } }, 600); 
+        } else { 
+            registerMistake(sQ[sIdx]); 
+            const sl = document.getElementById('spell-slots'); sl.style.animation = "shake 0.4s";
+            setTimeout(() => { sl.style.animation = ""; sCur = Array(sTar.length).fill(null); spellLock = false; renderSpell(); }, 600); 
+        }
     }
-
-    // --- ШИБЕНИЦЯ ---
-    let hmObj = null, hmLives = 5, hmGuessed = new Set(), hmLock = false;
-    function startHangman() {
-        hmObj = baseVocabulary[Math.floor(Math.random()*baseVocabulary.length)];
-        hmLives = 5; hmGuessed.clear(); hmLock = false;
-        showSection('hangman'); document.getElementById('hm-result').style.display='none'; document.getElementById('hm-active').style.display='flex';
-        renderHM();
-    }
-    function renderHM() {
-        document.getElementById('hm-question').textContent = hmObj.uk;
-        document.getElementById('hm-lives-text').textContent = "❤️".repeat(hmLives) + "🖤".repeat(5-hmLives);
-        const slots = document.getElementById('hm-slots'); slots.innerHTML = '';
-        let won = true;
-        hmObj.en.toUpperCase().split('').forEach(l => {
-            const s = document.createElement('div'); s.className = 'spell-slot';
-            if (hmGuessed.has(l)) s.textContent = l; else { s.textContent = ''; won = false; }
-            slots.appendChild(s);
-        });
-        if (won && !hmLock) { hmLock = true; addXP(5); alert("Ти врятувала сердечко! ❤️"); showSection('home'); gameFinished(); }
-        const keys = document.getElementById('hm-keyboard'); keys.innerHTML = '';
-        alphabet.forEach(l => {
-            const b = document.createElement('div'); b.className = 'hm-key'; b.textContent = l;
-            if (hmGuessed.has(l)) b.className += ' disabled';
-            b.onclick = () => {
-                if (hmLock || hmGuessed.has(l)) return;
-                hmGuessed.add(l);
-                if (!hmObj.en.toUpperCase().includes(l)) { hmLives--; if (hmLives <= 0) { hmLock = true; registerMistake(hmObj); alert("Слово було: " + hmObj.en); showSection('home'); } }
-                renderHM();
-            };
-            keys.appendChild(b);
-        });
-    }
-
-    // --- ІНІЦІАЛІЗАЦІЯ ---
-    window.onload = () => { initGamification(); setupWheelLegend(); renderDictionary(); };
-</script>
-</body>
-</html>
