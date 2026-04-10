@@ -6,7 +6,7 @@
     <title>EngLove App</title>
     <meta name="theme-color" content="#ec4899">
     <style>
-        :root { --primary: #ec4899; --primary-hover: #db2777; --bg: #fdf2f8; --card-bg: #ffffff; --text-main: #1f2937; --text-muted: #6b7280; --correct: #10b981; --wrong: #ef4444; }
+        :root { --primary: #ec4899; --bg: #fdf2f8; --card-bg: #ffffff; --text-main: #1f2937; --text-muted: #6b7280; --correct: #10b981; --wrong: #ef4444; }
         .dark { --bg: #0f172a; --card-bg: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8; --primary: #f472b6; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #e5e7eb; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
@@ -43,32 +43,26 @@
         .menu-title { font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;}
         .menu-desc { font-size: 0.75rem; color: var(--text-muted);}
 
-        .daily-goal { background: var(--card-bg); padding: 12px 15px; border-radius: 16px; margin-bottom:10px; border: 2px solid transparent;}
-        .daily-goal.completed { border-color: var(--correct); background: #f0fdf4; }
-        .daily-bar-bg { width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; margin-top:6px;}
-        .daily-bar-fill { height: 100%; background: var(--correct); width: 0%; transition: width 0.4s; }
-
         .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scroll-behavior: smooth; flex-shrink: 0;}
         .category-scroll::-webkit-scrollbar { display: none; }
         .cat-chip { flex-shrink: 0; background: var(--card-bg); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; border: 2px solid transparent; cursor: pointer;}
         .cat-chip.active { border-color: var(--primary); color: var(--primary); background: #fdf2f8; }
 
-        /* РУЛЕТКА БЕЗ ЕМОДЗІ (ТІЛЬКИ ЦИФРИ) */
+        /* РУЛЕТКА БЕЗ ТЕКСТУ (ТІЛЬКИ КОЛЬОРИ) */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 0 auto 20px auto; border-radius: 50%; border: 8px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.15); flex-shrink: 0; overflow: hidden;}
-        .wheel { width: 100%; height: 100%; position: absolute; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient( #ef4444 0deg 36deg, #a855f7 36deg 72deg, #3b82f6 72deg 108deg, #10b981 108deg 144deg, #f59e0b 144deg 180deg, #94a3b8 180deg 216deg, #f59e0b 216deg 252deg, #94a3b8 252deg 288deg, #f59e0b 288deg 324deg, #94a3b8 324deg 360deg ); }
-        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: var(--wrong); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; border-top: 4px solid white; }
+        .wheel { width: 100%; height: 100%; position: absolute; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient( #ff0055 0deg 36deg, #a855f7 36deg 72deg, #3b82f6 72deg 108deg, #10b981 108deg 144deg, #f59e0b 144deg 180deg, #94a3b8 180deg 216deg, #f59e0b 216deg 252deg, #94a3b8 252deg 288deg, #f59e0b 288deg 324deg, #94a3b8 324deg 360deg ); }
+        /* Світіння Джекпоту (сектор 0-36 град) */
+        .wheel::after { content:''; position:absolute; inset:0; border-radius:50%; background: conic-gradient(rgba(255,255,255,0.7) 0deg 36deg, transparent 36deg 360deg); animation: jackpotGlow 0.8s infinite alternate; pointer-events: none;}
+        @keyframes jackpotGlow { 0% { opacity: 0; } 100% { opacity: 1; box-shadow: inset 0 0 20px #fff; } }
+        
+        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: #ff0055; clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; border-top: 4px solid white; }
         .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: white; border-radius: 50%; border: 4px solid #1e293b; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;}
         
-        .wheel-text { position: absolute; top: 15px; left: 50%; margin-left: -25px; width: 50px; text-align: center; transform-origin: 50% 117px; font-size: 1.4rem; font-weight: 900; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); z-index: 2; }
-        .jackpot-glow { animation: glow 1s infinite alternate; }
-        @keyframes glow { from { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff0055; } to { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff0055; } }
-
         .legend-box { background: var(--card-bg); padding: 15px; border-radius: 16px; font-weight: 700; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
-        .legend-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 4px 0;}
+        .legend-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 4px 0; align-items: center;}
 
         /* КІТ-ПОМІЧНИК */
-        .cat-assistant { position: fixed; bottom: 85px; right: 15px; z-index: 9000; cursor: pointer; transition: 0.2s; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));}
-        .cat-assistant:active { transform: scale(0.9); }
+        .cat-assistant { position: fixed; bottom: 85px; right: 15px; z-index: 9000; cursor: pointer; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));}
         .cat-bubble { position: absolute; bottom: 70px; right: 0; width: 240px; background: var(--card-bg); padding: 15px; border-radius: 20px; border-bottom-right-radius: 0; font-size: 0.95rem; font-weight: 600; opacity: 0; pointer-events: none; transition: 0.3s; border: 2px solid var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.15); transform: translateY(10px); color: var(--text-main);}
         .cat-bubble.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
@@ -81,7 +75,7 @@
         #penalty-card { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(239, 68, 68, 0.9); z-index: 20000; display: none; align-items: center; justify-content: center; padding: 20px; text-align: center; backdrop-filter: blur(5px);}
         .penalty-box { background: white; padding: 30px; border-radius: 30px; border: 8px solid #fee2e2; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-        /* ІНШІ СТИЛІ ІГОР */
+        /* ІГРИ - КНОПКИ ТА КЛАВІАТУРА (ВЕЛИКА) */
         .question-box { background: var(--card-bg); padding: 25px 20px; border-radius: 20px; text-align: center; font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main);}
         .options-grid { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto;}
         .option-btn { padding: 16px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; font-size: 1.1rem; font-weight: 700; color: var(--text-main); cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.03);}
@@ -89,6 +83,13 @@
         .option-btn.wrong { background: var(--wrong) !important; color: white !important; }
         .btn { padding: 16px; border: none; border-radius: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; background: #e5e7eb; color: var(--text-main); width: 100%;}
         .btn-primary { background: var(--primary); color: white; }
+        
+        /* ВЕЛИКА КЛАВІАТУРА ДЛЯ СПЕЛІНГУ І ШИБЕНИЦІ */
+        .letter-btn, .hm-key { width: 50px; height: 50px; background: var(--card-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: var(--text-main); margin: 4px; text-transform: uppercase;}
+        .hm-key.disabled { opacity: 0.3; pointer-events: none; background: #e5e7eb; }
+        .letter-btn.hidden { opacity: 0; pointer-events: none; transform: scale(0); }
+        .spell-slot { width: 45px; height: 55px; border-bottom: 4px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: var(--primary); cursor: pointer; text-transform: uppercase;}
+        
         .dict-search-input { width: 100%; padding: 14px 16px; border-radius: 16px; border: 2px solid #e5e7eb; font-size: 1.05rem; outline: none; background: var(--card-bg); color: var(--text-main); font-weight: 600; margin-bottom: 15px;}
         .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .dict-card { height: 160px; perspective: 1000px; cursor: pointer; }
@@ -99,17 +100,13 @@
         
         .tf-card { position: absolute; background: var(--card-bg); width: 100%; max-width: 300px; height: 300px; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.2rem; font-weight: 800; text-align: center; color: var(--text-main); touch-action: none; z-index: 10;}
         .const-target { min-height: 80px; border-radius: 16px; border: 2px dashed #cbd5e1; display: flex; flex-wrap: wrap; gap: 8px; padding: 15px; margin-bottom: 20px; justify-content: center;}
-        .const-target.correct { border-color: var(--correct); background: rgba(16, 185, 129, 0.1); border-style: solid;}
         .const-word { background: var(--card-bg); color: var(--text-main); font-weight: 700; font-size: 1.1rem; padding: 10px 18px; border-radius: 12px; cursor: pointer; user-select: none;}
         .const-word.hidden { opacity: 0; pointer-events: none; transform: scale(0); }
-        .match-btn { padding: 12px; background: var(--card-bg); border: 2px solid #e5e7eb; border-radius: 16px; font-weight: 700; color: var(--text-main); min-height: 70px; display: flex; align-items: center; justify-content: center; cursor: pointer;}
-        .match-btn.selected { border-color: var(--primary); background: #fdf2f8; color: var(--primary); }
+        
         .particle { position: fixed; pointer-events: none; font-weight: bold; z-index: 9999; animation: explodeAnim 0.8s forwards; }
         @keyframes explodeAnim { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2); opacity: 0; } }
         
         .bg-blue { background: #dbeafe; } .bg-green { background: #dcfce7; } .bg-yellow { background: #fef08a; } .bg-purple { background: #f3e8ff; } .bg-red { background: #fee2e2; } .bg-orange { background: #ffedd5; } .bg-cyan { background: #cffafe; } .bg-pink { background: #fce7f3; }
-        
-        .word-day-box { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; padding: 15px; border-radius: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 5px 15px rgba(236,72,153,0.3); }
         .shop-item { background: var(--card-bg); padding: 15px; border-radius: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.03);}
         .buy-btn { background: #fdf2f8; color: var(--primary); font-weight: 800; padding: 10px 15px; border-radius: 12px; border: none; cursor: pointer;}
         .buy-btn:disabled { opacity: 0.4; pointer-events: none; }
@@ -171,7 +168,7 @@
                 <p class="page-subtitle" id="compliment-text">Ти сьогодні неймовірна! ✨</p>
             </div>
 
-            <div class="word-day-box">
+            <div style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; padding: 15px; border-radius: 20px; margin-bottom: 20px; text-align: center; box-shadow: 0 5px 15px rgba(236,72,153,0.3);">
                 <div style="font-size:0.8rem; font-weight:800; opacity:0.8; margin-bottom:4px;">РОМАНТИЧНЕ СЛОВО ДНЯ</div>
                 <div id="wod-en" style="font-size:1.8rem; font-weight:900;">Cuddle</div>
                 <div id="wod-uk" style="font-size:1.1rem; font-weight:600; font-style:italic;">Обійматися</div>
@@ -234,40 +231,39 @@
             <div style="position:relative; margin: 0 auto 20px;">
                 <div class="wheel-pointer"></div>
                 <div class="wheel-container">
-                    <div class="wheel" id="spin-wheel">
-                        <div class="wheel-text jackpot-glow" style="transform: translateX(-50%) rotate(18deg);">500</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(54deg);">20</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(90deg);">0</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(126deg);">20</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(162deg);">0</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(198deg);">20</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(234deg);">50</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(270deg);">100</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(306deg);">?</div>
-                        <div class="wheel-text" style="transform: translateX(-50%) rotate(342deg);">?</div>
-                    </div>
+                    <div class="wheel" id="spin-wheel"></div>
                     <div class="wheel-center">🌟</div>
                 </div>
             </div>
             
             <div class="legend-box" id="wheel-legend"></div>
-            <button class="btn btn-primary" id="spin-btn" onclick="spinWheel()">Крутити за 50 🌟</button>
+            <button class="btn btn-primary" id="spin-btn" onclick="spinWheel()" style="margin-top: 10px;">Крутити за 50 🌟</button>
         </div>
 
         <div id="inventory" class="section"><div class="page-header"><h1 class="page-title">Купони 🎁</h1></div><div id="inv-list" class="shop-list"></div></div>
         <div id="achievements" class="section"><div class="page-header"><h1 class="page-title">Досягнення 🏆</h1></div><div id="achiev-list" class="achiev-list"></div></div>
+        
         <div id="quiz-menu" class="section"><div class="page-header"><h1 class="page-title">Квіз 🎯</h1></div><div class="menu-grid"><div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div>Укр ➡️ Англ</div></div><div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div>Англ ➡️ Укр</div></div></div></div>
         <div id="flashcards-menu" class="section"><div class="page-header"><h1 class="page-title">Картки 🗂️</h1></div><div class="menu-grid"><div class="menu-card" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue">🇬🇧</div><div>Англ ➡️ Укр</div></div><div class="menu-card" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow">🇺🇦</div><div>Укр ➡️ Англ</div></div></div></div>
 
-        <div id="emoji-quiz" class="section"><div id="emoji-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="emoji-counter"></span><span id="emoji-score"></span></div><div class="question-box" id="emoji-question"></div><div class="options-grid grid-2" id="emoji-options"></div><button class="btn btn-primary" id="btn-next-emoji" style="display:none;margin-top:auto;" onclick="nextEmoji()">Далі</button></div><div class="result-screen" id="emoji-result"><h2>🤩 Готово!</h2><div class="result-score" id="emoji-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        <div id="emoji-quiz" class="section"><div id="emoji-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="emoji-counter"></span><span id="emoji-score"></span></div><div class="question-box" id="emoji-question"></div><div class="options-grid grid-2" id="emoji-options"></div><button class="btn btn-primary" id="btn-next-emoji" style="display:none;margin-top:20px;" onclick="nextEmoji()">Далі ➡️</button></div><div class="result-screen" id="emoji-result"><h2>🤩 Готово!</h2><div class="result-score" id="emoji-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
         <div id="truefalse" class="section"><div id="tf-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="tf-counter"></span><span id="tf-score"></span></div><div style="position:relative; flex:1; display:flex; align-items:center; justify-content:center;"><div style="position:absolute; top:-20px; font-weight:700; color:var(--text-muted);">👈 Брехня | Правда 👉</div><div class="tf-card" id="tf-card"></div></div><div style="display:flex;gap:10px;margin-top:auto;"><button class="btn bg-red" onclick="checkTfSwipe(false)">❌ Брехня</button><button class="btn bg-green" onclick="checkTfSwipe(true)">✅ Правда</button></div></div><div class="result-screen" id="tf-result"><h2>⚖️ Готово!</h2><div class="result-score" id="tf-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
-        <div id="constructor" class="section"><div id="const-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="const-counter"></span><span id="const-score"></span></div><div class="question-box" id="const-question"></div><div class="const-target" id="const-target"></div><div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:auto;" id="const-words"></div><button class="btn btn-primary" id="btn-next-const" style="display:none;margin-top:20px;" onclick="nextConst()">Далі</button></div><div class="result-screen" id="const-result"><h2>🧩 Геній!</h2><div class="result-score" id="const-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
-        <div id="quiz" class="section"><div id="quiz-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="quiz-counter"></span><span id="quiz-score"></span></div><div class="question-box" id="quiz-question"></div><div class="options-grid" id="quiz-options"></div><button class="btn btn-primary" id="btn-next-quiz" style="display:none;margin-top:auto;" onclick="nextQuizQuestion()">Далі</button></div><div class="result-screen" id="quiz-result"><h2>🎯 Готово!</h2><div class="result-score" id="final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
-        <div id="listening" class="section"><div id="listen-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="listen-counter"></span><span id="listen-score"></span></div><div class="question-box"><div style="margin-bottom:15px;">Слухай:</div><div style="display:flex; justify-content:center; gap:10px;"><button class="btn bg-blue" onclick="playWordAudio('us', event)">🇺🇸 US</button><button class="btn bg-yellow" onclick="playWordAudio('uk', event)">🇬🇧 UK</button></div></div><div class="options-grid" id="listen-options"></div><button class="btn btn-primary" id="btn-next-listen" style="display:none;margin-top:auto;" onclick="nextListenQuestion()">Далі</button></div><div class="result-screen" id="listen-result"><h2>🎧 Готово!</h2><div class="result-score" id="listen-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
+        <div id="constructor" class="section"><div id="const-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="const-counter"></span><span id="const-score"></span></div><div class="question-box" id="const-question"></div><div class="const-target" id="const-target"></div><div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:auto;" id="const-words"></div><button class="btn btn-primary" id="btn-next-const" style="display:none;margin-top:20px;" onclick="nextConst()">Далі ➡️</button></div><div class="result-screen" id="const-result"><h2>🧩 Геній!</h2><div class="result-score" id="const-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
+        <div id="quiz" class="section"><div id="quiz-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="quiz-counter"></span><span id="quiz-score"></span></div><div class="question-box" id="quiz-question"></div><div class="options-grid" id="quiz-options"></div><button class="btn btn-primary" id="btn-next-quiz" style="display:none;margin-top:20px;" onclick="nextQuizQuestion()">Далі ➡️</button></div><div class="result-screen" id="quiz-result"><h2>🎯 Готово!</h2><div class="result-score" id="final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
+        <div id="listening" class="section"><div id="listen-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="listen-counter"></span><span id="listen-score"></span></div><div class="question-box"><div style="margin-bottom:15px;">Слухай:</div><div style="display:flex; justify-content:center; gap:10px;"><button class="btn bg-blue" onclick="playWordAudio('us', event)">🇺🇸 US</button><button class="btn bg-yellow" onclick="playWordAudio('uk', event)">🇬🇧 UK</button></div></div><div class="options-grid" id="listen-options"></div><button class="btn btn-primary" id="btn-next-listen" style="display:none;margin-top:20px;" onclick="nextListenQuestion()">Далі ➡️</button></div><div class="result-screen" id="listen-result"><h2>🎧 Готово!</h2><div class="result-score" id="listen-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
         <div id="match" class="section"><div class="status-bar"><span id="match-counter"></span></div><div style="display:flex;gap:12px;flex:1;"><div style="flex:1;display:flex;flex-direction:column;gap:10px;" id="match-col-uk"></div><div style="flex:1;display:flex;flex-direction:column;gap:10px;" id="match-col-en"></div></div><div class="result-screen" id="match-result"><h2>🔗 Чудово!</h2><button class="btn btn-primary" style="margin-top:20px;" onclick="showSection('home')">В меню</button></div></div>
+        
         <div id="spelling" class="section"><div id="spell-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="spell-counter"></span><span id="spell-score"></span></div><div class="question-box" id="spell-question"></div><div style="display:flex;justify-content:center;gap:8px;margin-bottom:30px;flex-wrap:wrap;" id="spell-slots"></div><div style="display:flex;justify-content:center;gap:8px;margin-top:auto;flex-wrap:wrap;" id="spell-letters"></div></div><div class="result-screen" id="spell-result"><h2>🔠 Молодець!</h2><div class="result-score" id="spell-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
         <div id="sprint" class="section"><div id="sprint-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span>⏱️ <span id="sprint-time-text"></span>с</span><span id="sprint-score-text"></span></div><div style="height:12px;background:var(--bg);border-radius:10px;margin-bottom:15px;"><div id="sprint-bar" style="height:100%;background:var(--correct);transition:width 1s linear;"></div></div><div class="question-box" id="sprint-question"></div><div class="options-grid" id="sprint-options"></div></div><div class="result-screen" id="sprint-result"><h2>⏱ Час вийшов!</h2><div class="result-score" id="sprint-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
         <div id="hangman" class="section"><div id="hm-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="hm-counter"></span><span id="hm-lives-text" style="color:var(--wrong);"></span></div><div class="question-box" id="hm-question"></div><div style="display:flex;justify-content:center;gap:6px;margin-bottom:20px;flex-wrap:wrap;" id="hm-slots"></div><div style="display:flex;justify-content:center;gap:6px;margin-top:auto;flex-wrap:wrap;" id="hm-keyboard"></div></div><div class="result-screen" id="hm-result"><h2 id="hm-result-title"></h2><div class="result-score" id="hm-final-word"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        
         <div id="flashcards" class="section"><div class="status-bar"><span id="fc-counter"></span></div><div style="flex:1;display:flex;align-items:center;justify-content:center;perspective:1000px;" onclick="flipCard()"><div id="flashcard" style="width:100%;max-width:300px;height:350px;position:relative;transition:transform 0.4s;transform-style:preserve-3d;cursor:pointer;"><div id="fc-front" style="position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card-bg);border-radius:24px;font-weight:800;font-size:1.8rem;box-shadow:0 10px 30px rgba(0,0,0,0.08);color:var(--text-main);"></div><div id="fc-back" style="position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);border:2px solid var(--primary);border-radius:24px;font-weight:800;font-size:1.8rem;color:var(--primary);transform:rotateY(180deg);"></div></div></div><div style="display:flex;gap:10px; margin-top:20px;"><button class="btn" onclick="prevCard()">Назад</button><button class="btn btn-primary" onclick="nextCard()">Далі</button></div></div>
 
         <div id="boss" class="section">
@@ -293,22 +289,63 @@
     </nav>
 </div>
 <script>
-    // --- 1. ПОВНИЙ СЛОВНИК І МАСИВИ ---
-    const baseVocabulary=[{en:"Gorgeous",uk:"Розкішна",em:"😻",c:"co"},{en:"Smart",uk:"Розумна",em:"🧠",c:"co"},{en:"Funny",uk:"Смішна",em:"😂",c:"co"},{en:"Cute",uk:"Мила",em:"🥺",c:"co"},{en:"Perfect",uk:"Ідеальна",em:"✨",c:"co"},{en:"Stunning",uk:"Приголомшлива",em:"🤩",c:"co"},{en:"Shirt",uk:"Сорочка",em:"👕",c:"cl"},{en:"Dress",uk:"Сукня",em:"👗",c:"cl"},{en:"Hat",uk:"Шапка",em:"👒",c:"cl"},{en:"Socks",uk:"Шкарпетки",em:"🧦",c:"cl"},{en:"Pants",uk:"Штани",em:"👖",c:"cl"},{en:"Jacket",uk:"Куртка",em:"🧥",c:"cl"},{en:"Skirt",uk:"Спідниця",em:"👗",c:"cl"},{en:"Shoes",uk:"Взуття",em:"👟",c:"cl"},{en:"Coat",uk:"Пальто",em:"🧥",c:"cl"},{en:"Scarf",uk:"Шарф",em:"🧣",c:"cl"},{en:"Because",uk:"Тому що",em:"❓",c:"p"},{en:"But",uk:"Але",em:"☝️",c:"p"},{en:"Or",uk:"Або",em:"🔁",c:"p"},{en:"With",uk:"З",em:"➕",c:"p"},{en:"For",uk:"Для",em:"🎁",c:"p"},{en:"In",uk:"В",em:"📥",c:"p"},{en:"On",uk:"На",em:"🔝",c:"p"},{en:"Under",uk:"Під",em:"👇",c:"p"},{en:"Today",uk:"Сьогодні",em:"📅",c:"p"},{en:"Tomorrow",uk:"Завтра",em:"⏭️",c:"p"},{en:"Always",uk:"Завжди",em:"♾️",c:"p"},{en:"Never",uk:"Ніколи",em:"🚫",c:"p"},{en:"Fast",uk:"Швидко",em:"⚡",c:"p"},{en:"Slow",uk:"Повільно",em:"🐢",c:"p"},{en:"Very",uk:"Дуже",em:"‼️",c:"p"},{en:"Cake",uk:"Торт",em:"🍰",c:"fo"},{en:"Chocolate",uk:"Шоколад",em:"🍫",c:"fo"},{en:"Ice cream",uk:"Морозиво",em:"🍦",c:"fo"},{en:"Coffee",uk:"Кава",em:"☕",c:"fo"},{en:"Candy",uk:"Цукерка",em:"🍬",c:"fo"},{en:"Sweets",uk:"Солодощі",em:"🍭",c:"fo"},{en:"Lips",uk:"Губи",em:"👄",c:"bh"},{en:"Hands",uk:"Руки",em:"🤲",c:"bh"},{en:"Hair",uk:"Волосся",em:"💇‍♀️",c:"bh"},{en:"Hug",uk:"Обійми",em:"🫂",c:"bh"},{en:"Grass",uk:"Трава",em:"🌿",c:"n"},{en:"Tree",uk:"Дерево",em:"🌳",c:"n"},{en:"Flower",uk:"Квітка",em:"🌸",c:"n"},{en:"Stick",uk:"Палиця",em:"🪵",c:"n"},{en:"Sun",uk:"Сонце",em:"☀️",c:"n"},{en:"Moon",uk:"Місяць",em:"🌙",c:"n"},{en:"Star",uk:"Зірка",em:"⭐",c:"n"},{en:"Cloud",uk:"Хмара",em:"☁️",c:"n"},{en:"Sky",uk:"Небо",em:"🌌",c:"n"},{en:"Talk",uk:"Розмовляти",em:"🗣️",c:"a"},{en:"Speak",uk:"Говорити",em:"🎙️",c:"a"},{en:"Tell",uk:"Розповідати",em:"💬",c:"a"},{en:"Joke",uk:"Жарт",em:"😂",c:"a"},{en:"Eat",uk:"Їсти",em:"🍽️",c:"a"},{en:"Drink",uk:"Пити",em:"🥤",c:"a"},{en:"Go",uk:"Йти",em:"🚶‍♀️",c:"a"},{en:"Come",uk:"Приходити",em:"🏃‍♀️",c:"a"},{en:"Make",uk:"Робити",em:"🛠️",c:"a"},{en:"Take",uk:"Брати",em:"🤲",c:"a"},{en:"Give",uk:"Давати",em:"🎁",c:"a"},{en:"See",uk:"Бачити",em:"👁️",c:"a"},{en:"Watch",uk:"Спостерігати",em:"📺",c:"a"},{en:"Look",uk:"Дивитися",em:"🔭",c:"a"},{en:"Buy",uk:"Купувати",em:"🛍️",c:"a"},{en:"Sell",uk:"Продавати",em:"💵",c:"a"},{en:"Sold",uk:"Продано",em:"✅",c:"a"},{en:"Sink",uk:"Тонути",em:"⚓",c:"a"},{en:"Think",uk:"Думати",em:"🤔",c:"a"},{en:"Love",uk:"Любити",em:"❤️",c:"f"},{en:"Kiss",uk:"Цілувати",em:"💋",c:"f"},{en:"Smile",uk:"Посмішка",em:"😊",c:"f"},{en:"Want",uk:"Хотіти",em:"🥺",c:"f"},{en:"Need",uk:"Потребувати",em:"🆘",c:"f"},{en:"Like",uk:"Подобатися",em:"❤️",c:"f"},{en:"Miss",uk:"Сумувати",em:"😢",c:"f"},{en:"Care",uk:"Піклуватися",em:"🫶",c:"f"},{en:"Trust",uk:"Довіряти",em:"🤞",c:"f"},{en:"Feel",uk:"Відчувати",em:"💓",c:"f"},{en:"Touch",uk:"Торкатися",em:"👆",c:"f"},{en:"Hold",uk:"Тримати",em:"🤝",c:"f"},{en:"Eyes",uk:"Очі",em:"👀",c:"h"},{en:"Salt",uk:"Сіль",em:"🧂",c:"h"},{en:"Small",uk:"Маленький",em:"🤏",c:"h"},{en:"Big",uk:"Великий",em:"🐘",c:"h"},{en:"Cool",uk:"Крутий",em:"😎",c:"h"},{en:"Good",uk:"Хороший",em:"👍",c:"h"},{en:"Kind",uk:"Добрий",em:"😇",c:"h"},{en:"Cold",uk:"Холодний",em:"❄️",c:"h"},{en:"Hot",uk:"Гарячий",em:"🔥",c:"h"},{en:"Children",uk:"Діти",em:"👶",c:"h"},{en:"Family",uk:"Сім'я",em:"🏡",c:"h"},{en:"Mirror",uk:"Дзеркало",em:"🪞",c:"h"},{en:"Error",uk:"Помилка",em:"❌",c:"h"},{en:"Phone",uk:"Телефон",em:"📱",c:"h"},{en:"House",uk:"Будинок",em:"🏠",c:"h"},{en:"Flat",uk:"Квартира",em:"🏢",c:"h"},{en:"Bed",uk:"Ліжко",em:"🛏️",c:"h"},{en:"Bad",uk:"Поганий",em:"👎",c:"h"},{en:"Bedroom",uk:"Спальня",em:"🛌",c:"h"},{en:"Sweet",uk:"Солодкий",em:"🍬",c:"h"},{en:"Let's",uk:"Давай",em:"🤝",c:"p"},{en:"About",uk:"Про",em:"ℹ️",c:"p"},{en:"Something",uk:"Щось",em:"📦",c:"p"},{en:"I am",uk:"Я (є)",em:"🙋‍♀️",c:"p"},{en:"We are",uk:"Ми (є)",em:"👫",c:"p"},{en:"You are",uk:"Ти (є)",em:"🫵",c:"p"},{en:"They are",uk:"Вони (є)",em:"👨‍👩‍👦",c:"p"},{en:"He is",uk:"Він (є)",em:"👨",c:"p"},{en:"She is",uk:"Вона (є)",em:"👩",c:"p"},{en:"It is",uk:"Воно (є)",em:"🤖",c:"p"},{en:"Close",uk:"Близько",em:"🤏",c:"p"},{en:"Together",uk:"Разом",em:"💞",c:"p"},{en:"Forever",uk:"Назавжди",em:"♾️",c:"p"},{en:"Beautiful",uk:"Красива",em:"😍",c:"p"}];
+    // --- 1. ПОВНИЙ СЛОВНИК І МАСИВИ (НІЧОГО НЕ ВИДАЛЕНО) ---
+    const baseVocabulary=[
+        {en:"Gorgeous",uk:"Розкішна",em:"😻",c:"co"},{en:"Smart",uk:"Розумна",em:"🧠",c:"co"},{en:"Funny",uk:"Смішна",em:"😂",c:"co"},{en:"Cute",uk:"Мила",em:"🥺",c:"co"},{en:"Perfect",uk:"Ідеальна",em:"✨",c:"co"},{en:"Stunning",uk:"Приголомшлива",em:"🤩",c:"co"},
+        {en:"Shirt",uk:"Сорочка",em:"👕",c:"cl"},{en:"Dress",uk:"Сукня",em:"👗",c:"cl"},{en:"Hat",uk:"Шапка",em:"👒",c:"cl"},{en:"Socks",uk:"Шкарпетки",em:"🧦",c:"cl"},{en:"Pants",uk:"Штани",em:"👖",c:"cl"},{en:"Jacket",uk:"Куртка",em:"🧥",c:"cl"},{en:"Skirt",uk:"Спідниця",em:"👗",c:"cl"},{en:"Shoes",uk:"Взуття",em:"👟",c:"cl"},{en:"Coat",uk:"Пальто",em:"🧥",c:"cl"},{en:"Scarf",uk:"Шарф",em:"🧣",c:"cl"},
+        {en:"Because",uk:"Тому що",em:"❓",c:"p"},{en:"But",uk:"Але",em:"☝️",c:"p"},{en:"Or",uk:"Або",em:"🔁",c:"p"},{en:"With",uk:"З",em:"➕",c:"p"},{en:"For",uk:"Для",em:"🎁",c:"p"},{en:"In",uk:"В",em:"📥",c:"p"},{en:"On",uk:"На",em:"🔝",c:"p"},{en:"Under",uk:"Під",em:"👇",c:"p"},{en:"Today",uk:"Сьогодні",em:"📅",c:"p"},{en:"Tomorrow",uk:"Завтра",em:"⏭️",c:"p"},{en:"Always",uk:"Завжди",em:"♾️",c:"p"},{en:"Never",uk:"Ніколи",em:"🚫",c:"p"},{en:"Fast",uk:"Швидко",em:"⚡",c:"p"},{en:"Slow",uk:"Повільно",em:"🐢",c:"p"},{en:"Very",uk:"Дуже",em:"‼️",c:"p"},
+        {en:"Cake",uk:"Торт",em:"🍰",c:"fo"},{en:"Chocolate",uk:"Шоколад",em:"🍫",c:"fo"},{en:"Ice cream",uk:"Морозиво",em:"🍦",c:"fo"},{en:"Coffee",uk:"Кава",em:"☕",c:"fo"},{en:"Candy",uk:"Цукерка",em:"🍬",c:"fo"},{en:"Sweets",uk:"Солодощі",em:"🍭",c:"fo"},
+        {en:"Lips",uk:"Губи",em:"👄",c:"bh"},{en:"Hands",uk:"Руки",em:"🤲",c:"bh"},{en:"Hair",uk:"Волосся",em:"💇‍♀️",c:"bh"},{en:"Hug",uk:"Обійми",em:"🫂",c:"bh"},
+        {en:"Grass",uk:"Трава",em:"🌿",c:"n"},{en:"Tree",uk:"Дерево",em:"🌳",c:"n"},{en:"Flower",uk:"Квітка",em:"🌸",c:"n"},{en:"Stick",uk:"Палиця",em:"🪵",c:"n"},{en:"Sun",uk:"Сонце",em:"☀️",c:"n"},{en:"Moon",uk:"Місяць",em:"🌙",c:"n"},{en:"Star",uk:"Зірка",em:"⭐",c:"n"},{en:"Cloud",uk:"Хмара",em:"☁️",c:"n"},{en:"Sky",uk:"Небо",em:"🌌",c:"n"},
+        {en:"Talk",uk:"Розмовляти",em:"🗣️",c:"a"},{en:"Speak",uk:"Говорити",em:"🎙️",c:"a"},{en:"Tell",uk:"Розповідати",em:"💬",c:"a"},{en:"Joke",uk:"Жарт",em:"😂",c:"a"},{en:"Eat",uk:"Їсти",em:"🍽️",c:"a"},{en:"Drink",uk:"Пити",em:"🥤",c:"a"},{en:"Go",uk:"Йти",em:"🚶‍♀️",c:"a"},{en:"Come",uk:"Приходити",em:"🏃‍♀️",c:"a"},{en:"Make",uk:"Робити",em:"🛠️",c:"a"},{en:"Take",uk:"Брати",em:"🤲",c:"a"},{en:"Give",uk:"Давати",em:"🎁",c:"a"},{en:"See",uk:"Бачити",em:"👁️",c:"a"},{en:"Watch",uk:"Спостерігати",em:"📺",c:"a"},{en:"Look",uk:"Дивитися",em:"🔭",c:"a"},{en:"Buy",uk:"Купувати",em:"🛍️",c:"a"},{en:"Sell",uk:"Продавати",em:"💵",c:"a"},{en:"Sold",uk:"Продано",em:"✅",c:"a"},{en:"Sink",uk:"Тонути",em:"⚓",c:"a"},{en:"Think",uk:"Думати",em:"🤔",c:"a"},
+        {en:"Love",uk:"Любити",em:"❤️",c:"f"},{en:"Kiss",uk:"Цілувати",em:"💋",c:"f"},{en:"Smile",uk:"Посмішка",em:"😊",c:"f"},{en:"Want",uk:"Хотіти",em:"🥺",c:"f"},{en:"Need",uk:"Потребувати",em:"🆘",c:"f"},{en:"Like",uk:"Подобатися",em:"❤️",c:"f"},{en:"Miss",uk:"Сумувати",em:"😢",c:"f"},{en:"Care",uk:"Піклуватися",em:"🫶",c:"f"},{en:"Trust",uk:"Довіряти",em:"🤞",c:"f"},{en:"Feel",uk:"Відчувати",em:"💓",c:"f"},{en:"Touch",uk:"Торкатися",em:"👆",c:"f"},{en:"Hold",uk:"Тримати",em:"🤝",c:"f"},
+        {en:"Eyes",uk:"Очі",em:"👀",c:"h"},{en:"Salt",uk:"Сіль",em:"🧂",c:"h"},{en:"Small",uk:"Маленький",em:"🤏",c:"h"},{en:"Big",uk:"Великий",em:"🐘",c:"h"},{en:"Cool",uk:"Крутий",em:"😎",c:"h"},{en:"Good",uk:"Хороший",em:"👍",c:"h"},{en:"Kind",uk:"Добрий",em:"😇",c:"h"},{en:"Cold",uk:"Холодний",em:"❄️",c:"h"},{en:"Hot",uk:"Гарячий",em:"🔥",c:"h"},{en:"Children",uk:"Діти",em:"👶",c:"h"},{en:"Family",uk:"Сім'я",em:"🏡",c:"h"},{en:"Mirror",uk:"Дзеркало",em:"🪞",c:"h"},{en:"Error",uk:"Помилка",em:"❌",c:"h"},{en:"Phone",uk:"Телефон",em:"📱",c:"h"},{en:"House",uk:"Будинок",em:"🏠",c:"h"},{en:"Flat",uk:"Квартира",em:"🏢",c:"h"},{en:"Bed",uk:"Ліжко",em:"🛏️",c:"h"},{en:"Bad",uk:"Поганий",em:"👎",c:"h"},{en:"Bedroom",uk:"Спальня",em:"🛌",c:"h"},{en:"Sweet",uk:"Солодкий",em:"🍬",c:"h"},
+        {en:"Let's",uk:"Давай",em:"🤝",c:"p"},{en:"About",uk:"Про",em:"ℹ️",c:"p"},{en:"Something",uk:"Щось",em:"📦",c:"p"},{en:"I am",uk:"Я (є)",em:"🙋‍♀️",c:"p"},{en:"We are",uk:"Ми (є)",em:"👫",c:"p"},{en:"You are",uk:"Ти (є)",em:"🫵",c:"p"},{en:"They are",uk:"Вони (є)",em:"👨‍👩‍👦",c:"p"},{en:"He is",uk:"Він (є)",em:"👨",c:"p"},{en:"She is",uk:"Вона (є)",em:"👩",c:"p"},{en:"It is",uk:"Воно (є)",em:"🤖",c:"p"},{en:"Close",uk:"Близько",em:"🤏",c:"p"},{en:"Together",uk:"Разом",em:"💞",c:"p"},{en:"Forever",uk:"Назавжди",em:"♾️",c:"p"},{en:"Beautiful",uk:"Красива",em:"😍",c:"p"}
+    ];
+
     const sentences=[{en:"I love you forever",uk:"Я кохаю тебе назавжди"},{en:"We are together",uk:"Ми разом"},{en:"You are beautiful",uk:"Ти красива"},{en:"Give me a kiss",uk:"Дай мені поцілунок"},{en:"I miss you",uk:"Я сумую за тобою"},{en:"Hold me close",uk:"Тримай мене міцно"},{en:"You make me smile",uk:"Ти змушуєш мене посміхатися"},{en:"I want to hug you",uk:"Я хочу обійняти тебе"},{en:"You are my everything",uk:"Ти моє все"}];
     const catTips=["Мяу! Ти сьогодні просто сяєш! ✨","Ти - мій головний приз у цьому житті! ❤️","Оля - найкраща дівчинка на світі! Мурр.. 🥰","Твоя англійська стає все кращою, кицю! 👑","Кицюню, не забудь усміхнутися! 😊","Сумуєш за Юрою? Він теж дуууже сумує! 🥺","Покрути рулетку, Юра замовив тобі приз! 🎁","Я тут, щоб оберігати твій прогрес, кицю! 🐾"];
-    const compliments=["Ти сьогодні неймовірна! ✨","Моя найрозумніша дівчинка 🥰","Пишаюся тобою ❤️","Твоя посмішка - найкраща 😍","Кохаю тебе безмежно 💖","Моя манюня😊","Моє серденько ❤️","Кохаю тебе кицюня😘"];
+    const compliments=["Ти сьогодні неймовірна! ✨","Моя найрозумніша дівчинка 🥰","Пишаюся тобою ❤️","Твоя посмішка - найкраща 😍","Твоя наполегливість вражає! 🚀","Кохаю тебе безмежно 💖","Кохаю тебе дужче🤗","Моя манюня😊","Моє серденько ❤️","Кохаю тебе кицюня😘"];
     const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
     
-    // МАГАЗИН: ПОВЕРНУТО ВСІ КАРТКИ, ВКЛЮЧАЮЧИ "ОЛЯ ЛЮБИТЬ ДУЖЧЕ" ТА "ПАЛКІ ПОЦІЛУНКИ"
-    const shopItems=[{id:'olya_love',name:'Оля любить дужче Юру',price:'ERROR',icon:'♾️'},{id:'massage',name:'Масаж',price:500,icon:'💆‍♀️'},{id:'dinner',name:'Романтична вечеря',price:1500,icon:'🍷'},{id:'kisses',name:'Палкі поцілунки',price:200,icon:'💋'},{id:'veto',name:'Право на ВЕТО 🚫',price:500,icon:'🚫'},{id:'yes_card',name:'Юра каже ТАК ✅',price:1500,icon:'✅'},{id:'slave',name:'Раб на годину 🧹',price:600,icon:'🧹'},{id:'chef',name:'Кицик готує вечерю 👨‍🍳',price:600,icon:'🍳'},{id:'freeze',name:'Заморозка Стріку ❄️',price:150,icon:'❄️'},{id:'box',name:'Сюрприз-Бокс 🎁',price:400,icon:'🎁'},{id:'hug',name:'Безлімітні обійми',price:200,icon:'🫂'}];
+    // --- МАГАЗИН І АЧІВКИ (ЗІ ВСІМА НОВИНКАМИ ТА ОСОБЛИВИМИ КАРТКАМИ) ---
+    const shopItems=[
+        {id:'olya_love',name:'Оля любить дужче Юру',price:'ERROR',icon:'♾️'},
+        {id:'massage',name:'Масаж',price:500,icon:'💆‍♀️'},
+        {id:'dinner',name:'Романтична вечеря',price:1500,icon:'🍷'},
+        {id:'kisses',name:'Палкі поцілунки',price:200,icon:'💋'},
+        {id:'veto',name:'Право на ВЕТО 🚫',price:500,icon:'🚫'},
+        {id:'yes_card',name:'Юра каже ТАК ✅',price:1500,icon:'✅'},
+        {id:'slave',name:'Раб на годину 🧹',price:600,icon:'🧹'},
+        {id:'chef',name:'Кицик готує вечерю 👨‍🍳',price:600,icon:'🍳'},
+        {id:'freeze',name:'Заморозка Стріку ❄️',price:150,icon:'❄️'},
+        {id:'box',name:'Сюрприз-Бокс 🎁',price:400,icon:'🎁'},
+        {id:'hug',name:'Безлімітні обійми',price:200,icon:'🫂'}
+    ];
     
     const goalPool={easy:[{id:'g1',title:"🎮 Easy: 2 ігри",target:2,rew:5,type:'games'},{id:'g2',title:"🗂️ Easy: 10 карток",target:10,rew:5,type:'flash'},{id:'g3',title:"🤩 Easy: 5 емодзі",target:5,rew:5,type:'emoji'}],medium:[{id:'m1',title:"🔗 Mid: 12 пар",target:12,rew:10,type:'pairs'},{id:'m2',title:"🎯 Mid: Квіз (16)",target:16,rew:10,type:'quiz_score'}],hard:[{id:'h1',title:"⚡ Hard: Спринт (25)",target:25,rew:20,type:'sprint'},{id:'h2',title:"👑 Hard: Без помилок",target:20,rew:25,type:'perfect'}]};
     const achievList={first_blood:{icon:"🌱",title:"Перший крок",desc:"Зіграти першу гру",secret:false},perfect:{icon:"👑",title:"Моя відмінниця",desc:"Пройти квіз без помилок",secret:false},speed:{icon:"⚡",title:"Швидша за вітер",desc:"Набрати 15+ у спринті",secret:false},love:{icon:"💘",title:"Справжнє кохання",desc:"Знайти таємну пасхалку",secret:false},streak3:{icon:"🔥",title:"Капітан Стрік",desc:"Зайти 3 дні підряд",secret:false},polyglot:{icon:"🎓",title:"Поліглот",desc:"Зіграти 50 ігор",secret:false},rich:{icon:"💰",title:"Багачка",desc:"Накопичити 2000 зірочок",secret:false},survivor:{icon:"🪓",title:"Виживальниця",desc:"СЕКРЕТ! Шибениця з 1 ❤️",secret:true},crafter:{icon:"⛏️",title:"Майстер крафту",desc:"СЕКРЕТ! Конструктор без помилок",secret:true},sherlock:{icon:"🕵️‍♀️",title:"Шерлок",desc:"СЕКРЕТ! Знайти 3 промокоди",secret:true},lucky_bastard:{icon:"🍀",title:"Улюблениця фортуни",desc:"СЕКРЕТ! Зірвати джекпот",secret:true},boss_killer:{icon:"😈",title:"Переможниця",desc:"СЕКРЕТ! Здати Недільний Іспит",secret:true}};
     const levelSystem=[{xp:0,name:"Кошеня",icon:"🐾"},{xp:100,name:"Студентка",icon:"📚"},{xp:500,name:"Розумничка",icon:"💡"},{xp:1000,name:"Леді",icon:"💃"},{xp:2500,name:"Королева",icon:"👑"},{xp:5000,name:"Моя Богиня",icon:"🌌"}];
 
     // --- 2. СТАН ДОДАТКУ ---
-    let totalXP=parseInt(localStorage.getItem('totalXP'))||0; let lifetimeXP=parseInt(localStorage.getItem('lifetimeXP'))||0; let currentStreak=parseInt(localStorage.getItem('streak'))||0; let lastLogin=localStorage.getItem('lastLogin')||''; let bestSprint=parseInt(localStorage.getItem('sprintRecord'))||0; let mistakeWords=JSON.parse(localStorage.getItem('userMistakes'))||[]; let inventory=JSON.parse(localStorage.getItem('userInventory'))||[]; let achievs=JSON.parse(localStorage.getItem('achievs'))||{}; let usedCodes=JSON.parse(localStorage.getItem('usedCodes'))||[]; let userStats=JSON.parse(localStorage.getItem('userStats'))||{purchases:0,flippedCards:0,dictOpens:0,totalGames:0}; let dailyGoals=JSON.parse(localStorage.getItem('dailyGoals'))||null; let dailyProg=JSON.parse(localStorage.getItem('dailyProg'))||{games:0,flash:0,emoji:0,pairs:0,quiz_score:0,spell:0,sprint:0,perfect:0,clean_hm:0,g1Done:false,g2Done:false,g3Done:false}; let currentCat='all'; let lastBoxDate=localStorage.getItem('lastBoxDate')||0; let consecutiveErrors=0; let synth=window.speechSynthesis; let voices=[]; let audioUnlocked=false;
+    let totalXP=parseInt(localStorage.getItem('totalXP'))||0; 
+    let lifetimeXP=parseInt(localStorage.getItem('lifetimeXP'))||0; 
+    let currentStreak=parseInt(localStorage.getItem('streak'))||0; 
+    let lastLogin=localStorage.getItem('lastLogin')||''; 
+    let bestSprint=parseInt(localStorage.getItem('sprintRecord'))||0; 
+    let mistakeWords=JSON.parse(localStorage.getItem('userMistakes'))||[]; 
+    let inventory=JSON.parse(localStorage.getItem('userInventory'))||[]; 
+    let achievs=JSON.parse(localStorage.getItem('achievs'))||{}; 
+    let usedCodes=JSON.parse(localStorage.getItem('usedCodes'))||[]; 
+    let userStats=JSON.parse(localStorage.getItem('userStats'))||{purchases:0,flippedCards:0,dictOpens:0,totalGames:0}; 
+    let dailyGoals=JSON.parse(localStorage.getItem('dailyGoals'))||null; 
+    let dailyProg=JSON.parse(localStorage.getItem('dailyProg'))||{games:0,flash:0,emoji:0,pairs:0,quiz_score:0,spell:0,sprint:0,perfect:0,clean_hm:0,g1Done:false,g2Done:false,g3Done:false}; 
+    let currentCat='all'; 
+    let lastBoxDate=localStorage.getItem('lastBoxDate')||0; 
+    let consecutiveErrors=0; 
+    let synth=window.speechSynthesis; 
+    let voices=[]; 
+    let audioUnlocked=false;
 
     // --- ФУНКЦІЇ СИСТЕМИ ---
     function unlockAudio(){if(audioUnlocked)return; audioUnlocked=true; if(synth&&synth.paused)synth.resume(); synth.speak(new SpeechSynthesisUtterance(""));}
@@ -317,12 +354,24 @@
     function setCat(c,el){currentCat=c; document.querySelectorAll('.cat-chip').forEach(chip=>chip.classList.remove('active')); el.classList.add('active'); if(document.getElementById('dictionary').classList.contains('active'))renderDictionary();}
     function getLevelInfo(){let currentLvl=levelSystem[0]; for(let i=0;i<levelSystem.length;i++){if(lifetimeXP>=levelSystem[i].xp)currentLvl=levelSystem[i];} return currentLvl;}
 
+    // ЛОГІКА ШТРАФУ (Глобальний лічильник помилок)
     function registerMistake(wObj){
         consecutiveErrors++;
-        if(consecutiveErrors>=3){document.getElementById('penalty-card').style.display='flex'; consecutiveErrors=0;}
-        if(wObj){if(!mistakeWords.find(x=>x.en===wObj.en)){mistakeWords.push(wObj); localStorage.setItem('userMistakes',JSON.stringify(mistakeWords)); updateUI();}}
+        if(consecutiveErrors>=3){
+            document.getElementById('penalty-card').style.display='flex'; 
+            consecutiveErrors=0; // Скидаємо лічильник після штрафу
+        }
+        if(wObj){
+            if(!mistakeWords.find(x=>x.en===wObj.en)){
+                mistakeWords.push(wObj); 
+                localStorage.setItem('userMistakes',JSON.stringify(mistakeWords)); 
+                updateUI();
+            }
+        }
     }
-    function registerCorrect(){consecutiveErrors=0;}
+    
+    function registerCorrect(){ consecutiveErrors=0; } // Якщо дала правильну відповідь, серія помилок переривається
+    
     function playSFX(c){if(!audioUnlocked)return; const o=new(window.AudioContext||window.webkitAudioContext)().createOscillator(); o.type=c?'sine':'square'; o.frequency.setValueAtTime(c?523:150,0); o.connect(new(window.AudioContext||window.webkitAudioContext)().destination); o.start(); o.stop(0.2);}
     function fireParticles(x,y,cor){playSFX(cor); const e=cor?'💖':'💔'; const f=document.createDocumentFragment(); for(let i=0;i<20;i++){const p=document.createElement('div'); p.className='particle'; p.textContent=e; p.style.left=x+'px'; p.style.top=y+'px'; p.style.fontSize=(28*(Math.random()*1.2+0.8))+'px'; const a=Math.random()*Math.PI*2,d=Math.random()*100+40; p.style.setProperty('--tx',Math.cos(a)*d+'px'); p.style.setProperty('--ty',Math.sin(a)*d-40+'px'); f.appendChild(p); setTimeout(()=>p.remove(),800);} document.body.appendChild(f);}
 
@@ -332,6 +381,8 @@
         
         if(d.getDay()===0){const bb=document.getElementById('boss-btn'); bb.style.filter='none'; bb.style.pointerEvents='auto'; bb.style.borderColor='#ff0000'; document.getElementById('boss-desc').textContent="Відкрито! 😈"; document.getElementById('boss-desc').style.color="#ff4444";}
         const dayOfYear=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000); const wod=baseVocabulary[dayOfYear%baseVocabulary.length]; document.getElementById('wod-en').textContent=wod.en; document.getElementById('wod-uk').textContent=wod.uk;
+        
+        // Підрахунок днів разом (з 16.05.2025)
         const diff=Math.floor((d-new Date('2025-05-16'))/86400000); document.getElementById('stats-days').textContent=diff>0?diff:0;
         
         if(!dailyGoals||!dailyGoals[0]){dailyGoals=[goalPool.easy[Math.floor(Math.random()*goalPool.easy.length)],goalPool.medium[Math.floor(Math.random()*goalPool.medium.length)],goalPool.hard[Math.floor(Math.random()*goalPool.hard.length)]]; localStorage.setItem('dailyGoals',JSON.stringify(dailyGoals));}
@@ -341,10 +392,14 @@
             if(lastLogin!==''){
                 const diffDays=Math.ceil(Math.abs(d-new Date(lastLogin))/86400000); 
                 if(diffDays>=3)checkAchiev('sleeping_beauty');
-                if(diffDays>=2) { const fIdx=inventory.findIndex(x=>x.id==='freeze'); if(fIdx!==-1){inventory.splice(fIdx,1); localStorage.setItem('userInventory',JSON.stringify(inventory)); isFreezeUsed=true;} }
+                if(diffDays>=2) { 
+                    const fIdx=inventory.findIndex(x=>x.id==='freeze'); 
+                    if(fIdx!==-1){inventory.splice(fIdx,1); localStorage.setItem('userInventory',JSON.stringify(inventory)); isFreezeUsed=true;} 
+                }
             } 
             const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1); 
             if(lastLogin===yesterday.toDateString()){currentStreak++;}else if(lastLogin!=='' && isFreezeUsed){alert("Твій стрік був врятований 'Заморозкою Стріку'! ❄️");}else{currentStreak=1;} 
+            
             lastLogin=today; dailyGoals=[goalPool.easy[Math.floor(Math.random()*goalPool.easy.length)],goalPool.medium[Math.floor(Math.random()*goalPool.medium.length)],goalPool.hard[Math.floor(Math.random()*goalPool.hard.length)]]; dailyProg={games:0,flash:0,emoji:0,pairs:0,quiz_score:0,spell:0,sprint:0,perfect:0,clean_hm:0,g1Done:false,g2Done:false,g3Done:false}; localStorage.setItem('dailyGoals',JSON.stringify(dailyGoals)); localStorage.setItem('lastLogin',lastLogin); localStorage.setItem('streak',currentStreak); localStorage.setItem('dailyProg',JSON.stringify(dailyProg));
         }
         if(currentStreak>=3)checkAchiev('streak3');
@@ -352,8 +407,10 @@
     }
 
     function pokeCat(){const b=document.getElementById('cat-bubble'); if(b.classList.contains('show'))return; b.textContent=catTips[Math.floor(Math.random()*catTips.length)]; b.classList.add('show'); playSFX(true); setTimeout(()=>b.classList.remove('show'),4000);}
-    function addXP(a){totalXP+=a; localStorage.setItem('totalXP',totalXP); if(a>0){lifetimeXP+=a; localStorage.setItem('lifetimeXP',lifetimeXP);} if(totalXP>=2000)checkAchiev('rich'); updateUI();}
+    function saveDaily(){localStorage.setItem('dailyProg',JSON.stringify(dailyProg));}
     function saveStats(){localStorage.setItem('userStats',JSON.stringify(userStats));}
+    function addXP(a){totalXP+=a; localStorage.setItem('totalXP',totalXP); if(a>0){lifetimeXP+=a; localStorage.setItem('lifetimeXP',lifetimeXP);} if(totalXP>=2000)checkAchiev('rich'); updateUI();}
+    
     function checkGoals(){
         if(!dailyProg.g1Done&&dailyProg[dailyGoals[0].type]>=dailyGoals[0].target){dailyProg.g1Done=true; addXP(dailyGoals[0].rew); showToast(`Ціль 1 виконана! +${dailyGoals[0].rew}🌟`);}
         if(!dailyProg.g2Done&&dailyProg[dailyGoals[1].type]>=dailyGoals[1].target){dailyProg.g2Done=true; addXP(dailyGoals[1].rew); showToast(`Ціль 2 виконана! +${dailyGoals[1].rew}🌟`);}
@@ -385,11 +442,22 @@
             c.innerHTML+=`<div class="shop-item"><div><span style="font-size:1.5rem;">${i.icon}</span> <b style="${isErr?'color:var(--wrong)':''}">${i.name}</b><br><small style="${isErr?'color:var(--wrong)':''}">🌟 ${i.price}</small></div><button class="buy-btn" ${can?'':'disabled'} onclick="buyItem('${i.id}')">${bt}</button></div>`;
         });
     }
+    
     function buyItem(id){
         const i=shopItems.find(x=>x.id===id); if(i&&totalXP>=i.price){
             addXP(-i.price);
-            if(id==='box'){lastBoxDate=Date.now(); localStorage.setItem('lastBoxDate',lastBoxDate); const r=Math.random(); if(r<0.05){inventory.push({id:'bx1',name:'Вечеря (з Боксу)',price:0,icon:'🍷',uid:Date.now()}); alert("ОГО! Вечеря з боксу!");}else if(r<0.4){inventory.push({id:'bx2',name:'Масаж (з Боксу)',price:0,icon:'💆‍♀️',uid:Date.now()}); alert("Масаж з боксу!");}else{addXP(50); alert("+50 🌟 з боксу!");}}
-            else{inventory.push({...i,uid:Date.now()});} localStorage.setItem('userInventory',JSON.stringify(inventory)); userStats.purchases=(userStats.purchases||0)+1; localStorage.setItem('userStats',JSON.stringify(userStats)); if(userStats.purchases>=3)checkAchiev('shopaholic'); showToast("Куплено!"); renderInventory(); renderShop(); updateUI();
+            if(id==='box'){
+                lastBoxDate=Date.now(); localStorage.setItem('lastBoxDate',lastBoxDate); 
+                const r=Math.random(); 
+                if(r<0.05){inventory.push({id:'bx1',name:'Вечеря (з Боксу)',price:0,icon:'🍷',uid:Date.now()}); alert("ОГО! Вечеря з боксу!");}
+                else if(r<0.4){inventory.push({id:'bx2',name:'Масаж (з Боксу)',price:0,icon:'💆‍♀️',uid:Date.now()}); alert("Масаж з боксу!");}
+                else{addXP(50); alert("+50 🌟 з боксу!");}
+            }
+            else{inventory.push({...i,uid:Date.now()});} 
+            localStorage.setItem('userInventory',JSON.stringify(inventory)); 
+            userStats.purchases=(userStats.purchases||0)+1; localStorage.setItem('userStats',JSON.stringify(userStats)); 
+            if(userStats.purchases>=3)checkAchiev('shopaholic'); 
+            showToast("Куплено!"); renderInventory(); renderShop(); updateUI();
         }
     }
     
@@ -402,10 +470,10 @@
     function renderAchievs(){const c=document.getElementById('achiev-list'); c.innerHTML=''; Object.keys(achievList).forEach(k=>{const a=achievList[k]; const unl=achievs[k]?'unlocked':''; if(a.secret&&!unl)c.innerHTML+=`<div class="achiev-card"><div class="achiev-icon">❓</div><div><div class="achiev-title">Секретне досягнення</div></div></div>`; else c.innerHTML+=`<div class="achiev-card ${unl}"><div class="achiev-icon">${a.icon}</div><div><div class="achiev-title">${a.title}</div><div class="achiev-desc">${a.desc}</div></div></div>`;});}
     function showToast(m){const t=document.getElementById('toast'); document.getElementById('toast-msg').textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);}
 
-    // ✅ ПРОМОКОДИ ТА SORRY
+    // ✅ ПРОМОКОДИ, ЗБЕРЕЖЕННЯ ТА НАВІГАЦІЯ
     function enterPromo(){
         const input=prompt("Введи код:"); if(!input)return; const code=input.replace(/[^A-Z0-9]/gi,'').toUpperCase(); if(usedCodes.includes(code)){alert("Вже використано! Хитрунка 🦊"); return;} let ok=false;
-        if(code==='16052025'){inventory.push({id:'a1',name:'❤️ День, коли ми офіційно стали парою (16.05)',price:0,icon:'👩‍❤️‍👨',uid:Date.now()}); ok=true; alert("Код прийнято! Найкращий день! 👩‍❤️‍👨");}
+        if(code==='16052025'){inventory.push({id:'a1',name:'❤️ День, коли ми офіційно стали парою',price:0,icon:'👩‍❤️‍👨',uid:Date.now()}); ok=true; alert("Код прийнято! Найкращий день! 👩‍❤️‍👨");}
         else if(code==='16052026'){inventory.push({id:'a2',name:'💎 Рік стосунків (16.05.2026)',price:0,icon:'💍',uid:Date.now()}); addXP(365); ok=true; alert("З нашою першою річницею! +365 🌟 та купон! 💍");}
         else if(code==='MISSYOU'){inventory.push({id:'m1',name:'Я приїду до тебе зі смаколиками',price:0,icon:'🥐',uid:Date.now()}); ok=true;}
         else if(code==='DATE2026'){inventory.push({id:'d1',name:'Вибір фільму і піца',price:0,icon:'🍕',uid:Date.now()}); ok=true;}
@@ -446,7 +514,7 @@
     function finishBoss(win){document.getElementById('boss-active').style.display='none'; document.getElementById('boss-result').style.display='flex'; document.getElementById('boss-result-title').textContent=win?"Ти здолала Боса! 🎉":"Ти загинула... 💔"; if(win){document.getElementById('boss-result-desc').textContent="Ось твої +500 🌟 та Золотий купон!"; addXP(500); inventory.push({id:'boss_win',name:'🥇 Золотий купон',price:0,icon:'🥇',uid:Date.now()}); localStorage.setItem('userInventory',JSON.stringify(inventory)); checkAchiev('boss_killer');}else{document.getElementById('boss-result-desc').textContent="Життя скінчилися. Бос виявився сильнішим.";} renderInventory(); updateUI();}
 
     // --- 5. ЗАГАЛЬНА ЛОГІКА ТА 10 ІГОР ---
-    function exportProgress(){const d={totalXP,lifetimeXP,currentStreak,bestSprint,dailyProg,mistakeWords,inventory,achievs,usedCodes,lastLogin,dailyGoals,userStats,lastBoxDate}; navigator.clipboard.writeText(btoa(unescape(encodeURIComponent(JSON.stringify(d))))).then(()=>alert("Скопійовано!"));}
+    function exportProgress(){const d={totalXP,lifetimeXP,currentStreak,bestSprint,dailyProg,mistakeWords,inventory,achievs,usedCodes,lastLogin,dailyGoals,userStats,lastBoxDate}; navigator.clipboard.writeText(btoa(unescape(encodeURIComponent(JSON.stringify(d))))).then(()=>alert("Скопійовано! Надішліть це повідомлення Юрі 📩"));}
     function importProgress(){const s=prompt("Код:"); if(!s)return; try{const d=JSON.parse(decodeURIComponent(escape(atob(s)))); if(d.totalXP!==undefined){localStorage.setItem('totalXP',d.totalXP); localStorage.setItem('lifetimeXP',d.lifetimeXP); localStorage.setItem('streak',d.currentStreak); localStorage.setItem('dailyProg',JSON.stringify(d.dailyProg)); localStorage.setItem('userMistakes',JSON.stringify(d.mistakeWords)); localStorage.setItem('userInventory',JSON.stringify(d.inventory)); localStorage.setItem('achievs',JSON.stringify(d.achievs)); localStorage.setItem('usedCodes',JSON.stringify(d.usedCodes)); alert("Прогрес відновлено!"); location.reload();}}catch(e){alert("Помилка коду!");}}
     
     let isDark=localStorage.getItem('theme')==='dark'; if(isDark)document.getElementById('app-container').classList.add('dark'); document.getElementById('theme-icon').textContent=isDark?'☀️':'🌙';
