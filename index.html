@@ -581,6 +581,58 @@
     function flipCard(){document.getElementById('flashcard').classList.toggle('flipped'); dailyProg.flash++; checkGoals();}
     function nextCard(){fcI=(fcI+1)%fcArr.length; updFc();}
     function prevCard(){fcI=(fcI-1+fcArr.length)%fcArr.length; updFc();}
+    
+        // --- СЛОВНИК ТА ПОШУК ---
+    let dictMode = 'en-uk';
+    function setDictMode(m) { dictMode = m; renderDictionary(); }
+
+    function renderDictionary() {
+        const grid = document.getElementById('dict-grid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const searchInput = document.getElementById('dict-search');
+        if (!searchInput) return;
+        const q = searchInput.value.toLowerCase().trim();
+
+        if (q === 'love' || q === 'кохаю' || q === 'люблю') {
+            const egg = document.getElementById('easter-egg');
+            if(egg) egg.style.display = 'flex';
+            checkAchiev('love');
+            searchInput.value = '';
+            return;
+        }
+
+        let list = baseVocabulary.filter(w => {
+            const mQ = w.en.toLowerCase().includes(q) || w.uk.toLowerCase().includes(q);
+            const mC = currentCat === 'all' || w.c === currentCat;
+            return mQ && mC;
+        });
+
+        list.sort((a, b) => a.en.localeCompare(b.en)).forEach(w => {
+            const c = document.createElement('div'); c.className = 'dict-card';
+            const f = document.createElement('div'); f.className = 'dict-face';
+            const b = document.createElement('div'); b.className = 'dict-face dict-back';
+            
+            const bEn = (el) => {
+                el.innerHTML = `<div style="font-size:1.8rem; margin-bottom:2px;">${w.em}</div><div style="font-weight:900;">${w.en}</div><div style="margin-top:auto; display:flex; gap:10px; width:100%;"><button class="btn bg-blue" style="padding:8px; font-size:0.9rem;" onclick="speak('${w.en}','us',event)">🇺🇸</button><button class="btn bg-yellow" style="padding:8px; font-size:0.9rem;" onclick="speak('${w.en}','uk',event)">🇬🇧</button></div>`;
+            };
+            
+            if (dictMode === 'en-uk') {
+                bEn(f);
+                b.innerHTML = `<div style="font-size:1.8rem; margin-bottom:2px;">${w.em}</div><div style="font-weight:900;">${w.uk}</div>`;
+            } else {
+                f.innerHTML = `<div style="font-size:1.8rem; margin-bottom:2px;">${w.em}</div><div style="font-weight:900;">${w.uk}</div>`;
+                bEn(b);
+            }
+            
+            c.innerHTML = `<div class="dict-card-inner"></div>`;
+            c.firstChild.appendChild(f);
+            c.firstChild.appendChild(b);
+            c.onclick = () => { c.classList.toggle('flipped'); dailyProg.flash++; checkGoals(); };
+            grid.appendChild(c);
+        });
+    }
+
 
        // ==========================================
     // 🎮 БЛОК УСІХ ІГОР (ІДЕАЛЬНО НАЛАШТОВАНИЙ)
