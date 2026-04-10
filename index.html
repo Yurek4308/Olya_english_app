@@ -9,7 +9,6 @@
     <meta name="theme-color" content="#ec4899">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="EngLove">
     <link rel="apple-touch-icon" href="icon.png">
     
     <style>
@@ -27,9 +26,9 @@
         body { background-color: #e5e7eb; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
         .app-container { width: 100%; max-width: 480px; background-color: var(--bg); display: flex; flex-direction: column; height: 100%; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; transition: 0.2s; }
 
-        header { background-color: var(--header-bg); color: white; padding: calc(12px + env(safe-area-inset-top)) 20px 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10; transition: 0.2s; }
+        header { background-color: var(--header-bg); color: white; padding: calc(12px + env(safe-area-inset-top)) 20px 12px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; flex-shrink: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10;}
         .header-actions { display: flex; gap: 8px; }
-        .header-btn { background: rgba(255, 255, 255, 0.2); border: none; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.15s;}
+        .header-btn { background: rgba(255, 255, 255, 0.2); border: none; color: white; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.1s;}
         .header-btn:active { transform: scale(0.9); }
         .header-btn.text { border-radius: 20px; width: auto; padding: 6px 14px; font-size: 0.9rem; }
         
@@ -56,13 +55,14 @@
         .welcome-subtitle { font-size: 1rem; color: var(--primary); font-weight: 600; line-height: 1.4; font-style: italic;}
         
         .daily-goals-container { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; flex-shrink: 0; }
-        .daily-goal { background: var(--card-bg); padding: 12px 15px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 2px solid transparent;}
+        .daily-goal { background: var(--card-bg); padding: 12px 15px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 2px solid transparent; transition: 0.2s;}
         .daily-goal.completed { border-color: var(--correct); background: #f0fdf4; opacity: 0.8; }
         .dark .daily-goal.completed { background: #064e3b; border-color: #059669;}
         .daily-goal-top { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 700; color: var(--text-main); font-size: 0.85rem; align-items: center;}
         .daily-bar-bg { width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; }
         .daily-bar-fill { height: 100%; background: var(--correct); width: 0%; transition: width 0.4s ease-out; }
         
+        /* ТЕГИ */
         .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 5px 20px 10px 20px; margin: 0 -20px 15px -20px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; min-height: 55px; flex-shrink: 0; align-items: center;}
         .category-scroll::-webkit-scrollbar { display: none; }
         .cat-chip { flex-shrink: 0; background: var(--card-bg); color: var(--text-muted); border: 2px solid transparent; padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; white-space: nowrap; cursor: pointer; transition: 0.15s; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
@@ -70,7 +70,7 @@
         .dark .cat-chip.active { background: #1e293b; }
 
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .menu-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.1s; position: relative;}
+        .menu-card { background: var(--card-bg); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: transform 0.1s; position: relative;}
         .menu-card:active { transform: scale(0.93); }
         .menu-card.wide { grid-column: span 2; flex-direction: row; text-align: left; }
         .icon-box { width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 10px;}
@@ -102,6 +102,7 @@
         .redeem-btn { background: var(--wrong); color: white; width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 800; cursor: pointer; animation: pulse 2s infinite;}
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
+        /* ІГРИ (КВІЗ І Т.Д.) */
         .status-bar { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600; color: var(--text-muted); font-size: 0.9rem; flex-shrink: 0;}
         .question-box { background: var(--card-bg); padding: 25px 20px; border-radius: 20px; text-align: center; font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); flex-shrink: 0; color: var(--text-main);}
         .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; flex: 1; overflow-y: auto; }
@@ -112,10 +113,12 @@
         .option-btn.wrong { background: var(--wrong) !important; color: white !important; border-color: var(--wrong) !important; }
         .btn { flex: 1; padding: 16px; border: none; border-radius: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; background: #e5e7eb; color: var(--text-main); transition: 0.1s; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px;}
         .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:active { transform: scale(0.93); opacity: 0.9; }
         .controls { display: flex; gap: 12px; flex-shrink: 0; }
         .result-screen { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
         .result-score { font-size: 4rem; font-weight: 800; color: var(--primary); margin: 10px 0 30px;}
 
+        /* СЛОВНИК */
         .dict-search-input { width: 100%; padding: 14px 16px; border-radius: 16px; border: 2px solid #e5e7eb; font-size: 1.05rem; outline: none; transition: 0.2s; background: var(--card-bg); color: var(--text-main); font-weight: 600;} 
         .dict-search-input:focus { border-color: var(--primary); } 
         .dict-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; overflow-y: auto; padding-bottom: 30px; flex: 1; } 
@@ -164,60 +167,57 @@
         .achiev-card { display: flex; align-items: center; background: var(--card-bg); padding: 15px; border-radius: 16px; margin-bottom: 10px; opacity: 0.4; filter: grayscale(1); box-shadow: 0 2px 8px rgba(0,0,0,0.03);}
         .achiev-card.unlocked { opacity: 1; filter: grayscale(0); border-left: 5px solid var(--primary); background: linear-gradient(135deg, var(--card-bg), #fdf2f8); }
         .dark .achiev-card.unlocked { background: linear-gradient(135deg, var(--card-bg), #1e293b); }
+        .achiev-icon { font-size: 2.5rem; margin-right: 15px; }
 
-        /* НОВА РУЛЕТКА (БЕЗ ЗСУВІВ) */
-        .wheel-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-bottom: 20px;}
-        .wheel-wrapper { position: relative; width: 300px; height: 300px; margin-bottom: 30px; flex-shrink: 0;}
+        /* --- ІДЕАЛЬНА РУЛЕТКА --- */
+        .wheel-container { position: relative; width: 280px; height: 280px; margin: 0 auto 20px auto; border-radius: 50%; overflow: hidden; border: 8px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.15); flex-shrink: 0;}
+        .dark .wheel-container { border-color: #475569; }
         
-        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: var(--wrong); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)); border: 2px solid white; }
-
-        .wheel-container { width: 100%; height: 100%; border-radius: 50%; border: 8px solid #334155; box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 30px rgba(0,0,0,0.1); overflow: hidden; position: relative; transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1); background: #f1f5f9; cursor: pointer; }
-        .dark .wheel-container { border-color: #475569; background: #1e293b;}
-
-        .wheel-segment { position: absolute; width: 50%; height: 50%; top: 0; left: 50%; transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        /* 10 секторів (кожні 36 градусів) намальовані через conic-gradient */
+        .wheel { 
+            width: 100%; height: 100%; position: absolute; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            background: conic-gradient(
+                #ef4444 0deg 36deg,     /* 1. Джекпот */
+                #a855f7 36deg 72deg,    /* 2. Кіндер */
+                #3b82f6 72deg 108deg,   /* 3. 100xp */
+                #10b981 108deg 144deg,  /* 4. 50xp */
+                #f59e0b 144deg 180deg,  /* 5. 20xp */
+                #94a3b8 180deg 216deg,  /* 6. 0xp */
+                #f59e0b 216deg 252deg,  /* 7. 20xp */
+                #94a3b8 252deg 288deg,  /* 8. 0xp */
+                #f59e0b 288deg 324deg,  /* 9. 20xp */
+                #94a3b8 324deg 360deg   /* 10. 0xp */
+            );
+        }
         
-        .segment-content { position: absolute; bottom: 30px; left: -100px; width: 200px; height: 80px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(18deg); color: #1e293b; font-weight: 900; filter: drop-shadow(0 1px 2px rgba(255,255,255,0.5));}
-        .dark .segment-content { color: #f1f5f9; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));}
-
-        /* 10 секторів по 36 градусів */
-        .seg1 { transform: rotate(0deg) skewY(-54deg); background: #ff79c6; }
-        .seg2 { transform: rotate(36deg) skewY(-54deg); background: #8be9fd; }
-        .seg3 { transform: rotate(72deg) skewY(-54deg); background: #50fa7b; }
-        .seg4 { transform: rotate(108deg) skewY(-54deg); background: #ffb86c; }
-        .seg5 { transform: rotate(144deg) skewY(-54deg); background: #bd93f9; }
-        .seg6 { transform: rotate(180deg) skewY(-54deg); background: #ff5555; }
-        .seg7 { transform: rotate(216deg) skewY(-54deg); background: #f1fa8c; }
-        .seg8 { transform: rotate(252deg) skewY(-54deg); background: #ff79c6; }
-        .seg9 { transform: rotate(288deg) skewY(-54deg); background: #8be9fd; }
-        .seg10 { transform: rotate(324deg) skewY(-54deg); background: #ffb86c; }
-
-        .wheel-center-cap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: white; border-radius: 50%; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 4px solid #334155; }
+        /* Елементи, які стоять РІВНО по центру своїх секторів */
+        .wheel-item { position: absolute; top: 10px; left: 50%; width: 50px; margin-left: -25px; text-align: center; transform-origin: 50% 130px; font-size: 1.3rem; font-weight: 900; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.6); z-index: 2; }
+        .wheel-pointer { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: var(--primary); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)); border-top: 4px solid white; }
+        .wheel-center-cap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: white; border-radius: 50%; border: 4px solid #1e293b; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         .dark .wheel-center-cap { background: #1e293b; border-color: #475569;}
-        
-        .legend-box { background: var(--card-bg); padding: 15px; border-radius: 16px; font-weight: 700; font-size: 0.95rem; margin-bottom: 20px; color: var(--text-main); line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: 100%;}
+
+        .legend-box { background: var(--card-bg); padding: 15px; border-radius: 16px; font-weight: 700; font-size: 0.95rem; margin-bottom: 20px; color: var(--text-main); line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
         .legend-item { display: flex; justify-content: space-between; }
 
-        /* КІТ ПОМІЧНИК */
-        .cat-assistant { position: fixed; bottom: 85px; right: 15px; z-index: 9000; cursor: pointer; transition: 0.3s; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0)); }
-        .cat-assistant:hover { filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.7)); }
+        /* --- КІТ ПОМІЧНИК ПОКРАЩЕНИЙ --- */
+        .cat-assistant { position: fixed; bottom: 80px; right: 15px; z-index: 9000; cursor: pointer; transition: 0.2s; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4)); }
         .cat-assistant:active { transform: scale(0.9); }
-        .cat-emoji { font-size: 3.8rem; animation: catSway 3s infinite ease-in-out; display: inline-block; transform-origin: bottom center; }
+        .cat-emoji { font-size: 4rem; display: inline-block; animation: catSway 3s infinite ease-in-out; transform-origin: bottom center;}
         @keyframes catSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
-        .cat-bubble { position: absolute; bottom: 65px; right: 0; width: 240px; background: linear-gradient(135deg, var(--card-bg), #fdf2f8); color: var(--text-main); padding: 15px; border-radius: 20px; border-bottom-right-radius: 0; font-size: 0.95rem; font-weight: 600; opacity: 0; pointer-events: none; transition: 0.3s; border: 3px solid var(--primary); transform: translateY(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .cat-bubble { position: absolute; bottom: 70px; right: 20px; width: 230px; background: linear-gradient(135deg, var(--card-bg), #fdf2f8); color: var(--text-main); padding: 15px; border-radius: 20px; border-bottom-right-radius: 0; font-size: 0.95rem; font-weight: 700; opacity: 0; pointer-events: none; transition: 0.3s; border: 3px solid var(--primary); transform: translateY(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .dark .cat-bubble { background: linear-gradient(135deg, var(--card-bg), #1e293b); }
         .cat-bubble.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-        /* НЕДІЛЬНИЙ БОС ПОКРАЩЕНИЙ */
+        /* --- НЕДІЛЬНИЙ БОС ПОКРАЩЕНИЙ --- */
         #boss { padding: 0; }
-        #boss-active { background: radial-gradient(circle at center, #2d0a3d 0%, #000000 100%); padding: 30px 20px; border-radius: 0; position: relative; overflow: hidden; border: 4px solid #ff0000; box-shadow: 0 0 30px rgba(255,0,0,0.5); animation: bossBgPulse 4s infinite;}
-        @keyframes bossBgPulse { 0% { box-shadow: 0 0 30px rgba(255,0,0,0.5); } 50% { box-shadow: 0 0 60px rgba(255,0,0,0.8); } 100% { box-shadow: 0 0 30px rgba(255,0,0,0.5); } }
-        #boss-question-box { background: rgba(0, 0, 0, 0.7); border: 3px solid #ff0000; color: white; text-shadow: 0 0 10px #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.4); animation: bossQuestionPulse 1s infinite;}
-        @keyframes bossQuestionPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
-        #boss-options .option-btn { background: #1a1a1a; color: white; border: 2px solid #4a4a4a; transition: 0.2s; box-shadow: 0 4px 0 #000;}
-        #boss-options .option-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
-        #boss-options .option-btn:hover { background: #333; border-color: #ff0000; color: #ff0000; text-shadow: 0 0 5px #ff0000;}
-        #boss-options .option-btn.correct { background: #10b981 !important; color: white !important; border-color: white !important; box-shadow: 0 0 20px #10b981 !important;}
-        #boss-options .option-btn.wrong { background: #ef4444 !important; color: white !important; border-color: white !important; box-shadow: 0 0 20px #ef4444 !important;}
+        #boss-active { background: radial-gradient(circle at center, #2d0a3d 0%, #1a001a 100%); padding: 30px 20px; border-radius: 0; position: relative; overflow: hidden; border: 4px solid #ff2a2a; box-shadow: inset 0 0 40px rgba(255,0,0,0.3); }
+        .boss-header-text { font-size: 2rem; text-transform: uppercase; color: #ff2a2a; text-shadow: 0 0 10px #ff2a2a; font-weight: 900; text-align: center; margin-bottom: 15px; letter-spacing: 2px; animation: bossPulse 1.5s infinite;}
+        @keyframes bossPulse { 0%, 100% { transform: scale(1); text-shadow: 0 0 10px #ff2a2a; } 50% { transform: scale(1.05); text-shadow: 0 0 25px #ff2a2a; } }
+        #boss-question-box { background: rgba(0, 0, 0, 0.6); border: 2px solid #ff2a2a; color: white; box-shadow: 0 0 15px rgba(255,0,0,0.5); border-radius: 16px; padding: 30px 20px;}
+        #boss-options .option-btn { background: #111; color: white; border: 2px solid #444; box-shadow: 0 4px 0 #000; margin-bottom: 10px; transition: 0.1s;}
+        #boss-options .option-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #000; }
+        #boss-options .option-btn.correct { background: #10b981 !important; border-color: #10b981 !important; box-shadow: 0 0 20px #10b981 !important;}
+        #boss-options .option-btn.wrong { background: #ef4444 !important; border-color: #ef4444 !important; box-shadow: 0 0 20px #ef4444 !important;}
 
         #easter-egg { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(253, 242, 248, 0.98); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;}
         .dark #easter-egg { background: rgba(15, 23, 42, 0.98); }
@@ -279,21 +279,19 @@
             </div>
 
             <div class="menu-grid">
-                <div class="menu-card wide" id="boss-btn" onclick="startBoss()" style="background: linear-gradient(135deg, #1e1b4b, #4c1d95); border: 2px solid #ff0000; filter: grayscale(1); pointer-events: none; animation: bossBtnFlash 2s infinite; position:relative;">
-                    <style>@keyframes bossBtnFlash { 0%, 100% { border-color: #ff0000; box-shadow: 0 0 5px #ff0000; } 50% { border-color: #ffcccc; box-shadow: 0 0 20px #ffcccc; } }</style>
+                <div class="menu-card wide" id="boss-btn" onclick="startBoss()" style="background: linear-gradient(135deg, #1e1b4b, #4c1d95); border: 2px solid #ff2a2a; filter: grayscale(1); pointer-events: none;">
                     <div class="icon-box" style="background: rgba(255,255,255,0.1); font-size:2rem;">😈</div>
                     <div class="menu-text"><div class="menu-title" style="color:white; text-shadow: 0 0 5px red;">НЕДІЛЬНИЙ ІСПИТ</div><div class="menu-desc" style="color:#cbd5e1;" id="boss-desc">Тільки в неділю! (Іспит від Боса)</div></div>
-                    <span style="position:absolute; top:5px; right:10px; font-size:1.2rem;">💀</span>
+                </div>
+                
+                <div class="menu-card wide" onclick="showSection('wheel')" style="background: linear-gradient(135deg, #fef08a, #fce7f3); border: 2px dashed #f59e0b;">
+                    <div class="icon-box" style="background: white; font-size:2rem;">🎡</div>
+                    <div class="menu-text"><div class="menu-title">Рулетка Фортуни</div><div class="menu-desc">Крути і вигравай (50 🌟)</div></div>
                 </div>
 
                 <div class="menu-card wide" onclick="startMistakesMode()" style="border: 2px solid var(--wrong);">
                     <div class="icon-box bg-red">🧠</div>
                     <div class="menu-text"><div class="menu-title">Робота над помилками</div><div class="menu-desc">Повторюй тільки те, де помилилася <span class="menu-badge" id="mistakes-count">0</span></div></div>
-                </div>
-                
-                <div class="menu-card wide" onclick="showSection('wheel')" style="background: linear-gradient(135deg, #fef08a, #fce7f3); border: 2px dashed #f59e0b;">
-                    <div class="icon-box" style="background: white; font-size:2rem;">🎡</div>
-                    <div class="menu-text"><div class="menu-title">Колесо Фортуни</div><div class="menu-desc">Крути і вигравай (50 🌟)</div></div>
                 </div>
                 
                 <div class="menu-card" onclick="showSection('quiz-menu')"><div class="icon-box bg-green">🎯</div><div class="menu-title">Квіз</div></div>
@@ -305,68 +303,66 @@
                 <div class="menu-card" onclick="startHangman()"><div class="icon-box bg-red">❤️‍🩹</div><div class="menu-title">Сердечко</div></div>
                 <div class="menu-card" onclick="startListening()"><div class="icon-box bg-blue">🎧</div><div class="menu-title">На слух</div></div>
                 
-                <div class="menu-card wide" onclick="startSprint()"><div class="icon-box bg-red" style="background-color: #fecaca;">⏱️</div><div class="menu-text"><div class="menu-title">Спринт на час <span class="menu-badge" id="sprint-badge" style="top:-15px; right:-15px;">0</span></div></div></div>
+                <div class="menu-card wide" onclick="startSprint()"><div class="icon-box bg-red">⏱️</div><div class="menu-text"><div class="menu-title">Спринт на час <span class="menu-badge" id="sprint-badge" style="top:-15px; right:-15px;">0</span></div></div></div>
             </div>
         </div>
 
         <div id="dictionary" class="section">
-            <div class="welcome-header" style="padding-bottom:5px;"><h1 class="welcome-title">Словник 📖</h1></div>
+            <h1 class="welcome-title">Словник 📖</h1>
             <div class="category-scroll" id="cat-filters">
                 <div class="cat-chip active" onclick="setCat('all', this)">Усі слова</div><div class="cat-chip" onclick="setCat('co', this)">😍 Компліменти</div><div class="cat-chip" onclick="setCat('cl', this)">👗 Одяг</div><div class="cat-chip" onclick="setCat('fo', this)">🍩 Смаколики</div><div class="cat-chip" onclick="setCat('bh', this)">🩺 Тіло</div><div class="cat-chip" onclick="setCat('p', this)">💬 Фрази</div><div class="cat-chip" onclick="setCat('n', this)">🌿 Природа</div><div class="cat-chip" onclick="setCat('f', this)">❤️ Почуття</div><div class="cat-chip" onclick="setCat('a', this)">🏃‍♀️ Дії</div><div class="cat-chip" onclick="setCat('h', this)">🏠 Дім</div>
             </div>
-            <input type="text" id="dict-search" class="dict-search-input" placeholder="Пошук (або таємне слово)..." oninput="renderDictionary()" style="margin-bottom:15px;">
-            <div class="controls" style="margin-bottom: 15px; gap: 8px;"><button class="btn btn-primary" id="btn-dict-en" onclick="setDictMode('en-uk')">En ➡️ Uk</button><button class="btn" id="btn-dict-uk" onclick="setDictMode('uk-en')">Uk ➡️ En</button></div>
+            <input type="text" id="dict-search" class="dict-search-input" placeholder="Пошук..." oninput="renderDictionary()">
+            <div class="controls" style="margin-bottom: 15px;"><button class="btn btn-primary" id="btn-dict-en" onclick="setDictMode('en-uk')">En ➡️ Uk</button><button class="btn" id="btn-dict-uk" onclick="setDictMode('uk-en')">Uk ➡️ En</button></div>
             <div class="dict-grid" id="dict-grid"></div>
         </div>
 
-        <div id="shop" class="section"><div class="welcome-header"><h1 class="welcome-title">Магазин 🛍️</h1><p class="welcome-subtitle">Обмінюй 🌟 на реальні подарунки!</p></div><div id="shop-list" class="shop-list"></div></div>
+        <div id="shop" class="section"><h1 class="welcome-title">Магазин 🛍️</h1><p class="welcome-subtitle" style="text-align:center; margin-bottom:15px;">Обмінюй 🌟 на подарунки!</p><div id="shop-list" class="shop-list"></div></div>
         
         <div id="settings" class="section">
-            <div class="welcome-header"><h1 class="welcome-title">Опції ⚙️</h1></div>
+            <h1 class="welcome-title">Опції ⚙️</h1>
             <div class="question-box"><p style="font-size: 1rem; color:var(--text-muted); margin-bottom:10px;">Маєш секретний код або вгадай ?)</p><button class="btn btn-primary" onclick="enterPromo()">🎁 Ввести код</button></div>
             <div class="question-box"><p style="font-size: 1rem; color:var(--text-muted); margin-bottom:10px;">Збереження прогресу</p><button class="btn" style="border:2px solid var(--primary); margin-bottom:10px;" onclick="exportProgress()">💾 Скопіювати прогрес</button><button class="btn" onclick="importProgress()">📂 Відновити прогрес</button></div>
         </div>
 
-        <div id="inventory" class="section"><div class="welcome-header"><h1 class="welcome-title">Купони 🎁</h1><p class="welcome-subtitle">Покажи цей екран Юрі</p></div><div id="inv-list" class="shop-list"></div></div>
-        <div id="achievements" class="section"><div class="welcome-header"><h1 class="welcome-title">Досягнення 🏆</h1><p class="welcome-subtitle">Збери їх усі, моя розумничко!</p></div><div id="achiev-list" class="achiev-list"></div></div>
+        <div id="inventory" class="section"><h1 class="welcome-title">Купони 🎁</h1><div id="inv-list" class="shop-list"></div></div>
+        <div id="achievements" class="section"><h1 class="welcome-title">Досягнення 🏆</h1><div id="achiev-list" class="achiev-list"></div></div>
 
         <div id="wheel" class="section">
-            <div class="welcome-header"><h1 class="welcome-title">Рулетка 🎡</h1><p class="welcome-subtitle" style="margin-bottom:20px;">Крути за 50 🌟 і вигравай!</p></div>
+            <h1 class="welcome-title">Рулетка 🎡</h1><p class="welcome-subtitle" style="text-align:center; margin-bottom:20px;">Крути за 50 🌟 і вигравай!</p>
             
-            <div class="wheel-content">
+            <div style="display:flex; justify-content:center; position:relative; margin-bottom:20px;">
                 <div class="wheel-pointer"></div>
-                <div class="wheel-wrapper">
-                    <div class="wheel-container" id="spin-wheel">
-                        <div class="wheel-segment seg1"><div class="segment-content"><span>20 🌟</span></div></div>
-                        <div class="wheel-segment seg2"><div class="segment-content"><span style="font-size:2.2rem">🍬</span></div></div>
-                        <div class="wheel-segment seg3"><div class="segment-content"><span>5 🌟</span></div></div>
-                        <div class="wheel-segment seg4"><div class="segment-content"><span>50 🌟</span></div></div>
-                        <div class="wheel-segment seg5"><div class="segment-content"><span style="font-size:2.2rem">❤️</span></div></div>
-                        <div class="wheel-segment seg6"><div class="segment-content"><span>10 🌟</span></div></div>
-                        <div class="wheel-segment seg7"><div class="segment-content"><span style="font-size:2.2rem">🍫</span></div></div>
-                        <div class="wheel-segment seg8"><div class="segment-content"><span>0 🌟</span></div></div>
-                        <div class="wheel-segment seg9"><div class="segment-content"><span>100🌟</span></div></div>
-                        <div class="wheel-segment seg10"><div class="segment-content"><span style="font-size:2.2rem">🎁</span></div></div>
+                <div class="wheel-container">
+                    <div class="wheel" id="spin-wheel">
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(18deg);">💎</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(54deg);">20</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(90deg);">0</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(126deg);">20</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(162deg);">0</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(198deg);">20</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(234deg);">50</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(270deg);">100</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(306deg);">🍫</div>
+                        <div class="wheel-item" style="transform: translateX(-50%) rotate(342deg);">🎁</div>
                     </div>
                     <div class="wheel-center-cap">🌟</div>
                 </div>
-                
-                <div class="legend-box">
-                    <div class="legend-item"><span style="color:#ef4444;">🔴 1% шанс</span><span>Джекпот (500 🌟)</span></div>
-                    <div class="legend-item"><span style="color:#a855f7;">🟣 9% шанс</span><span>Кіндер-сюрприз 🍫</span></div>
-                    <div class="legend-item"><span style="color:#3b82f6;">🔵 10% шанс</span><span>+100 🌟</span></div>
-                    <div class="legend-item"><span style="color:#10b981;">🟢 15% шанс</span><span>+50 🌟</span></div>
-                    <div class="legend-item"><span style="color:#f59e0b;">🟡 30% шанс</span><span>+20 🌟</span></div>
-                    <div class="legend-item"><span style="color:#94a3b8;">🪙 35% шанс</span><span>0 🌟 (Пустушка)</span></div>
-                </div>
-
-                <button class="btn btn-primary" id="spin-btn" style="width: 100%; padding: 20px; font-size: 1.3rem; margin-bottom: 10px;" onclick="spinWheel()">Крутити (50 🌟)</button>
-                <button class="btn" style="width: 100%;" onclick="showSection('home')">Назад в меню</button>
             </div>
+
+            <div class="legend-box">
+                <div class="legend-item"><span style="color:#ef4444;">🔴 1% шанс</span><span>Джекпот (500 🌟)</span></div>
+                <div class="legend-item"><span style="color:#a855f7;">🟣 9% шанс</span><span>Кіндер-сюрприз 🍫</span></div>
+                <div class="legend-item"><span style="color:#3b82f6;">🔵 10% шанс</span><span>+100 🌟</span></div>
+                <div class="legend-item"><span style="color:#10b981;">🟢 15% шанс</span><span>+50 🌟</span></div>
+                <div class="legend-item"><span style="color:#f59e0b;">🟡 30% шанс</span><span>+20 🌟</span></div>
+                <div class="legend-item"><span style="color:#94a3b8;">🪙 35% шанс</span><span>0 🌟 (Пустушка)</span></div>
+            </div>
+            <button class="btn btn-primary" id="spin-btn" style="margin-bottom:15px;" onclick="spinWheel()">Крутити (50 🌟)</button>
         </div>
 
-        <div id="quiz-menu" class="section"><div class="welcome-header"><h1 class="welcome-title">Квіз 🎯</h1></div><div class="menu-grid"><div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div>Укр ➡️ Англ</div></div><div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div>Англ ➡️ Укр</div></div></div><button class="btn" style="margin-top:20px;" onclick="showSection('home')">Назад</button></div>
-        <div id="flashcards-menu" class="section"><div class="welcome-header"><h1 class="welcome-title">Картки 🗂️</h1></div><div class="menu-grid"><div class="menu-card" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue">🇬🇧</div><div>Англ ➡️ Укр</div></div><div class="menu-card" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow">🇺🇦</div><div>Укр ➡️ Англ</div></div></div><button class="btn" style="margin-top:20px;" onclick="showSection('home')">Назад</button></div>
+        <div id="quiz-menu" class="section"><h1 class="welcome-title">Квіз 🎯</h1><div class="menu-grid"><div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div>Укр ➡️ Англ</div></div><div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div>Англ ➡️ Укр</div></div></div><button class="btn" style="margin-top:20px;" onclick="showSection('home')">Назад</button></div>
+        <div id="flashcards-menu" class="section"><h1 class="welcome-title">Картки 🗂️</h1><div class="menu-grid"><div class="menu-card" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue">🇬🇧</div><div>Англ ➡️ Укр</div></div><div class="menu-card" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow">🇺🇦</div><div>Укр ➡️ Англ</div></div></div><button class="btn" style="margin-top:20px;" onclick="showSection('home')">Назад</button></div>
 
         <div id="emoji-quiz" class="section"><div id="emoji-active" style="display:flex; flex-direction:column; height:100%;"><div class="status-bar"><span id="emoji-counter"></span><span id="emoji-score"></span></div><div class="question-box" id="emoji-question"></div><div class="options-grid grid-2" id="emoji-options"></div><button class="btn btn-primary" id="btn-next-emoji" style="display:none; margin-top:auto;" onclick="nextEmoji()">Далі</button></div><div class="result-screen" id="emoji-result"><h2>🤩 Готово!</h2><div class="result-score" id="emoji-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
         <div id="constructor" class="section"><div id="const-active" style="display:flex; flex-direction:column; height:100%;"><div class="status-bar"><span id="const-counter"></span><span id="const-score"></span></div><div class="question-box" id="const-question"></div><div class="const-target" id="const-target"></div><div class="const-words" id="const-words"></div><button class="btn btn-primary" id="btn-next-const" style="display:none; margin-top:auto;" onclick="nextConst()">Далі</button></div><div class="result-screen" id="const-result"><h2>🧩 Геній!</h2><div class="result-score" id="const-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
@@ -381,15 +377,16 @@
 
         <div id="boss" class="section">
             <div id="boss-active" style="display: flex; flex-direction: column; height: 100%;">
-                <div class="status-bar" style="color:#cbd5e1;"><span id="boss-counter">💀 Питання 1/50</span><span>Життя: <span id="boss-errors" style="color:#ff0000; font-weight:900;">3/3</span></span></div>
+                <div class="boss-header-text">Фінальний Іспит</div>
+                <div class="status-bar" style="color:white; margin-bottom: 20px;"><span id="boss-counter">💀 1/50</span><span id="boss-errors" style="font-size: 1.2rem;">❤️❤️❤️</span></div>
                 <div class="question-box" id="boss-question-box"></div>
                 <div class="options-grid" id="boss-options"></div>
             </div>
-            <div class="result-screen" id="boss-result" style="background:#000; border:4px solid #ff0000; border-radius:20px; padding:20px; color:white;">
-                <h2 style="font-size: 2.5rem; text-shadow: 0 0 10px #ff0000;" id="boss-result-title"></h2>
-                <div class="result-score" id="boss-final" style="color: #ff0000; font-size:1.5rem; margin:10px 0;"></div>
-                <p id="boss-result-desc" style="margin-bottom: 20px; font-size: 1.1rem;"></p>
-                <button class="btn" style="background:#ff0000; color:white; font-weight:800;" onclick="showSection('home')">ПОВЕРНУТИСЯ</button>
+            <div class="result-screen" id="boss-result" style="background:#111; border:4px solid #ff0000; border-radius:20px; padding:20px; color:white;">
+                <h2 style="font-size: 2.5rem; text-shadow: 0 0 15px #ff0000;" id="boss-result-title"></h2>
+                <div class="result-score" id="boss-final" style="color: #ff2a2a; font-size:1.5rem; margin:10px 0;"></div>
+                <p id="boss-result-desc" style="margin-bottom: 20px; font-size: 1.1rem; line-height: 1.5;"></p>
+                <button class="btn" style="background:#ff0000; color:white; font-weight:900;" onclick="showSection('home')">ПОВЕРНУТИСЯ</button>
             </div>
         </div>
     </div>
@@ -438,8 +435,8 @@
 
     const shopItems = [
         { id: 'olya_love', name: 'Оля любить дужче Юру', price: 'ERROR', icon: '♾️' },
-        { id: 'massage', name: 'Професійний масаж від Юри', price: 500, icon: '💆‍♀️' },
-        { id: 'dinner', name: 'Вечеря на двох (Ти обираєш страви)', price: 1500, icon: '🍷' },
+        { id: 'massage', name: 'Масаж', price: 500, icon: '💆‍♀️' },
+        { id: 'dinner', name: 'Романтична вечеря', price: 1500, icon: '🍷' },
         { id: 'hug', name: 'Безлімітні обійми на день', price: 200, icon: '🫂' }
     ];
     
@@ -448,7 +445,7 @@
         { id: 'bm_breakfast', name: 'Ексклюзив: Сніданок у ліжко 🥐', price: 600, icon: '🥞' },
         { id: 'bm_cinema', name: 'Ексклюзив: Похід у кінотеатр 🍿', price: 900, icon: '🎞️' },
         { id: 'bm_picnic', name: 'Ексклюзив: Пікнік у парку 🧺', price: 750, icon: '🌳' },
-        { id: 'bm_flowers', name: 'Ексклюзив: Букет квітів 💐', price: 1200, icon: '🌷' }
+        { id: 'bm_cook', name: 'Ексклюзив: Кицик готує вечерю 👨‍🍳', price: 500, icon: '🍳' }
     ];
 
     const goalPool = {
@@ -532,6 +529,8 @@
         if(d.getDay() === 0) { 
             bossBtn.style.filter = 'grayscale(0)';
             bossBtn.style.pointerEvents = 'auto';
+            bossBtn.style.animation = 'none';
+            bossBtn.style.borderColor = '#ff2a2a';
             document.getElementById('boss-desc').textContent = "Іспит відкрито! Успіхів 😈";
             document.getElementById('boss-desc').style.color = "#ff4444";
         }
@@ -712,18 +711,16 @@
         if(usedCodes.includes(code)) { alert("Вже використано! Хитрунка 🦊"); return; }
         
         let ok = false;
-        // 16.05.2025 - День став парою
-        if(code === '16052025') { inventory.push({ id:'anniv1', name:'❤️ Початок нашої історії (16.05.25)', price:0, icon:'👩‍❤️‍👨', uid:Date.now() }); ok=true; alert("Код прийнято! Це був найкращий день! 👩‍❤️‍👨"); }
-        // 16.05.2026 - Рік стосунків
-        else if(code === '16052026') { inventory.push({ id:'anniv2', name:'💎 Рік щастя разом (16.05.26)', price:0, icon:'💍', uid:Date.now() }); addXP(365); ok=true; alert("З нашою першою річницею, кохана! +365 🌟 та особливий купон! 💍"); }
-        
+        if(code === '16052025') { inventory.push({ id:'anniv1', name:'❤️ День, коли ми офіційно стали парою (16.05)', price:0, icon:'👩‍❤️‍👨', uid:Date.now() }); ok=true; alert("Код прийнято! Це був найкращий день! 👩‍❤️‍👨"); }
+        else if(code === '16052026') { inventory.push({ id:'anniv2', name:'💎 Рік стосунків (16.05.2026)', price:0, icon:'💍', uid:Date.now() }); addXP(365); ok=true; alert("З нашою першою річницею, кохана! +365 🌟 та особливий купон! 💍"); }
         else if(code === 'MISSYOU') { inventory.push({ id:'m1', name:'Я приїду до тебе зі смаколиками', price:0, icon:'🥐', uid:Date.now() }); ok=true; alert("Чекай на мене зі смаколиками! 🥐"); }
         else if(code === 'DATE2026') { inventory.push({ id:'d1', name:'Вибір фільму і піца', price:0, icon:'🍕', uid:Date.now() }); ok=true; alert("Кіно і піца за мною! 🍕🎬"); }
         else if(code === 'OLYA') { addXP(200); alert("Найкраща дівчинка на всьому світі 😘 +200 🌟"); ok=true; }
         else if(code === 'FOREVER') { addXP(500); alert("+500 🌟 за моє кохання!"); ok=true; }
         else if(code === 'SMILE') { addXP(100); alert("Твоя посмішка робить мій день яскравішим! +100 🌟"); ok=true; }
-        else if(code === 'MYQUEEN') { inventory.push({ id:'p2', name:'Масаж спини', price:0, icon:'💆‍♀️', uid:Date.now() }); addXP(50); ok=true; alert("Масаж та зірочки твої 👑"); }
+        else if(code === 'MYQUEEN') { inventory.push({ id:'p2', name:'Масаж', price:0, icon:'💆‍♀️', uid:Date.now() }); addXP(50); ok=true; alert("Масаж та зірочки твої 👑"); }
         else if(code === 'BESTGIRL') { addXP(300); ok=true; alert("+300 🌟"); }
+        else if(code === 'COFFEE') { inventory.push({ id:'p3', name:'Смачна кава разом', price:0, icon:'☕', uid:Date.now() }); ok=true; alert("☕ Кава!"); }
         else if(code === 'KISSME') { inventory.push({ id:'p4', name:'100 поцілунків', price:0, icon:'😘', uid:Date.now() }); ok=true; alert("Купон додано! 🎁"); }
         else if(code === 'LOVEYOUMORE' || code === 'LOVEYOUSTRONGER') { addXP(300); ok=true; alert("А я тебе ще дужче! +300 🌟"); }
         else if(code === 'CAR') { inventory.push({ id:'p_car', name:'Романтична поїздка за місто', price:0, icon:'🚐', uid:Date.now() }); ok=true; checkAchiev('navigator'); alert("Головний штурман знайдений! 🚐"); }
@@ -759,18 +756,18 @@
         }
     }
 
-    // Призи для нової рулетки
+    // Призи для нової рулетки (Ті самі, але без зсувів)
     const wheelPrizes = [
-        { type: 'xp', val: 20, msg: '+20 🌟! Непогано!' },
-        { type: 'item', val: '🍬', msg: 'Виграш: Цукерка! Шукай у Купонах!', icon: '🍬', name: 'Солодка цукерка (Рулетка)' },
-        { type: 'xp', val: 5, msg: '+5 🌟! Краще, ніж нічого)' },
-        { type: 'xp', val: 50, msg: '+50 🌟! Ого, ти повернула своє!' },
-        { type: 'item', val: '❤️', msg: 'Виграш: Палкий поцілунок від Юри! Шукай у Купонах!', icon: '💋', name: 'Палкий поцілунок (Рулетка)' },
-        { type: 'xp', val: 10, msg: '+10 🌟! Нормально!' },
-        { type: 'item', val: '🍫', msg: 'Виграш: Шоколадка! Шукай у Купонах!', icon: '🍫', name: 'Смачна шоколадка (Рулетка)' },
-        { type: 'xp', val: 0, msg: 'Пусто... Цього разу не пощастило 😢' },
-        { type: 'xp', val: 100, msg: 'КЛАС! +100 🌟!' },
-        { type: 'jackpot', val: '🎁', msg: 'ДЖЕКПОТ! Масаж спини твій!', icon: '💆‍♀️', name: 'Масаж спини (ДЖЕКПОТ)' }
+        { type: 'jackpot', val: '💎', msg: 'ДЖЕКПОТ! Масаж спини твій!', icon: '💆‍♀️', name: 'Масаж спини (ДЖЕКПОТ)' }, // 0: 18deg
+        { type: 'xp', val: 20, msg: '+20 🌟! Непогано!' }, // 1: 54deg
+        { type: 'xp', val: 0, msg: 'Пусто... Цього разу не пощастило 😢' }, // 2: 90deg
+        { type: 'xp', val: 20, msg: '+20 🌟! Непогано!' }, // 3: 126deg
+        { type: 'xp', val: 0, msg: 'Пусто... Цього разу не пощастило 😢' }, // 4: 162deg
+        { type: 'xp', val: 20, msg: '+20 🌟! Непогано!' }, // 5: 198deg
+        { type: 'xp', val: 50, msg: '+50 🌟! Ого, ти повернула своє!' }, // 6: 234deg
+        { type: 'xp', val: 100, msg: 'КЛАС! +100 🌟!' }, // 7: 270deg
+        { type: 'item', val: '🍫', msg: 'Виграш: Шоколадка! Шукай у Купонах!', icon: '🍫', name: 'Смачна шоколадка (Рулетка)' }, // 8: 306deg
+        { type: 'item', val: '🎁', msg: 'Виграш: Цукерка! Шукай у Купонах!', icon: '🍬', name: 'Солодка цукерка (Рулетка)' } // 9: 342deg
     ];
 
     function spinWheel() {
@@ -789,17 +786,15 @@
         const r = Math.random();
         let prizeIndex;
 
-        if (r < 0.01) { prizeIndex = 9; } // Джекпот
-        else if (r < 0.10) { prizeIndex = 6; } // Шоколадка
-        else if (r < 0.20) { prizeIndex = 8; } // 100xp
-        else if (r < 0.35) { prizeIndex = 3; } // 50xp
-        else if (r < 0.65) { prizeIndex = 0; } // 20xp
-        else { prizeIndex = 7; } // 0xp
+        if (r < 0.01) { prizeIndex = 0; } // 1% Джекпот
+        else if (r < 0.10) { prizeIndex = 8; } // 9% Шоколадка
+        else if (r < 0.20) { prizeIndex = 7; } // 10% 100xp
+        else if (r < 0.35) { prizeIndex = 6; } // 15% 50xp
+        else if (r < 0.65) { prizeIndex = [1, 3, 5][Math.floor(Math.random()*3)]; } // 30% 20xp
+        else { prizeIndex = [2, 4][Math.floor(Math.random()*2)]; } // 35% 0xp
 
-        // Розрахунок кута. Кожен сектор 36 градусів.
-        const sectorAngle = 36;
-        const randomOffset = 5 + Math.random() * 26; // Від 5 до 31 градуса всередині сектора
-        const targetDegree = (prizeIndex * sectorAngle) + randomOffset;
+        // Розрахунок кута. Кожен сектор 36 градусів, центр сектора на 18deg, 54deg, 90deg...
+        const targetDegree = (prizeIndex * 36) + 18;
         
         const spins = 6; // Кількість повних обертів
         const currentRotation = parseFloat(wheel.dataset.rotation) || 0;
@@ -829,11 +824,50 @@
         }, 4000);
     }
 
-    // БОС
-    let bQ=[], bIdx=0, bErr=0, bLock=false;
+    // БОС (З ЖИТТЯМИ-СЕРДЕЧКАМИ)
+    let bQ=[], bIdx=0, bErr=3, bLock=false;
     function startBoss() { const voc = getVocab(); if(voc.length<50){alert("Мало слів для іспиту!"); return;} bQ = shuffleArray(voc).slice(0, 50); bIdx=0; bErr=3; showSection('boss'); document.getElementById('boss-result').style.display='none'; document.getElementById('boss-active').style.display='flex'; loadBoss(); }
-    function loadBoss() { bLock = false; let w = bQ[bIdx]; document.getElementById('boss-counter').textContent=`💀 Питання ${bIdx+1}/50`; document.getElementById('boss-errors').textContent=`${bErr}/3`; document.getElementById('boss-question-box').innerHTML=`<div style="font-size:3.5rem;margin-bottom:10px;">${w.em}</div>${w.uk}`; const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g = document.getElementById('boss-options'); g.innerHTML=''; opts.forEach(o => { const b = document.createElement('button'); b.className='option-btn'; b.textContent=o.en; b.style.color = "var(--text-main)"; b.onclick = (e) => { if(bLock) return; bLock=true; const c = o.en===w.en; fireParticles(e.clientX, e.clientY, c); if(c) { b.classList.add('correct'); setTimeout(()=>{ bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); }, 300); } else { b.classList.add('wrong'); bErr--; document.getElementById('boss-errors').textContent=`${bErr}/3`; setTimeout(()=>{ if(bErr <= 0) finishBoss(false); else { bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); } }, 400); } }; g.appendChild(b); }); }
-    function finishBoss(win) { document.getElementById('boss-active').style.display='none'; document.getElementById('boss-result').style.display='flex'; document.getElementById('boss-final').textContent = win ? "ПЕРЕМОГА!" : "ПРОВАЛ"; document.getElementById('boss-result-title').textContent = win ? "Ти здолала Боса! 🎉" : "Ти загинула... 💔"; if(win) { document.getElementById('boss-result-desc').textContent = "Оля - справжня войовниця! Ось твої +500 🌟 та Золотий купон! Юра тобою пишається! 🥰"; addXP(500); inventory.push({ id:'boss_win', name:'🥇 Золотий купон від Юри (Перемога над Босом)', price:0, icon:'🥇', uid:Date.now() }); localStorage.setItem('userInventory', JSON.stringify(inventory)); checkAchiev('boss_killer'); } else { document.getElementById('boss-result-desc').textContent = "Життя скінчилися. Бос виявився сильнішим. Повтори словник і повертайся за реваншем! Юра вірить в тебе!"; } renderInventory(); updateUI(); }
+    
+    function drawBossHearts() {
+        let h = "";
+        for(let i=0; i<3; i++) { h += i < bErr ? "❤️" : "🖤"; }
+        document.getElementById('boss-errors').innerHTML = h;
+    }
+
+    function loadBoss() { 
+        bLock = false; let w = bQ[bIdx]; 
+        document.getElementById('boss-counter').textContent=`💀 Питання ${bIdx+1}/50`; 
+        drawBossHearts();
+        document.getElementById('boss-question-box').innerHTML=`<div style="font-size:3.5rem;margin-bottom:10px;">${w.em}</div>${w.uk}`; 
+        const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); 
+        const g = document.getElementById('boss-options'); g.innerHTML=''; 
+        opts.forEach(o => { 
+            const b = document.createElement('button'); b.className='option-btn'; b.textContent=o.en; 
+            b.onclick = (e) => { 
+                if(bLock) return; bLock=true; const c = o.en===w.en; fireParticles(e.clientX, e.clientY, c); 
+                if(c) { 
+                    b.classList.add('correct'); setTimeout(()=>{ bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); }, 300); 
+                } else { 
+                    b.classList.add('wrong'); bErr--; drawBossHearts();
+                    setTimeout(()=>{ if(bErr <= 0) finishBoss(false); else { bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); } }, 400); 
+                } 
+            }; 
+            g.appendChild(b); 
+        }); 
+    }
+
+    function finishBoss(win) { 
+        document.getElementById('boss-active').style.display='none'; document.getElementById('boss-result').style.display='flex'; 
+        document.getElementById('boss-final').textContent = win ? "ПЕРЕМОГА!" : "ПРОВАЛ"; 
+        document.getElementById('boss-result-title').textContent = win ? "Ти здолала Боса! 🎉" : "Ти загинула... 💔"; 
+        if(win) { 
+            document.getElementById('boss-result-desc').textContent = "Оля - справжня войовниця! Ось твої +500 🌟 та Золотий купон! Юра тобою пишається! 🥰"; 
+            addXP(500); inventory.push({ id:'boss_win', name:'🥇 Золотий купон від Юри (Перемога над Босом)', price:0, icon:'🥇', uid:Date.now() }); localStorage.setItem('userInventory', JSON.stringify(inventory)); checkAchiev('boss_killer'); 
+        } else { 
+            document.getElementById('boss-result-desc').textContent = "Життя скінчилися. Бос виявився сильнішим. Повтори слова і повертайся за реваншем! Юра вірить в тебе!"; 
+        } 
+        renderInventory(); updateUI(); 
+    }
 
     function exportProgress() { const d = { totalXP, lifetimeXP, currentStreak, bestSprint, dailyProg, mistakeWords, inventory, achievs, usedCodes, lastLogin, dailyGoals, userStats, lastWheelDate }; const s = btoa(unescape(encodeURIComponent(JSON.stringify(d)))); navigator.clipboard.writeText(s).then(()=>alert("Код скопійовано! Надішли Юрі 📩")).catch(()=>prompt("Скопіюй вручну:", s)); }
     function importProgress() { const s = prompt("Встав код прогресу сюди:"); if(!s) return; try { const d = JSON.parse(decodeURIComponent(escape(atob(s)))); if(d.totalXP !== undefined) { localStorage.setItem('totalXP', d.totalXP); if(d.lifetimeXP !== undefined) localStorage.setItem('lifetimeXP', d.lifetimeXP); localStorage.setItem('streak', d.currentStreak); localStorage.setItem('sprintRecord', d.bestSprint); localStorage.setItem('dailyProg', JSON.stringify(d.dailyProg)); localStorage.setItem('userMistakes', JSON.stringify(d.mistakeWords)); localStorage.setItem('userInventory', JSON.stringify(d.inventory)); localStorage.setItem('achievs', JSON.stringify(d.achievs)); localStorage.setItem('usedCodes', JSON.stringify(d.usedCodes)); localStorage.setItem('lastLogin', d.lastLogin); if(d.dailyGoals) localStorage.setItem('dailyGoals', JSON.stringify(d.dailyGoals)); if(d.userStats) localStorage.setItem('userStats', JSON.stringify(d.userStats)); if(d.lastWheelDate) localStorage.setItem('lastWheelDate', d.lastWheelDate); alert("Прогрес відновлено!"); location.reload(); } } catch(e){alert("Помилка коду!");} }
@@ -888,10 +922,7 @@
         if(q === 'love' || q === 'кохаю' || q === 'люблю') { document.getElementById('easter-egg').style.display='flex'; checkAchiev('love'); document.getElementById('dict-search').value=''; return; } 
         let list = baseVocabulary.filter(w => w.en.toLowerCase().includes(q) || w.uk.toLowerCase().includes(q)); 
         
-        // Фільтрація за категорією
-        if(currentCat !== 'all') {
-            list = list.filter(w => w.c === currentCat);
-        }
+        if(currentCat !== 'all') { list = list.filter(w => w.c === currentCat); }
 
         list.sort((a,b) => a.en.localeCompare(b.en)).forEach(w => { 
             const c = document.createElement('div'); c.className = 'dict-card'; const f = document.createElement('div'); f.className = 'dict-face'; const b = document.createElement('div'); b.className = 'dict-face dict-back'; 
