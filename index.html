@@ -149,8 +149,7 @@
         .match-columns { display: flex; gap: 12px; flex: 1; overflow-y: auto; padding-bottom: 20px; } .match-col { flex: 1; display: flex; flex-direction: column; gap: 10px; } 
         .match-btn { padding: 12px; background: var(--card-bg); border: 2px solid #e5e7eb; border-radius: 16px; font-size: 1.05rem; font-weight: 700; text-align: center; cursor: pointer; color: var(--text-main); min-height: 70px; display: flex; align-items: center; justify-content: center;} 
         .match-btn.selected { border-color: var(--primary); background: #fdf2f8; color: var(--primary); transform: scale(0.95); } 
-        .dark .match-btn.selected { background: #1e293b; border-color: var(--primary); }
-        .match-btn.correct { opacity: 0; visibility: hidden; pointer-events: none; } .match-btn.wrong { border-color: var(--wrong); background: #fee2e2; color: var(--wrong); animation: shake 0.3s; }
+        .dark .match-btn.selected { background: #1e293b; border-color: var(--primary); } .match-btn.correct { opacity: 0; visibility: hidden; pointer-events: none; } .match-btn.wrong { border-color: var(--wrong); background: #fee2e2; color: var(--wrong); animation: shake 0.3s; }
         
         .spell-slots { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; flex-wrap: wrap; } .spell-slot { width: 40px; height: 50px; border-bottom: 4px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800; color: var(--primary); cursor: pointer; text-transform: uppercase;} .spell-slot.filled { border-bottom-color: var(--primary); } 
         .letter-btn { width: 45px; height: 45px; background: var(--card-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-transform: uppercase; color: var(--text-main); } 
@@ -174,20 +173,69 @@
         .achiev-title { font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-bottom: 4px;}
         .achiev-desc { font-size: 0.85rem; color: var(--text-muted); font-weight: 500;}
 
-        /* РУЛЕТКА */
-        .wheel-container { position: relative; width: 280px; height: 280px; margin: 0 auto 20px auto; border-radius: 50%; overflow: hidden; border: 10px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.1); flex-shrink: 0;}
-        .wheel { width: 100%; height: 100%; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); position: relative; background: conic-gradient(#e5e7eb 0% 40%, #fef08a 40% 70%, #93c5fd 70% 90%, #f472b6 90% 99%, #fbbf24 99% 100%); }
-        .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: white; border-radius: 50%; border: 5px solid var(--primary); z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;}
+        /* --- НОВА РУЛЕТКА --- */
+        .wheel-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-bottom: 20px;}
+        .wheel-wrapper { position: relative; width: 320px; height: 320px; margin-bottom: 30px; flex-shrink: 0;}
         
-        /* КІТ ПОМІЧНИК */
-        .cat-assistant { position: absolute; bottom: 20px; right: 20px; z-index: 9000; cursor: pointer; transition: transform 0.2s; }
-        .cat-assistant:active { transform: scale(0.9); }
-        .cat-bubble { position: absolute; bottom: 70px; right: 0; width: 250px; background: var(--card-bg); color: var(--text-main); padding: 15px; border-radius: 20px; border-bottom-right-radius: 0; box-shadow: 0 10px 25px rgba(0,0,0,0.15); font-size: 0.95rem; font-weight: 600; line-height: 1.4; opacity: 0; pointer-events: none; transition: 0.3s; border: 2px solid var(--primary); transform: translateY(10px); }
-        .cat-bubble.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: var(--wrong); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; filter: drop-shadow(0 4px 5px rgba(0,0,0,0.3)); border: 2px solid white; }
 
-        #easter-egg { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(253, 242, 248, 0.98); z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px;}
-        .dark #easter-egg { background: rgba(15, 23, 42, 0.98); }
-        .ee-photo { width: 80%; max-width: 300px; border-radius: 24px; border: 5px solid white; box-shadow: 0 10px 25px rgba(236, 72, 153, 0.5); margin-bottom: 20px;}
+        .wheel-container { width: 100%; height: 100%; border-radius: 50%; border: 8px solid #334155; box-shadow: 0 15px 35px rgba(0,0,0,0.2), inset 0 0 30px rgba(0,0,0,0.1); overflow: hidden; position: relative; transition: transform 4s cubic-bezier(0.2, 0.8, 0.3, 1); background: #f1f5f9; cursor: pointer; }
+        .dark .wheel-container { border-color: #475569; background: #1e293b;}
+
+        .wheel-segment { position: absolute; width: 50%; height: 50%; top: 0; left: 50%; transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        
+        .segment-content { position: absolute; bottom: 30px; left: -100px; width: 200px; height: 80px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(18deg); /* Централізація тексту в секторі */ color: #1e293b; font-weight: 900; filter: drop-shadow(0 1px 2px rgba(255,255,255,0.5));}
+        .dark .segment-content { color: #f1f5f9; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));}
+
+        /* Налаштування для кожного сектора (360 / 10 = 36 градусів на сектор) */
+        .seg1 { transform: rotate(0deg) skewY(-54deg); background: #ff79c6; }
+        .seg2 { transform: rotate(36deg) skewY(-54deg); background: #8be9fd; }
+        .seg3 { transform: rotate(72deg) skewY(-54deg); background: #50fa7b; }
+        .seg4 { transform: rotate(108deg) skewY(-54deg); background: #ffb86c; }
+        .seg5 { transform: rotate(144deg) skewY(-54deg); background: #bd93f9; }
+        .seg6 { transform: rotate(180deg) skewY(-54deg); background: #ff5555; }
+        .seg7 { transform: rotate(216deg) skewY(-54deg); background: #f1fa8c; }
+        .seg8 { transform: rotate(252deg) skewY(-54deg); background: #ff79c6; }
+        .seg9 { transform: rotate(288deg) skewY(-54deg); background: #8be9fd; }
+        .seg10 { transform: rotate(324deg) skewY(-54deg); background: #ffb86c; }
+
+        .wheel-center-cap { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: white; border-radius: 50%; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 4px solid #334155; }
+        .dark .wheel-center-cap { background: #1e293b; border-color: #475569;}
+
+        /* --- КІТ ПОМІЧНИК ПОКРАЩЕНИЙ --- */
+        .cat-assistant { bottom: 90px; right: 20px; transition: 0.3s; filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0)); }
+        .cat-assistant:hover { filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.7)); }
+        .cat-emoji { font-size: 3.8rem; animation: catSway 3s infinite ease-in-out; display: inline-block; transform-origin: bottom center; }
+        @keyframes catSway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+        .cat-bubble { border: 3px solid var(--primary); font-size: 1rem; padding: 18px; width: 270px; background: linear-gradient(135deg, var(--card-bg), #fdf2f8); }
+        .dark .cat-bubble { background: linear-gradient(135deg, var(--card-bg), #1e293b); }
+
+        /* --- НЕДІЛЬНИЙ БОС ПОКРАЩЕНИЙ --- */
+        #boss { padding: 0; }
+        #boss-active { 
+            background: radial-gradient(circle at center, #2d0a3d 0%, #000000 100%); 
+            padding: 30px 20px; border-radius: 0; position: relative; overflow: hidden; 
+            border: 4px solid #ff0000; box-shadow: 0 0 30px rgba(255,0,0,0.5); 
+            animation: bossBgPulse 4s infinite;
+        }
+        @keyframes bossBgPulse { 0% { box-shadow: 0 0 30px rgba(255,0,0,0.5); } 50% { box-shadow: 0 0 60px rgba(255,0,0,0.8); } 100% { box-shadow: 0 0 30px rgba(255,0,0,0.5); } }
+        
+        #boss-question-box { 
+            background: rgba(0, 0, 0, 0.7); border: 3px solid #ff0000; color: white; 
+            text-shadow: 0 0 10px #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.4); 
+            animation: bossQuestionPulse 1s infinite;
+        }
+        @keyframes bossQuestionPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+
+        #boss-options .option-btn { 
+            background: #1a1a1a; color: white; border: 2px solid #4a4a4a; transition: 0.2s; 
+            box-shadow: 0 4px 0 #000;
+        }
+        #boss-options .option-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #000; }
+        #boss-options .option-btn:hover { background: #333; border-color: #ff0000; color: #ff0000; text-shadow: 0 0 5px #ff0000;}
+        #boss-options .option-btn.correct { background: #10b981 !important; color: white !important; border-color: white !important; box-shadow: 0 0 20px #10b981 !important;}
+        #boss-options .option-btn.wrong { background: #ef4444 !important; color: white !important; border-color: white !important; box-shadow: 0 0 20px #ef4444 !important;}
+
     </style>
 </head>
 <body onclick="unlockAudio()">
@@ -230,7 +278,7 @@
         
         <div class="cat-assistant" onclick="pokeCat()">
             <div class="cat-bubble" id="cat-bubble">Мяу! Я тут, щоб допомагати!</div>
-            <div style="font-size: 3.5rem; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">🐈</div>
+            <span class="cat-emoji">🐈</span>
         </div>
 
         <div id="home" class="section active">
@@ -246,9 +294,13 @@
             </div>
 
             <div class="menu-grid">
-                <div class="menu-card wide" id="boss-btn" onclick="startBoss()" style="background: linear-gradient(135deg, #1e1b4b, #4c1d95); border: 2px solid #8b5cf6; filter: grayscale(1); pointer-events: none;">
+                <div class="menu-card wide" id="boss-btn" onclick="startBoss()" style="background: linear-gradient(135deg, #1e1b4b, #4c1d95); border: 2px solid #ff0000; filter: grayscale(1); pointer-events: none; animation: bossBtnFlash 2s infinite; position:relative;">
+                    <style>
+                        @keyframes bossBtnFlash { 0%, 100% { border-color: #ff0000; box-shadow: 0 0 5px #ff0000; } 50% { border-color: #ffcccc; box-shadow: 0 0 20px #ffcccc; } }
+                    </style>
                     <div class="icon-box" style="background: rgba(255,255,255,0.1); font-size:2rem;">😈</div>
-                    <div class="menu-text"><div class="menu-title" style="color:white;">Екзамен від коханого</div><div class="menu-desc" style="color:#cbd5e1;" id="boss-desc">Відкривається тільки в неділю!</div></div>
+                    <div class="menu-text"><div class="menu-title" style="color:white; text-shadow: 0 0 5px red;">НЕДІЛЬНИЙ ІСПИТ</div><div class="menu-desc" style="color:#cbd5e1;" id="boss-desc">Тільки в неділю! (Іспит від Боса)</div></div>
+                    <span style="position:absolute; top:5px; right:10px; font-size:1.2rem;">💀</span>
                 </div>
 
                 <div class="menu-card wide" onclick="startMistakesMode()" style="border: 2px solid var(--wrong);">
@@ -258,7 +310,7 @@
                 
                 <div class="menu-card wide" onclick="showSection('wheel')" style="background: linear-gradient(135deg, #fef08a, #fce7f3); border: 2px dashed #f59e0b;">
                     <div class="icon-box" style="background: white; font-size:2rem;">🎡</div>
-                    <div class="menu-text"><div class="menu-title">Рулетка Фортуни</div><div class="menu-desc">Крути і вигравай призи (50 🌟)</div></div>
+                    <div class="menu-text"><div class="menu-title">Колесо Фортуни</div><div class="menu-desc">Крути і вигравай (50 🌟)</div></div>
                 </div>
                 
                 <div class="menu-card" onclick="showSection('quiz-menu')"><div class="icon-box bg-green">🎯</div><div class="menu-title">Квіз</div></div>
@@ -312,23 +364,32 @@
         </div>
 
         <div id="wheel" class="section">
-            <div class="welcome-header"><h1 class="welcome-title">Рулетка Фортуни 🎡</h1><p class="welcome-subtitle">Крути за 50 🌟 і вигравай!</p></div>
-            <div style="text-align:center; font-size:3rem; margin-bottom:-20px; z-index:10; position:relative;">👇</div>
-            <div class="wheel-container">
-                <div class="wheel" id="spin-wheel">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: rotate(-18deg) translate(50px, -50%); font-weight:900; color:#6b7280; font-size: 1.8rem;">0 🌟</div>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: rotate(108deg) translate(50px, -50%); font-weight:900; color:#a16207; font-size: 1.5rem;">20 🌟</div>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: rotate(198deg) translate(60px, -50%); font-weight:900; color:#1e3a8a; font-size: 1.2rem; text-shadow:0 0 5px white;">100🌟</div>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: rotate(250deg) translate(80px, -50%); font-size: 2.2rem; text-shadow:0 0 5px white;">🍫</div>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: rotate(268deg) translate(100px, -50%); font-size: 1.5rem; text-shadow:0 0 5px white;">💎</div>
+            <div class="welcome-header"><h1 class="welcome-title">Колесо Фортуни 🎡</h1><p class="welcome-subtitle">Вигравай зірочки та супер-призи!</p></div>
+            
+            <div class="wheel-content">
+                <div class="wheel-wrapper">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel-container" id="spin-wheel" onclick="spinWheel()">
+                        <div class="wheel-segment seg1"><div class="segment-content"><span>20 🌟</span></div></div>
+                        <div class="wheel-segment seg2"><div class="segment-content"><span style="font-size:2.2rem">🍬</span></div></div>
+                        <div class="wheel-segment seg3"><div class="segment-content"><span>5 🌟</span></div></div>
+                        <div class="wheel-segment seg4"><div class="segment-content"><span>50 🌟</span></div></div>
+                        <div class="wheel-segment seg5"><div class="segment-content"><span style="font-size:2.2rem">❤️</span></div></div>
+                        <div class="wheel-segment seg6"><div class="segment-content"><span>10 🌟</span></div></div>
+                        <div class="wheel-segment seg7"><div class="segment-content"><span style="font-size:2.2rem">🍫</span></div></div>
+                        <div class="wheel-segment seg8"><div class="segment-content"><span>0 🌟</span></div></div>
+                        <div class="wheel-segment seg9"><div class="segment-content"><span>100🌟</span></div></div>
+                        <div class="wheel-segment seg10"><div class="segment-content"><span style="font-size:2.2rem">🎁</span></div></div>
+                    </div>
+                    <div class="wheel-center-cap">🌟</div>
                 </div>
-                <div class="wheel-center">🌟</div>
+                
+                <button class="btn btn-primary" id="spin-btn" style="width: 100%; padding: 20px; font-size: 1.3rem;" onclick="spinWheel()">Крутити за 50 🌟</button>
+                <button class="btn" style="width: 100%; margin-top:15px;" onclick="showSection('home')">Назад в меню</button>
             </div>
-            <button class="btn btn-primary" id="spin-btn" style="width: 100%; padding: 20px; font-size: 1.3rem; margin-bottom: 10px;" onclick="spinWheel()">Крутити (50 🌟)</button>
-            <button class="btn" style="width: 100%;" onclick="showSection('home')">Назад в меню</button>
         </div>
 
-        <div id="inventory" class="section"><div class="welcome-header"><h1 class="welcome-title">Мої Купони 🎁</h1><p class="welcome-subtitle">Покажи цей екран хлопцю</p></div><div id="inv-list" class="shop-list"></div></div>
+        <div id="inventory" class="section"><div class="welcome-header"><h1 class="welcome-title">Мої Купони 🎁</h1><p class="welcome-subtitle">Покажи цей екран Юрі</p></div><div id="inv-list" class="shop-list"></div></div>
         <div id="achievements" class="section"><div class="welcome-header"><h1 class="welcome-title">Досягнення 🏆</h1><p class="welcome-subtitle">Збери їх усі, моя розумничко!</p></div><div id="achiev-list" class="achiev-list"></div></div>
 
         <div id="quiz-menu" class="section"><div class="welcome-header"><h1 class="welcome-title">Квіз 🎯</h1></div><div class="menu-grid"><div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div>Укр ➡️ Англ</div></div><div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div>Англ ➡️ Укр</div></div></div><button class="btn" style="margin-top:20px;" onclick="showSection('home')">Назад</button></div>
@@ -345,7 +406,7 @@
         <div id="hangman" class="section"><div id="hm-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar"><span id="hm-counter">1</span><span class="hm-lives" id="hm-lives-text">❤️❤️❤️❤️❤️</span></div><div class="question-box" id="hm-question"></div><div class="hm-slots" id="hm-slots"></div><div class="hm-keyboard" id="hm-keyboard"></div></div><div class="result-screen" id="hm-result"><h2 style="font-size: 2rem;" id="hm-result-title">Молодець!</h2><div class="result-score" id="hm-final-word"></div><button class="btn btn-primary" style="width: 100%; margin-top:10px;" onclick="showSection('home')">В меню</button></div></div>
         <div id="flashcards" class="section"><div class="status-bar"><span id="fc-counter">1</span></div><div class="flashcard-container" onclick="flipCard()" style="flex:1; perspective:1000px; display:flex; align-items:center; justify-content:center; margin-bottom:20px;"><div class="flashcard" id="flashcard" style="width:100%; max-width:300px; height:350px; position:relative; transition:transform 0.4s; transform-style:preserve-3d; cursor:pointer;"><div class="flashcard-face" id="fc-front" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--card-bg); border-radius:24px; font-weight:800; font-size:1.8rem; box-shadow:0 10px 30px rgba(0,0,0,0.08); color:var(--text-main);"></div><div class="flashcard-face flashcard-back" id="fc-back" style="position:absolute; width:100%; height:100%; backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--bg); border:2px solid var(--primary); border-radius:24px; font-weight:800; font-size:1.8rem; box-shadow:0 10px 30px rgba(0,0,0,0.08); color:var(--primary); transform:rotateY(180deg);"></div></div></div><div class="controls"><button class="btn" onclick="prevCard()">Назад</button><button class="btn btn-primary" onclick="nextCard()">Наступна</button></div></div>
 
-        <div id="boss" class="section"><div id="boss-active" style="display: flex; flex-direction: column; height: 100%; background: #1e1b4b; padding: 20px; border-radius: 20px; color: white;"><div class="status-bar" style="color:#cbd5e1;"><span id="boss-counter">Питання 1/50</span><span>Помилки: <span id="boss-errors" style="color:var(--wrong);">0/3</span></span></div><div class="question-box" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid #8b5cf6;" id="boss-question"></div><div class="options-grid" id="boss-options"></div></div><div class="result-screen" id="boss-result" style="color: white; background: #1e1b4b; border-radius: 20px; padding: 20px;"><h2 style="font-size: 2rem;" id="boss-result-title"></h2><div class="result-score" id="boss-final" style="color: #c084fc;"></div><p id="boss-result-desc" style="margin-bottom: 20px;"></p><button class="btn" style="background:#8b5cf6; color:white; width: 100%;" onclick="showSection('home')">В меню</button></div></div>
+        <div id="boss" class="section"><div id="boss-active" style="display: flex; flex-direction: column; height: 100%;"><div class="status-bar" style="color:#cbd5e1;"><span id="boss-counter">💀 Питання 1/50</span><span>💙 Життя: <span id="boss-errors" style="color:#ff0000; font-weight:900;">3/3</span></span></div><div class="question-box" id="boss-question-box"></div><div class="options-grid" id="boss-options"></div></div><div class="result-screen" id="boss-result" style="color: white; background: #000; border-radius: 20px; padding: 20px; border: 4px solid #ff0000;"><h2 style="font-size: 2.5rem; text-shadow: 0 0 10px #ff0000;" id="boss-result-title"></h2><div class="result-score" id="boss-final" style="color: #ff0000;"></div><p id="boss-result-desc" style="margin-bottom: 20px; font-size: 1.1rem;"></p><button class="btn" style="background:#ff0000; color:white; width: 100%; font-size: 1.2rem; font-weight:800;" onclick="showSection('home')">ПОВЕРНУТИСЯ</button></div></div>
     </div>
 
     <nav class="bottom-nav">
@@ -355,8 +416,7 @@
         <div class="nav-item" onclick="showSection('settings')"><div class="nav-icon">⚙️</div><span>Опції</span></div>
     </nav>
 </div>
-
- <script>
+<script>
     // --- ДАНІ ---
     const baseVocabulary = [
         { en: "Gorgeous", uk: "Розкішна", em: "😻", c: "co" }, { en: "Smart", uk: "Розумна", em: "🧠", c: "co" }, { en: "Funny", uk: "Смішна", em: "😂", c: "co" }, { en: "Cute", uk: "Мила", em: "🥺", c: "co" }, { en: "Perfect", uk: "Ідеальна", em: "✨", c: "co" }, { en: "Stunning", uk: "Приголомшлива", em: "🤩", c: "co" },
@@ -376,15 +436,16 @@
     ];
 
     const catTips = [
-        "Мяу! Запам'ятай: після 'love' та 'enjoy' дієслово часто йде із закінченням -ing. Наприклад: I love kissing you 😘",
-        "Слово 'Crush' - це не тільки розбити, а й людина, яка дуже подобається. Ти - мій crush назавжди! ❤️",
-        "Артикль 'the' ставиться перед унікальними речами. The Sun, the Moon, the most beautiful girl Olya ✨",
-        "Мурр... Ніколи не здавайся! Твоя англійська вже звучить краще, ніж у королеви Британії 👑",
-        "Знаєш як сказати 'Я сумую'? I miss you. Але я сумую сильніше! 🥺",
-        "Слово 'Sweet' означає солодкий. А ти в мене - the sweetest! 🍬",
-        "В англійській мові немає слова 'кохаю', є тільки 'люблю' (love). Добре, що в українській ми маємо обидва! 🥰",
-        "Дієслово 'to be' (бути) дуже важливе. I am happy with you! (Я щасливий з тобою) 😊",
-        "Мяу! Якщо втомилася, просто покрути рулетку, може випаде Кіндер! 🍫"
+        "Мяу! Ти сьогодні просто сяєш! ✨",
+        "Ти - мій головний приз у цьому житті! ❤️",
+        "Оля - найкраща дівчинка на світі! Мурр.. 🥰",
+        "Твоя англійська стає все кращою, я пишаюся! 👑",
+        "Кицику, не забудь усміхнутися, це тобі личить! 😊",
+        "Сумуєш за Юрою? Він теж дуууже сумує! 🥺",
+        "Покрути рулетку, Юра замовив тобі приз! 🎁",
+        "Пам'ятай: ти розумна, красива і кохана! 💖",
+        "Я тут, щоб оберігати твій прогрес! 🐾",
+        "Твоя посмішка дорожча за всі зірочки! 😍"
     ];
 
     const compliments = ["Ти сьогодні неймовірна! ✨", "Моя найрозумніша дівчинка 🥰", "Пишаюся тобою ❤️", "Твоя посмішка - найкраща 😍", "Твоя наполегливість вражає! 🚀", "Кохаю тебе безмежно 💖", "Кохаю тебе дужче🤗", "Моя манюня😊", "Моє серденько ❤️", "Кохаю тебе кицюня😘", "Ти моє найбільше натхнення 🌸"];
@@ -392,18 +453,16 @@
 
     const shopItems = [
         { id: 'olya_love', name: 'Оля любить дужче Юру', price: 'ERROR', icon: '♾️' },
-        { id: 'massage', name: 'Масаж спини', price: 500, icon: '💆‍♀️' },
-        { id: 'dinner', name: 'Романтична вечеря', price: 1500, icon: '🍷' },
+        { id: 'massage', name: 'Професійний масаж від Юри', price: 500, icon: '💆‍♀️' },
+        { id: 'dinner', name: 'Вечеря на двох (Ти обираєш страви)', price: 1500, icon: '🍷' },
         { id: 'hug', name: 'Безлімітні обійми на день', price: 200, icon: '🫂' }
     ];
     
     const bmItems = [
         { id: 'bm_night', name: 'Ексклюзив: Нічна прогулянка 🌙', price: 800, icon: '🌃' },
         { id: 'bm_breakfast', name: 'Ексклюзив: Сніданок у ліжко 🥐', price: 600, icon: '🥞' },
-        { id: 'bm_massage_pro', name: 'Ексклюзив: Професійний масаж 💆‍♀️', price: 1000, icon: '💆‍♀️' },
         { id: 'bm_cinema', name: 'Ексклюзив: Похід у кінотеатр 🍿', price: 900, icon: '🎞️' },
         { id: 'bm_picnic', name: 'Ексклюзив: Пікнік у парку 🧺', price: 750, icon: '🌳' },
-        { id: 'bm_cook', name: 'Ексклюзив: Кицик готує вечерю 👨‍🍳', price: 500, icon: '🍳' },
         { id: 'bm_flowers', name: 'Ексклюзив: Букет квітів 💐', price: 1200, icon: '🌷' }
     ];
 
@@ -472,33 +531,18 @@
 
     function getVocab() { return currentCat === 'all' ? baseVocabulary : baseVocabulary.filter(w => w.c === currentCat); }
     function setCat(c, el) { currentCat = c; document.querySelectorAll('.cat-chip').forEach(chip => chip.classList.remove('active')); el.classList.add('active'); if(document.getElementById('dictionary').classList.contains('active')) renderDictionary(); }
-
-    function getLevelInfo() {
-        let currentLvl = levelSystem[0];
-        for(let i=0; i<levelSystem.length; i++) { if(lifetimeXP >= levelSystem[i].xp) currentLvl = levelSystem[i]; }
-        return currentLvl;
-    }
+    function getLevelInfo() { let currentLvl = levelSystem[0]; for(let i=0; i<levelSystem.length; i++) { if(lifetimeXP >= levelSystem[i].xp) currentLvl = levelSystem[i]; } return currentLvl; }
 
     function initGamification() {
         const d = new Date(); const today = d.toDateString(); const hour = d.getHours();
-        
         document.getElementById('compliment-text').textContent = compliments[Math.floor(Math.random() * compliments.length)];
-        
         const bossBtn = document.getElementById('boss-btn');
-        if(d.getDay() === 0) { 
-            bossBtn.style.filter = 'grayscale(0)';
-            bossBtn.style.pointerEvents = 'auto';
-            document.getElementById('boss-desc').textContent = "Іспит відкрито! Успіхів 😈";
-            document.getElementById('boss-desc').style.color = "#a78bfa";
-        }
+        if(d.getDay() === 0) { bossBtn.style.filter = 'grayscale(0)'; bossBtn.style.pointerEvents = 'auto'; document.getElementById('boss-desc').textContent = "Іспит відкрито! Удачі 😈"; document.getElementById('boss-desc').style.color = "#ff4444"; }
 
         if (!dailyGoals || !dailyGoals[0]) { dailyGoals = [ goalPool.easy[Math.floor(Math.random()*goalPool.easy.length)], goalPool.medium[Math.floor(Math.random()*goalPool.medium.length)], goalPool.hard[Math.floor(Math.random()*goalPool.hard.length)] ]; localStorage.setItem('dailyGoals', JSON.stringify(dailyGoals)); }
 
         if (lastLogin !== today) {
-            if (lastLogin !== '') {
-                const lastDate = new Date(lastLogin); const diffDays = Math.ceil(Math.abs(d - lastDate) / (1000 * 60 * 60 * 24)); 
-                if (diffDays >= 3) checkAchiev('sleeping_beauty');
-            }
+            if (lastLogin !== '') { const lastDate = new Date(lastLogin); const diffDays = Math.ceil(Math.abs(d - lastDate) / (1000 * 60 * 60 * 24)); if (diffDays >= 3) checkAchiev('sleeping_beauty'); }
             const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
             if (lastLogin === yesterday.toDateString()) { currentStreak++; } else if (lastLogin !== '') { currentStreak = 1; } else { currentStreak = 1; }
             lastLogin = today; userStats.nightGames = 0; saveStats();
@@ -507,31 +551,20 @@
             localStorage.setItem('dailyGoals', JSON.stringify(dailyGoals)); localStorage.setItem('lastLogin', lastLogin); localStorage.setItem('streak', currentStreak); saveDaily();
         }
         
-        if(currentStreak >= 3) checkAchiev('streak3'); 
-        if(currentStreak >= 7) checkAchiev('streak7'); 
-        if(hour >= 22 || hour < 4) checkAchiev('owl');
-        if(hour >= 5 && hour < 9) checkAchiev('early_bird');
-        
+        if(currentStreak >= 3) checkAchiev('streak3'); if(currentStreak >= 7) checkAchiev('streak7'); if(hour >= 22 || hour < 4) checkAchiev('owl'); if(hour >= 5 && hour < 9) checkAchiev('early_bird');
         updateUI(); renderShop(); renderInventory(); renderAchievs();
     }
 
     function pokeCat() {
         const bubble = document.getElementById('cat-bubble');
         if(bubble.classList.contains('show')) return;
-        bubble.textContent = catTips[Math.floor(Math.random() * catTips.length)];
-        bubble.classList.add('show');
-        playSFX(true);
+        bubble.textContent = catTips[Math.floor(Math.random() * catTips.length)]; bubble.classList.add('show'); playSFX(true);
         setTimeout(() => bubble.classList.remove('show'), 4000);
     }
 
     function saveDaily() { localStorage.setItem('dailyProg', JSON.stringify(dailyProg)); }
     function saveStats() { localStorage.setItem('userStats', JSON.stringify(userStats)); }
-    function addXP(amount) { 
-        totalXP += amount; localStorage.setItem('totalXP', totalXP); 
-        if(amount > 0) { lifetimeXP += amount; localStorage.setItem('lifetimeXP', lifetimeXP); }
-        if (totalXP >= 2000) checkAchiev('rich'); 
-        updateUI(); 
-    }
+    function addXP(amount) { totalXP += amount; localStorage.setItem('totalXP', totalXP); if(amount > 0) { lifetimeXP += amount; localStorage.setItem('lifetimeXP', lifetimeXP); } if (totalXP >= 2000) checkAchiev('rich'); updateUI(); }
 
     function checkGoals() {
         if (!dailyProg.g1Done && dailyProg[dailyGoals[0].type] >= dailyGoals[0].target) { dailyProg.g1Done = true; addXP(dailyGoals[0].rew); showToast(`Ціль виконана! +${dailyGoals[0].rew}🌟`); fireParticles(window.innerWidth/2, window.innerHeight/2, true); }
@@ -542,16 +575,11 @@
 
     function gameFinished(perfect = false, type = 'games', score = 0) {
         if(type === 'boss') return; 
-        dailyProg.games++;
-        userStats.totalGames = (userStats.totalGames || 0) + 1;
-        
+        dailyProg.games++; userStats.totalGames = (userStats.totalGames || 0) + 1;
         if(!userStats.modes) userStats.modes = [];
         if(!userStats.modes.includes(type) && type !== 'games') { userStats.modes.push(type); if(userStats.modes.length >= 8) checkAchiev('professor'); }
-        
         if(type === 'constructor') { userStats.constructorGames = (userStats.constructorGames || 0) + 1; if(userStats.constructorGames >= 10) checkAchiev('builder'); }
-
         saveStats();
-
         if (userStats.totalGames >= 50) checkAchiev('polyglot');
         if (dailyProg.games >= 10) checkAchiev('marathon');
 
@@ -559,15 +587,11 @@
         if (type === 'pairs') dailyProg.pairs += score;
         if (type === 'quiz_score') dailyProg.quiz_score = Math.max(dailyProg.quiz_score, score);
         if (type === 'spell') dailyProg.spell += score;
-        if (type === 'sprint') { 
-            dailyProg.sprint = Math.max(dailyProg.sprint, score); 
-            if(score === 7) checkAchiev('lucky7'); 
-        }
+        if (type === 'sprint') { dailyProg.sprint = Math.max(dailyProg.sprint, score); if(score === 7) checkAchiev('lucky7'); }
         if (perfect && type === 'quiz_score') dailyProg.perfect = 20;
         if (perfect && type === 'hangman') dailyProg.clean_hm = 1;
 
-        const h = new Date().getHours();
-        const m = new Date().getMinutes();
+        const h = new Date().getHours(); const m = new Date().getMinutes();
         if(h >= 1 && h <= 4) { userStats.nightGames++; saveStats(); if(userStats.nightGames >= 3) checkAchiev('ninja'); }
         if(h === 0 && m >= 0 && m <= 10) checkAchiev('midnight');
 
@@ -576,11 +600,7 @@
 
     function updateUI() {
         document.getElementById('xp-count').textContent = totalXP; document.getElementById('streak-count').textContent = currentStreak; document.getElementById('sprint-badge').textContent = bestSprint; document.getElementById('mistakes-count').textContent = mistakeWords.length; document.getElementById('inv-count').textContent = inventory.length;
-        
-        const lvl = getLevelInfo();
-        document.getElementById('user-level-name').textContent = lvl.name;
-        document.getElementById('user-level-icon').textContent = lvl.icon;
-
+        const lvl = getLevelInfo(); document.getElementById('user-level-name').textContent = lvl.name; document.getElementById('user-level-icon').textContent = lvl.icon;
         if (dailyGoals && dailyGoals.length === 3) {
             for(let i=1; i<=3; i++) {
                 const g = dailyGoals[i-1]; document.getElementById(`dg${i}-title`).textContent = g.title; document.getElementById(`dg${i}-rew`).textContent = `+${g.rew} 🌟`;
@@ -598,19 +618,13 @@
     }
 
     function renderShop() { 
-        const c = document.getElementById('shop-list'); 
-        const bmStatus = isBlackMarketOpen();
+        const c = document.getElementById('shop-list'); const bmStatus = isBlackMarketOpen();
         c.innerHTML = bmStatus ? `<div style="background:#0f172a; color:#10b981; padding:10px; border-radius:12px; margin-bottom:15px; text-align:center; font-weight:800; border:2px solid #10b981;">🕶️ ЧОРНИЙ РИНОК ВІДКРИТО!</div>` : ''; 
         
         let currentItems = [...shopItems];
         if (bmStatus) {
             currentItems = currentItems.map(i => i.id === 'dinner' ? { ...i, price: Math.floor(i.price * 0.85) } : i);
-            if (bmStatus === 'ALL') {
-                currentItems.push(...bmItems);
-            } else {
-                const d = new Date(); const seed = d.getFullYear() + d.getMonth() + d.getDate();
-                currentItems.push(bmItems[seed % bmItems.length], bmItems[(seed + 1) % bmItems.length]);
-            }
+            if (bmStatus === 'ALL') { currentItems.push(...bmItems); } else { const d = new Date(); const seed = d.getFullYear() + d.getMonth() + d.getDate(); currentItems.push(bmItems[seed % bmItems.length], bmItems[(seed + 1) % bmItems.length]); }
         }
 
         currentItems.forEach(i => { 
@@ -622,25 +636,14 @@
     }
 
     function buyItem(id) { 
-        const bmStatus = isBlackMarketOpen();
-        let currentItems = [...shopItems];
-        if (bmStatus) {
-            currentItems = currentItems.map(i => i.id === 'dinner' ? { ...i, price: Math.floor(i.price * 0.85) } : i);
-            if (bmStatus === 'ALL') currentItems.push(...bmItems);
-            else { const d = new Date(); const seed = d.getFullYear() + d.getMonth() + d.getDate(); currentItems.push(bmItems[seed % bmItems.length], bmItems[(seed + 1) % bmItems.length]); }
-        }
-        const i = currentItems.find(x => x.id === id); 
-        if(!i || i.price === 'ERROR') return;
+        const bmStatus = isBlackMarketOpen(); let currentItems = [...shopItems];
+        if (bmStatus) { currentItems = currentItems.map(i => i.id === 'dinner' ? { ...i, price: Math.floor(i.price * 0.85) } : i); if (bmStatus === 'ALL') currentItems.push(...bmItems); else { const d = new Date(); const seed = d.getFullYear() + d.getMonth() + d.getDate(); currentItems.push(bmItems[seed % bmItems.length], bmItems[(seed + 1) % bmItems.length]); } }
+        const i = currentItems.find(x => x.id === id); if(!i || i.price === 'ERROR') return;
 
         if(totalXP >= i.price) { 
-            addXP(-i.price); 
-            inventory.push({ ...i, uid: Date.now() }); 
-            localStorage.setItem('userInventory', JSON.stringify(inventory)); 
-            
-            userStats.purchases = (userStats.purchases || 0) + 1;
-            if(id === 'hug') { userStats.hugPurchases = (userStats.hugPurchases || 0) + 1; if(userStats.hugPurchases >= 3) checkAchiev('hug_addict'); }
+            addXP(-i.price); inventory.push({ ...i, uid: Date.now() }); localStorage.setItem('userInventory', JSON.stringify(inventory)); 
+            userStats.purchases = (userStats.purchases || 0) + 1; if(id === 'hug') { userStats.hugPurchases = (userStats.hugPurchases || 0) + 1; if(userStats.hugPurchases >= 3) checkAchiev('hug_addict'); }
             saveStats(); if(userStats.purchases >= 3) checkAchiev('shopaholic');
-
             showToast("Куплено: " + i.name); renderInventory(); renderShop(); updateUI();
         } 
     }
@@ -668,8 +671,11 @@
         if(usedCodes.includes(code)) { alert("Вже використано! Хитрунка 🦊"); return; }
         
         let ok = false;
-        if(code === '16052025') { inventory.push({ id:'anniv', name:'День, коли ми стали щасливими ❤️', price:0, icon:'💍', uid:Date.now() }); ok=true; alert("Код прийнято! З нашою річницею! 💍"); }
-        else if(code === '16052026') { inventory.push({ id:'dinner', name:'Романтична вечеря (16.05)', price:0, icon:'🍷', uid:Date.now() }); ok=true; alert("Код активовано! 🍷 Готуйся до вечері!"); }
+        // 16.05.2025 - День став парою
+        if(code === '16052025') { inventory.push({ id:'anniv1', name:'❤️ Початок нашої історії (16.05.25)', price:0, icon:'👩‍❤️‍👨', uid:Date.now() }); ok=true; alert("Код прийнято! Це був найкращий день! 👩‍❤️‍👨"); }
+        // 16.05.2026 - Рік стосунків
+        else if(code === '16052026') { inventory.push({ id:'anniv2', name:'💎 Рік щастя разом (16.05.26)', price:0, icon:'💍', uid:Date.now() }); addXP(365); ok=true; alert("З нашою першою річницею, кохана! +365 🌟 та особливий купон! 💍"); }
+        
         else if(code === 'MISSYOU') { inventory.push({ id:'m1', name:'Я приїду до тебе зі смаколиками', price:0, icon:'🥐', uid:Date.now() }); ok=true; alert("Чекай на мене зі смаколиками! 🥐"); }
         else if(code === 'DATE2026') { inventory.push({ id:'d1', name:'Вибір фільму і піца', price:0, icon:'🍕', uid:Date.now() }); ok=true; alert("Кіно і піца за мною! 🍕🎬"); }
         else if(code === 'OLYA') { addXP(200); alert("Найкраща дівчинка на всьому світі 😘 +200 🌟"); ok=true; }
@@ -677,41 +683,33 @@
         else if(code === 'SMILE') { addXP(100); alert("Твоя посмішка робить мій день яскравішим! +100 🌟"); ok=true; }
         else if(code === 'MYQUEEN') { inventory.push({ id:'p2', name:'Масаж спини', price:0, icon:'💆‍♀️', uid:Date.now() }); addXP(50); ok=true; alert("Масаж та зірочки твої 👑"); }
         else if(code === 'BESTGIRL') { addXP(300); ok=true; alert("+300 🌟"); }
-        else if(code === 'COFFEE') { inventory.push({ id:'p3', name:'Смачна кава разом', price:0, icon:'☕', uid:Date.now() }); ok=true; alert("☕ Кава!"); }
         else if(code === 'KISSME') { inventory.push({ id:'p4', name:'100 поцілунків', price:0, icon:'😘', uid:Date.now() }); ok=true; alert("Купон додано! 🎁"); }
         else if(code === 'LOVEYOUMORE' || code === 'LOVEYOUSTRONGER') { addXP(300); ok=true; alert("А я тебе ще дужче! +300 🌟"); }
-        else if(code === 'CAR') { inventory.push({ id:'p_car', name:'Романтична поїздка за місто', price:0, icon:'🚐', uid:Date.now() }); ok=true; checkAchiev('navigator'); alert("Головний штурман знайдений! 🚐"); }
-        else if(code === 'CHOCOLATE') { inventory.push({ id:'p_choc', name:'Кіндер або Шоколадка', price:0, icon:'🍫', uid:Date.now() }); ok=true; checkAchiev('sweet_tooth'); alert("Солодке життя! 🍫"); }
         
-        if(ok) {
-            usedCodes.push(code); localStorage.setItem('usedCodes', JSON.stringify(usedCodes));
-            localStorage.setItem('userInventory', JSON.stringify(inventory));
-            if(usedCodes.length >= 3) checkAchiev('sherlock');
-            updateUI(); renderInventory(); fireParticles(window.innerWidth/2, window.innerHeight/2, true);
-        } else { 
-            alert("Невірний код! Спробуй ще раз."); 
-            userStats.failedCodes = (userStats.failedCodes || 0) + 1; saveStats();
-            if(userStats.failedCodes >= 3) checkAchiev('hacker');
-        }
+        if(ok) { usedCodes.push(code); localStorage.setItem('usedCodes', JSON.stringify(usedCodes)); localStorage.setItem('userInventory', JSON.stringify(inventory)); if(usedCodes.length >= 3) checkAchiev('sherlock'); updateUI(); renderInventory(); fireParticles(window.innerWidth/2, window.innerHeight/2, true); } 
+        else { alert("Невірний код! Спробуй ще раз."); userStats.failedCodes = (userStats.failedCodes || 0) + 1; saveStats(); if(userStats.failedCodes >= 3) checkAchiev('hacker'); }
     }
 
-    let spinLock = false;
-    let lastWheelDate = localStorage.getItem('lastWheelDate') || 0;
-    
+    let spinLock = false; let lastWheelDate = localStorage.getItem('lastWheelDate') || 0;
     function checkWheelCooldown() {
-        const btn = document.getElementById('spin-btn');
-        const now = Date.now();
-        const diff = now - parseInt(lastWheelDate);
-        const cooldown = 3 * 24 * 60 * 60 * 1000;
-        if(lastWheelDate && diff < cooldown) {
-            const daysLeft = Math.ceil((cooldown - diff) / (1000 * 60 * 60 * 24));
-            btn.textContent = `Доступно через ${daysLeft} дн.`;
-            btn.disabled = true;
-        } else {
-            btn.textContent = "Крутити (50 🌟)";
-            btn.disabled = false;
-        }
+        const btn = document.getElementById('spin-btn'); const now = Date.now(); const diff = now - parseInt(lastWheelDate); const cooldown = 3 * 24 * 60 * 60 * 1000;
+        if(lastWheelDate && diff < cooldown) { const daysLeft = Math.ceil((cooldown - diff) / (1000 * 60 * 60 * 24)); btn.textContent = `Доступно через ${daysLeft} дн.`; btn.disabled = true; } 
+        else { btn.textContent = "Крутити за 50 🌟"; btn.disabled = false; }
     }
+
+    // Призи для нової рулетки
+    const wheelPrizes = [
+        { type: 'xp', val: 20, msg: '+20 🌟! Непогано!' },
+        { type: 'item', val: '🍬', msg: 'Виграш: Цукерка! Шукай у Купонах!', icon: '🍬', name: 'Солодка цукерка (Рулетка)' },
+        { type: 'xp', val: 5, msg: '+5 🌟! Краще, ніж нічого)' },
+        { type: 'xp', val: 50, msg: '+50 🌟! Ого, ти повернула своє!' },
+        { type: 'item', val: '❤️', msg: 'Виграш: Палкий поцілунок від Юри! Шукай у Купонах!', icon: '💋', name: 'Палкий поцілунок (Рулетка)' },
+        { type: 'xp', val: 10, msg: '+10 🌟! Нормально!' },
+        { type: 'item', val: '🍫', msg: 'Виграш: Шоколадка! Шукай у Купонах!', icon: '🍫', name: 'Смачна шоколадка (Рулетка)' },
+        { type: 'xp', val: 0, msg: 'Пусто... Цього разу не пощастило 😢' },
+        { type: 'xp', val: 100, msg: 'КЛАС! +100 🌟!' },
+        { type: 'jackpot', val: '🎁', msg: 'ДЖЕКПОТ! Масаж спини твій!', icon: '💆‍♀️', name: 'Масаж спини (ДЖЕКПОТ)' }
+    ];
 
     function spinWheel() {
         if(spinLock) return;
@@ -720,44 +718,50 @@
         if(totalXP < 50) { alert("Бракує зірочок! (Треба 50 🌟)"); return; }
         
         addXP(-50); spinLock = true;
-        
-        lastWheelDate = now; localStorage.setItem('lastWheelDate', lastWheelDate);
-        checkWheelCooldown();
+        lastWheelDate = now; localStorage.setItem('lastWheelDate', lastWheelDate); checkWheelCooldown();
 
         const wheel = document.getElementById('spin-wheel');
-        const r = Math.random();
-        let targetDegree, prizeType;
-
-        if (r < 0.01) { targetDegree = 358.2; prizeType = 'jackpot'; } // 1%
-        else if (r < 0.10) { targetDegree = 340.2; prizeType = 'kinder'; } // 9%
-        else if (r < 0.30) { targetDegree = 252 + 5 + Math.random() * 62; prizeType = '100xp'; } // 20%
-        else if (r < 0.60) { targetDegree = 144 + 5 + Math.random() * 98; prizeType = '20xp'; } // 30%
-        else { targetDegree = 5 + Math.random() * 134; prizeType = '0xp'; } // 40%
-
-        const spins = 5;
+        const prizeIndex = Math.floor(Math.random() * wheelPrizes.length);
+        
+        // Розрахунок кута. Кожен сектор 36 градусів.
+        // Додаємо випадковий відступ всередині сектора (від 5 до 31 градуса), щоб стрілка не попадала на межу.
+        const sectorAngle = 36;
+        const randomOffset = 5 + Math.random() * 26;
+        const targetDegree = (prizeIndex * sectorAngle) + randomOffset;
+        
+        const spins = 6; // Кількість повних обертів
         const currentRotation = parseFloat(wheel.dataset.rotation) || 0;
-        const newAbs = 360 - targetDegree;
-        const nextRotation = currentRotation + (360 - (currentRotation % 360)) + (360 * spins) + newAbs;
+        
+        // Нова ротація: поточна + вирівнювання до 0 + оберти + цільовий кут (обертаємо коло проти годинникової стрілки)
+        const nextRotation = currentRotation + (360 - (currentRotation % 360)) + (360 * spins) + (360 - targetDegree);
 
         wheel.style.transform = `rotate(${nextRotation}deg)`;
         wheel.dataset.rotation = nextRotation;
         
         setTimeout(() => {
-            if(prizeType === 'jackpot') { addXP(500); checkAchiev('lucky_bastard'); alert("ДЖЕКПОТ!!! +500 🌟"); }
-            else if(prizeType === 'kinder') { inventory.push({ id:'w_kin', name:'Кіндер-сюрприз (Виграш)', price:0, icon:'🍫', uid:Date.now() }); localStorage.setItem('userInventory', JSON.stringify(inventory)); alert("Виграш: Кіндер-сюрприз! 🍫 Шукай у Купонах!"); renderInventory(); updateUI(); }
-            else if(prizeType === '100xp') { addXP(100); alert("Клас! +100 🌟"); }
-            else if(prizeType === '20xp') { addXP(20); alert("Непогано! +20 🌟"); }
-            else { alert("Цього разу пустушка 😢"); }
+            const prize = wheelPrizes[prizeIndex];
             
+            if(prize.type === 'xp') {
+                if(prize.val > 0) { addXP(prize.val); fireParticles(window.innerWidth/2, window.innerHeight/2, true); }
+                alert(prize.msg);
+            } 
+            else if(prize.type === 'item' || prize.type === 'jackpot') {
+                inventory.push({ id: 'wheel_pr', name: prize.name, price: 0, icon: prize.icon, uid: Date.now() });
+                localStorage.setItem('userInventory', JSON.stringify(inventory));
+                fireParticles(window.innerWidth/2, window.innerHeight/2, true);
+                if(prize.type === 'jackpot') checkAchiev('lucky_bastard');
+                alert(prize.msg);
+                renderInventory(); updateUI();
+            }
             spinLock = false; 
         }, 4000);
     }
 
     // БОС
     let bQ=[], bIdx=0, bErr=0, bLock=false;
-    function startBoss() { const voc = getVocab(); if(voc.length<50){alert("Мало слів для іспиту!"); return;} bQ = shuffleArray(voc).slice(0, 50); bIdx=0; bErr=0; showSection('boss'); document.getElementById('boss-result').style.display='none'; document.getElementById('boss-active').style.display='flex'; loadBoss(); }
-    function loadBoss() { bLock = false; let w = bQ[bIdx]; document.getElementById('boss-counter').textContent=`Питання ${bIdx+1}/50`; document.getElementById('boss-errors').textContent=`${bErr}/3`; document.getElementById('boss-question').innerHTML=`<div style="font-size:3rem;margin-bottom:10px;">${w.em}</div>${w.uk}`; const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g = document.getElementById('boss-options'); g.innerHTML=''; opts.forEach(o => { const b = document.createElement('button'); b.className='option-btn'; b.textContent=o.en; b.style.color = "var(--text-main)"; b.onclick = (e) => { if(bLock) return; bLock=true; const c = o.en===w.en; fireParticles(e.clientX, e.clientY, c); if(c) { b.classList.add('correct'); setTimeout(()=>{ bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); }, 300); } else { b.classList.add('wrong'); bErr++; document.getElementById('boss-errors').textContent=`${bErr}/3`; setTimeout(()=>{ if(bErr >= 3) finishBoss(false); else { bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); } }, 400); } }; g.appendChild(b); }); }
-    function finishBoss(win) { document.getElementById('boss-active').style.display='none'; document.getElementById('boss-result').style.display='flex'; document.getElementById('boss-final').textContent = win ? "ПЕРЕМОГА!" : "ПРОВАЛ"; document.getElementById('boss-result-title').textContent = win ? "Ти склала іспит! 🎉" : "Не здавайся, спробуй ще раз! 💔"; if(win) { document.getElementById('boss-result-desc').textContent = "Ось твої +500 🌟 та Золотий купон!"; addXP(500); inventory.push({ id:'boss_win', name:'Золотий купон від Юри 🥇', price:0, icon:'🥇', uid:Date.now() }); localStorage.setItem('userInventory', JSON.stringify(inventory)); checkAchiev('boss_killer'); } else { document.getElementById('boss-result-desc').textContent = "Більше 3 помилок... Повтори слова і повертайся!"; } }
+    function startBoss() { const voc = getVocab(); if(voc.length<50){alert("Мало слів для іспиту!"); return;} bQ = shuffleArray(voc).slice(0, 50); bIdx=0; bErr=3; showSection('boss'); document.getElementById('boss-result').style.display='none'; document.getElementById('boss-active').style.display='flex'; loadBoss(); }
+    function loadBoss() { bLock = false; let w = bQ[bIdx]; document.getElementById('boss-counter').textContent=`💀 Питання ${bIdx+1}/50`; document.getElementById('boss-errors').textContent=`${bErr}/3`; document.getElementById('boss-question-box').innerHTML=`<div style="font-size:3.5rem;margin-bottom:10px;">${w.em}</div>${w.uk}`; const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g = document.getElementById('boss-options'); g.innerHTML=''; opts.forEach(o => { const b = document.createElement('button'); b.className='option-btn'; b.textContent=o.en; b.onclick = (e) => { if(bLock) return; bLock=true; const c = o.en===w.en; fireParticles(e.clientX, e.clientY, c); if(c) { b.classList.add('correct'); setTimeout(()=>{ bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); }, 300); } else { b.classList.add('wrong'); bErr--; document.getElementById('boss-errors').textContent=`${bErr}/3`; setTimeout(()=>{ if(bErr <= 0) finishBoss(false); else { bIdx++; if(bIdx<50) loadBoss(); else finishBoss(true); } }, 400); } }; g.appendChild(b); }); }
+    function finishBoss(win) { document.getElementById('boss-active').style.display='none'; document.getElementById('boss-result').style.display='flex'; document.getElementById('boss-final').textContent = win ? "ПЕРЕМОГА!" : "ПРОВАЛ"; document.getElementById('boss-result-title').textContent = win ? "Ти здолала Боса! 🎉" : "Ти загинула... 💔"; if(win) { document.getElementById('boss-result-desc').textContent = "Оля - справжня войовниця! Ось твої +500 🌟 та Золотий купон! Юра тобою пишається! 🥰"; addXP(500); inventory.push({ id:'boss_win', name:'🥇 Золотий купон від Юри (Перемога над Босом)', price:0, icon:'🥇', uid:Date.now() }); localStorage.setItem('userInventory', JSON.stringify(inventory)); checkAchiev('boss_killer'); } else { document.getElementById('boss-result-desc').textContent = "Життя скінчилися. Бос виявився сильнішим. Повтори словник і повертайся за реваншем! Юра вірить в тебе!"; } renderInventory(); updateUI(); }
 
     function exportProgress() { const d = { totalXP, lifetimeXP, currentStreak, bestSprint, dailyProg, mistakeWords, inventory, achievs, usedCodes, lastLogin, dailyGoals, userStats, lastWheelDate }; const s = btoa(unescape(encodeURIComponent(JSON.stringify(d)))); navigator.clipboard.writeText(s).then(()=>alert("Код скопійовано! Надішли Юрі 📩")).catch(()=>prompt("Скопіюй вручну:", s)); }
     function importProgress() { const s = prompt("Встав код прогресу сюди:"); if(!s) return; try { const d = JSON.parse(decodeURIComponent(escape(atob(s)))); if(d.totalXP !== undefined) { localStorage.setItem('totalXP', d.totalXP); if(d.lifetimeXP !== undefined) localStorage.setItem('lifetimeXP', d.lifetimeXP); localStorage.setItem('streak', d.currentStreak); localStorage.setItem('sprintRecord', d.bestSprint); localStorage.setItem('dailyProg', JSON.stringify(d.dailyProg)); localStorage.setItem('userMistakes', JSON.stringify(d.mistakeWords)); localStorage.setItem('userInventory', JSON.stringify(d.inventory)); localStorage.setItem('achievs', JSON.stringify(d.achievs)); localStorage.setItem('usedCodes', JSON.stringify(d.usedCodes)); localStorage.setItem('lastLogin', d.lastLogin); if(d.dailyGoals) localStorage.setItem('dailyGoals', JSON.stringify(d.dailyGoals)); if(d.userStats) localStorage.setItem('userStats', JSON.stringify(d.userStats)); if(d.lastWheelDate) localStorage.setItem('lastWheelDate', d.lastWheelDate); alert("Прогрес відновлено!"); location.reload(); } } catch(e){alert("Помилка коду!");} }
@@ -789,18 +793,12 @@
         document.getElementById(id).classList.add('active'); 
         
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        if(id === 'home' || id === 'dictionary' || id === 'shop' || id === 'settings') {
-            document.querySelector(`.nav-item[onclick="showSection('${id}')"]`).classList.add('active');
-        }
+        if(id === 'home' || id === 'dictionary' || id === 'shop' || id === 'settings') { document.querySelector(`.nav-item[onclick="showSection('${id}')"]`).classList.add('active'); }
 
         window.scrollTo(0,0); 
-        if(id === 'home') document.getElementById('user-stats').style.display = 'flex'; 
-        else document.getElementById('user-stats').style.display = 'none'; 
-        
+        if(id === 'home') document.getElementById('user-stats').style.display = 'flex'; else document.getElementById('user-stats').style.display = 'none'; 
         if(id === 'dictionary') { document.getElementById('dict-search').value = ''; renderDictionary(); userStats.dictOpens = (userStats.dictOpens || 0) + 1; saveStats(); if(userStats.dictOpens >= 50) checkAchiev('vocab_king'); } 
-        if(id === 'inventory') { renderInventory(); } 
-        if(id === 'shop') { renderShop(); } 
-        if(id === 'wheel') { checkWheelCooldown(); } 
+        if(id === 'inventory') { renderInventory(); } if(id === 'shop') { renderShop(); } if(id === 'wheel') { checkWheelCooldown(); } 
     }
 
     let dictMode = 'en-uk'; function setDictMode(m) { dictMode = m; renderDictionary(); }
