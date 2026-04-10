@@ -582,18 +582,113 @@
     function nextCard(){fcI=(fcI+1)%fcArr.length; updFc();}
     function prevCard(){fcI=(fcI-1+fcArr.length)%fcArr.length; updFc();}
 
-    // --- ЕМОДЗІ КВІЗ ---
-    let emoQ=[],eIdx=0,eScore=0,eAns=false;
-    function startEmojiQuiz(){const voc=getVocab(); if(voc.length<4){alert("Замало слів!"); return;} emoQ=shuffleArray(voc).slice(0,15); eIdx=0; eScore=0; showSection('emoji-quiz'); document.getElementById('emoji-result').style.display='none'; document.getElementById('emoji-active').style.display='flex'; loadEmo();}
-    function loadEmo(){eAns=false; document.getElementById('btn-next-emoji').style.display='none'; let w=emoQ[eIdx]; document.getElementById('emoji-counter').textContent=`${eIdx+1}/${emoQ.length}`; document.getElementById('emoji-score').textContent=eScore; document.getElementById('emoji-question').innerHTML=`<div style="font-size: 4.5rem;">${w.em}</div><div style="font-size: 1.2rem; color: var(--text-muted);">${w.uk}</div>`; const opts=shuffleArray([w,...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('emoji-options'); g.innerHTML=''; opts.forEach(o=>{const b=document.createElement('button'); b.className='option-btn'; b.textContent=o.en; b.onclick=(e)=>{if(eAns)return; eAns=true; const c=o.en===w.en; fireParticles(e.clientX,e.clientY,c); document.querySelectorAll('#emoji-options .option-btn').forEach(btn=>{btn.disabled=true; if(btn.textContent===w.en)btn.classList.add('correct'); else if(btn===b&&!c)btn.classList.add('wrong');}); if(c){eScore++; addXP(1); registerCorrect();}else registerMistake(w); document.getElementById('emoji-score').textContent=eScore; document.getElementById('btn-next-emoji').style.display='block';}; g.appendChild(b);});}
-    function nextEmoji(){eIdx++; if(eIdx<emoQ.length)loadEmo(); else{document.getElementById('emoji-active').style.display='none'; document.getElementById('emoji-result').style.display='flex'; document.getElementById('emoji-final').textContent=eScore+"/"+emoQ.length; gameFinished(eScore===emoQ.length,'emoji',eScore);}}
+      // --- ЕМОДЗІ КВІЗ ---
+    let emoQ = [], eIdx = 0, eScore = 0, eAns = false;
+    function startEmojiQuiz() {
+        const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
+        emoQ = shuffleArray([...voc]).slice(0, 15); eIdx = 0; eScore = 0;
+        showSection('emoji-quiz'); document.getElementById('emoji-result').style.display = 'none'; document.getElementById('emoji-active').style.display = 'flex'; loadEmo();
+    }
+    function loadEmo() {
+        eAns = false; document.getElementById('btn-next-emoji').style.display = 'none';
+        let w = emoQ[eIdx];
+        document.getElementById('emoji-counter').textContent = `${eIdx + 1}/${emoQ.length}`; document.getElementById('emoji-score').textContent = eScore;
+        document.getElementById('emoji-question').innerHTML = `<div style="font-size: 4.5rem;">${w.em}</div><div style="font-size: 1.2rem; color: var(--text-muted);">${w.uk}</div>`;
+        const opts = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
+        const g = document.getElementById('emoji-options'); g.innerHTML = '';
+        opts.forEach(o => {
+            const b = document.createElement('button'); b.className = 'option-btn'; b.textContent = o.en;
+            b.onclick = (e) => {
+                if (eAns) return; eAns = true;
+                const c = o.en === w.en; fireParticles(e.clientX, e.clientY, c);
+                document.querySelectorAll('#emoji-options .option-btn').forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.textContent === w.en) btn.classList.add('correct');
+                    else if (btn === b && !c) btn.classList.add('wrong');
+                });
+                if (c) { eScore++; addXP(1); registerCorrect(); } else registerMistake(w);
+                document.getElementById('emoji-score').textContent = eScore;
+                document.getElementById('btn-next-emoji').style.display = 'block';
+            };
+            g.appendChild(b);
+        });
+    }
+    function nextEmoji() { eIdx++; if (eIdx < emoQ.length) loadEmo(); else { document.getElementById('emoji-active').style.display = 'none'; document.getElementById('emoji-result').style.display = 'flex'; document.getElementById('emoji-final').textContent = eScore + "/" + emoQ.length; gameFinished(eScore === emoQ.length, 'emoji', eScore); } }
 
-    // --- КОНСТРУКТОР ---
-    let constQ=[],cIdx=0,cScore=0,cAns=[],constLock=false,constErrors=0;
-    function startConstructor(){constQ=shuffleArray(sentences).slice(0,5); cIdx=0; cScore=0; constErrors=0; showSection('constructor'); document.getElementById('const-result').style.display='none'; document.getElementById('const-active').style.display='flex'; loadConst();}
-    function loadConst(){constLock=false; document.getElementById('btn-next-const').style.display='none'; document.getElementById('const-counter').textContent=`${cIdx+1}/5`; document.getElementById('const-score').textContent=cScore; let s=constQ[cIdx]; document.getElementById('const-question').textContent=s.uk; const t=document.getElementById('const-target'); t.innerHTML=''; t.className='const-target'; cAns=[]; const oW=s.en.split(' '); const w=shuffleArray([...oW]); const wC=document.getElementById('const-words'); wC.innerHTML=''; w.forEach((wd)=>{const b=document.createElement('div'); b.className='const-word'; b.textContent=wd; b.onclick=()=>{if(constLock)return; b.classList.add('hidden'); cAns.push({w:wd,b}); renderConstTarget(oW.join(' '));}; wC.appendChild(b);});}
-    function renderConstTarget(fT){const t=document.getElementById('const-target'); t.innerHTML=''; cAns.forEach((i,idx)=>{const b=document.createElement('div'); b.className='const-word'; b.textContent=i.w; b.onclick=()=>{if(constLock)return; i.b.classList.remove('hidden'); cAns.splice(idx,1); renderConstTarget(fT);}; t.appendChild(b);}); if(cAns.length===fT.split(' ').length&&!constLock){constLock=true; const r=t.getBoundingClientRect(); if(cAns.map(x=>x.w).join(' ')===fT){fireParticles(r.left+r.width/2,r.top+r.height/2,true); t.classList.add('correct'); cScore++; addXP(3); registerCorrect(); setTimeout(()=>{document.getElementById('btn-next-const').style.display='block'; constLock=false;},250);}else{fireParticles(r.left+r.width/2,r.top+r.height/2,false); constErrors++; registerMistake(null); t.style.animation="shake 0.3s"; setTimeout(()=>{t.style.animation=""; cAns.forEach(x=>x.b.classList.remove('hidden')); cAns=[]; constLock=false; renderConstTarget(fT);},400);}}}
-    function nextConst(){cIdx++; if(cIdx<5)loadConst(); else{document.getElementById('const-active').style.display='none'; document.getElementById('const-result').style.display='flex'; document.getElementById('const-final').textContent=cScore+"/5"; gameFinished(cScore===5,'constructor',1);}}
+    // --- КОНСТРУКТОР РЕЧЕНЬ ---
+    let constQ = [], cIdx = 0, cScore = 0, cAns = [], constLock = false;
+    function startConstructor() {
+        constQ = shuffleArray([...sentences]).slice(0, 5); cIdx = 0; cScore = 0;
+        showSection('constructor'); document.getElementById('const-result').style.display = 'none'; document.getElementById('const-active').style.display = 'flex'; loadConst();
+    }
+    function loadConst() {
+        constLock = false; document.getElementById('btn-next-const').style.display = 'none';
+        document.getElementById('const-counter').textContent = `${cIdx + 1}/5`; document.getElementById('const-score').textContent = cScore;
+        let s = constQ[cIdx]; document.getElementById('const-question').textContent = s.uk;
+        const t = document.getElementById('const-target'); t.innerHTML = ''; t.className = 'const-target'; cAns = [];
+        const oW = s.en.split(' '); const w = shuffleArray([...oW]);
+        const wC = document.getElementById('const-words'); wC.innerHTML = '';
+        w.forEach((wd) => {
+            const b = document.createElement('div'); b.className = 'const-word'; b.textContent = wd;
+            b.onclick = () => { if (constLock) return; b.classList.add('hidden'); cAns.push({ w: wd, b }); renderConstTarget(oW.join(' '), s); };
+            wC.appendChild(b);
+        });
+    }
+    function renderConstTarget(fT, sentenceObj) {
+        const t = document.getElementById('const-target'); t.innerHTML = '';
+        cAns.forEach((i, idx) => {
+            const b = document.createElement('div'); b.className = 'const-word'; b.textContent = i.w;
+            b.onclick = () => { if (constLock) return; i.b.classList.remove('hidden'); cAns.splice(idx, 1); renderConstTarget(fT, sentenceObj); };
+            t.appendChild(b);
+        });
+        if (cAns.length === fT.split(' ').length && !constLock) {
+            constLock = true; const r = t.getBoundingClientRect();
+            if (cAns.map(x => x.w).join(' ') === fT) {
+                fireParticles(r.left + r.width / 2, r.top + r.height / 2, true); t.classList.add('correct');
+                cScore++; addXP(3); registerCorrect();
+                setTimeout(() => { document.getElementById('btn-next-const').style.display = 'block'; }, 250);
+            } else {
+                fireParticles(r.left + r.width / 2, r.top + r.height / 2, false);
+                registerMistake(null); // Штраф за помилку в реченні
+                t.style.animation = "shake 0.3s";
+                setTimeout(() => { t.style.animation = ""; cAns.forEach(x => x.b.classList.remove('hidden')); cAns = []; constLock = false; renderConstTarget(fT, sentenceObj); }, 400);
+            }
+        }
+    }
+    function nextConst() { cIdx++; if (cIdx < 5) loadConst(); else { document.getElementById('const-active').style.display = 'none'; document.getElementById('const-result').style.display = 'flex'; document.getElementById('const-final').textContent = cScore + "/5"; gameFinished(cScore === 5, 'constructor', 1); } }
+
+    // --- АУДІЮВАННЯ ---
+    let lstQ = [], lstI = 0, lstS = 0, cLw = "", lstLock = false;
+    function startListening() {
+        const voc = getVocab(); if (voc.length < 4) { alert("Замало слів!"); return; }
+        lstQ = shuffleArray([...voc]).slice(0, 15); lstI = 0; lstS = 0;
+        showSection('listening'); document.getElementById('listen-result').style.display = 'none'; document.getElementById('listen-active').style.display = 'flex'; loadLst();
+    }
+    function playWordAudio(a, e) { speak(cLw, a, e); }
+    function loadLst() {
+        lstLock = false; document.getElementById('btn-next-listen').style.display = 'none';
+        let w = lstQ[lstI]; cLw = w.en;
+        document.getElementById('listen-counter').textContent = `${lstI + 1}/15`; document.getElementById('listen-score').textContent = lstS;
+        const o = shuffleArray([w, ...shuffleArray(baseVocabulary.filter(x => x.en !== w.en)).slice(0, 3)]);
+        const g = document.getElementById('listen-options'); g.innerHTML = '';
+        o.forEach(opt => {
+            const b = document.createElement('button'); b.className = 'option-btn'; b.textContent = opt.uk;
+            b.onclick = (e) => {
+                if (lstLock) return; lstLock = true;
+                const c = opt.en === w.en; fireParticles(e.clientX, e.clientY, c);
+                document.querySelectorAll('#listen-options .option-btn').forEach(x => {
+                    x.disabled = true;
+                    if (x.textContent === w.uk) x.classList.add('correct');
+                    else if (x === b && !c) x.classList.add('wrong');
+                });
+                if (c) { lstS++; addXP(1); registerCorrect(); } else registerMistake(w);
+                document.getElementById('btn-next-listen').style.display = 'block';
+            };
+            g.appendChild(b);
+        });
+        setTimeout(() => speak(cLw, 'us', null), 300);
+    }
+    function nextListenQuestion() { lstI++; if (lstI < 15) loadLst(); else { document.getElementById('listen-active').style.display = 'none'; document.getElementById('listen-result').style.display = 'flex'; document.getElementById('listen-final-score').textContent = lstS + "/15"; gameFinished(lstS === 15, 'listening', 1); } }
 
     // --- TRUE/FALSE СВАЙП ---
     let tfQ=[],tfIdx=0,tfScore=0,tfTrue=false,tfLock=false;
@@ -682,13 +777,7 @@
         }
     }
 
-    // --- АУДІЮВАННЯ ---
-    let lstQ=[],lstI=0,lstS=0,cLw="",lstLock=false;
-    function startListening(){const voc=getVocab(); if(voc.length<4){alert("Замало слів!"); return;} lstQ=shuffleArray(voc).slice(0,15); lstI=0; lstS=0; showSection('listening'); document.getElementById('listen-result').style.display='none'; document.getElementById('listen-active').style.display='flex'; loadLst();}
-    function playWordAudio(a,e){speak(cLw,a,e);}
-    function loadLst(){lstLock=false; document.getElementById('btn-next-listen').style.display='none'; let w=lstQ[lstI]; cLw=w.en; document.getElementById('listen-counter').textContent=`${lstI+1}/15`; document.getElementById('listen-score').textContent=lstS; const o=shuffleArray([w,...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('listen-options'); g.innerHTML=''; o.forEach(opt=>{const b=document.createElement('button'); b.className='option-btn'; b.textContent=opt.uk; b.onclick=(e)=>{if(lstLock)return; lstLock=true; const c=opt.en===w.en; fireParticles(e.clientX,e.clientY,c); document.querySelectorAll('#listen-options .option-btn').forEach(x=>{x.disabled=true; if(x.textContent===w.uk)x.classList.add('correct'); else if(x===b&&!c)x.classList.add('wrong');}); if(c){lstS++; addXP(1); registerCorrect();}else registerMistake(w); document.getElementById('btn-next-listen').style.display='block';}; g.appendChild(b);}); setTimeout(()=>speak(cLw,'us',null),300);}
-    function nextListenQuestion(){lstI++; if(lstI<15)loadLst(); else{document.getElementById('listen-active').style.display='none'; document.getElementById('listen-result').style.display='flex'; document.getElementById('listen-final-score').textContent=lstS+"/15"; gameFinished(lstS===15,'listening',1);}}
-
+  
     // --- ПАРА ---
     let mFound=0,mErr=0,mSel=null,mLock=false;
     function startMatchGame(){const voc=getVocab(); if(voc.length<6){alert("Замало слів!"); return;} showSection('match'); mFound=0; mErr=0; document.getElementById('match-result').style.display='none'; document.getElementById('match-columns').style.display='flex'; updM(); let wds=shuffleArray(voc).slice(0,6); const cUk=document.getElementById('match-col-uk'),cEn=document.getElementById('match-col-en'); cUk.innerHTML=''; cEn.innerHTML=''; shuffleArray(wds.map((w,i)=>({t:w.uk,id:i,l:'uk',w}))).forEach(c=>createMB(c,cUk)); shuffleArray(wds.map((w,i)=>({t:w.en,id:i,l:'en',w}))).forEach(c=>createMB(c,cEn));}
