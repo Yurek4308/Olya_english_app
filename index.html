@@ -26,12 +26,10 @@
         .section.active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ВІДЦЕНТРОВАНІ ЗАГОЛОВКИ */
         .page-header { text-align: center; margin-bottom: 20px; width: 100%; }
         .page-title { font-size: 2.2rem; font-weight: 900; color: var(--text-main); }
         .page-subtitle { font-size: 1rem; color: var(--text-muted); margin-top: 5px; }
         
-        /* BOTTOM NAV */
         .bottom-nav { background: var(--card-bg); border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-around; padding: 10px 10px calc(10px + env(safe-area-inset-bottom)) 10px; z-index: 100; flex-shrink: 0;}
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-muted); font-size: 0.75rem; font-weight: 700; cursor: pointer; padding: 5px 12px; border-radius: 16px; }
         .nav-item.active { color: var(--primary); background: var(--bg); }
@@ -45,47 +43,38 @@
         .menu-title { font-size: 1rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;}
         .menu-desc { font-size: 0.75rem; color: var(--text-muted);}
 
-        /* СИСТЕМА ДЕННИХ ЦІЛЕЙ */
         .daily-goal { background: var(--card-bg); padding: 12px 15px; border-radius: 16px; margin-bottom:10px; border: 2px solid transparent;}
         .daily-goal.completed { border-color: var(--correct); background: #f0fdf4; }
         .daily-bar-bg { width: 100%; height: 8px; background: var(--bg); border-radius: 10px; overflow: hidden; margin-top:6px;}
         .daily-bar-fill { height: 100%; background: var(--correct); width: 0%; transition: width 0.4s; }
 
-        /* ТЕГИ У СЛОВНИКУ */
         .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; scroll-behavior: smooth; flex-shrink: 0;}
         .category-scroll::-webkit-scrollbar { display: none; }
         .cat-chip { flex-shrink: 0; background: var(--card-bg); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; border: 2px solid transparent; cursor: pointer;}
         .cat-chip.active { border-color: var(--primary); color: var(--primary); background: #fdf2f8; }
 
-        /* ІДЕАЛЬНА РУЛЕТКА (БЕЗ ЕМОДЗІ, ТІЛЬКИ ЦИФРИ ПО ЦЕНТРУ) */
         .wheel-container { position: relative; width: 280px; height: 280px; margin: 0 auto 20px auto; border-radius: 50%; border: 8px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.15); flex-shrink: 0; overflow: hidden;}
         .wheel { width: 100%; height: 100%; position: absolute; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient( #ef4444 0deg 36deg, #a855f7 36deg 72deg, #3b82f6 72deg 108deg, #10b981 108deg 144deg, #f59e0b 144deg 180deg, #94a3b8 180deg 216deg, #f59e0b 216deg 252deg, #94a3b8 252deg 288deg, #f59e0b 288deg 324deg, #94a3b8 324deg 360deg ); }
         .wheel-pointer { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); width: 40px; height: 50px; background: var(--wrong); clip-path: polygon(50% 100%, 0 0, 100% 0); z-index: 10; border-top: 4px solid white; }
         .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: white; border-radius: 50%; border: 4px solid #1e293b; z-index: 5; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;}
-        
         .wheel-text { position: absolute; top: 15px; left: 50%; margin-left: -25px; width: 50px; text-align: center; transform-origin: 50% 117px; font-size: 1.2rem; font-weight: 900; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); z-index: 2; }
         .jackpot-glow { animation: glow 1s infinite alternate; }
         @keyframes glow { from { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff0055; } to { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff0055; } }
-
         .legend-box { background: var(--card-bg); padding: 15px; border-radius: 16px; font-weight: 700; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
         .legend-item { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 4px 0;}
 
-        /* КІТ-ПОМІЧНИК */
         .cat-assistant { position: fixed; bottom: 85px; right: 15px; z-index: 9000; cursor: pointer; transition: 0.2s; filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));}
         .cat-assistant:active { transform: scale(0.9); }
         .cat-bubble { position: absolute; bottom: 70px; right: 0; width: 240px; background: var(--card-bg); padding: 15px; border-radius: 20px; border-bottom-right-radius: 0; font-size: 0.95rem; font-weight: 600; opacity: 0; pointer-events: none; transition: 0.3s; border: 2px solid var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.15); transform: translateY(10px); color: var(--text-main);}
         .cat-bubble.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-        /* ЕПІЧНИЙ БОС */
         #boss-active { background: radial-gradient(circle at center, #3f0000 0%, #000000 100%); padding: 25px; border-radius: 20px; border: 4px solid #ff0000; box-shadow: inset 0 0 30px rgba(255,0,0,0.5); }
         .boss-title { color: #ff2a2a; text-shadow: 0 0 10px #ff0000; font-weight: 900; font-size: 1.8rem; text-align: center; margin-bottom: 20px; text-transform: uppercase; animation: bossPulse 1.5s infinite;}
         @keyframes bossPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-        /* КАРТКА ШТРАФУ */
         #penalty-card { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(239, 68, 68, 0.9); z-index: 20000; display: none; align-items: center; justify-content: center; padding: 20px; text-align: center; backdrop-filter: blur(5px);}
         .penalty-box { background: white; padding: 30px; border-radius: 30px; border: 8px solid #fee2e2; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
 
-        /* ІНШІ СТИЛІ ІГОР */
         .question-box { background: var(--card-bg); padding: 25px 20px; border-radius: 20px; text-align: center; font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; color: var(--text-main);}
         .options-grid { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow-y: auto;}
         .option-btn { padding: 16px; background: var(--card-bg); border: 2px solid transparent; border-radius: 16px; font-size: 1.1rem; font-weight: 700; color: var(--text-main); cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.03);}
@@ -121,7 +110,7 @@
 </head>
 <body>
 
-<div class="app-container">
+<div class="app-container" id="app-container">
     <div class="toast" id="toast">🏆 <span id="toast-msg">Молодець!</span></div>
 
     <div id="penalty-card" onclick="this.style.display='none'">
@@ -149,7 +138,7 @@
     <div class="user-stats" id="user-stats">
         <div class="stat-badge">🔥 <span id="streak-count">0</span></div>
         <div class="stat-badge">🌟 <span id="xp-count">0</span></div>
-        <div class="stat-badge" onclick="showSection('profile')" style="cursor:pointer; background:#fce7f3;">
+        <div class="stat-badge" onclick="showSection('profile')" style="cursor:pointer; background:#fce7f3; border:1px solid #fbcfe8;">
             <span id="user-level-icon">🐾</span> <span id="user-level-name">Кошеня</span>
         </div>
     </div>
@@ -162,15 +151,15 @@
             </div>
 
             <div class="word-day-box">
-                <div style="font-size:0.8rem; font-weight:800; opacity:0.8; margin-bottom:4px;">РОМАНТИЧНЕ СЛОВО ДНЯ</div>
-                <div id="wod-en" style="font-size:1.6rem; font-weight:900;">Cuddle</div>
-                <div id="wod-uk" style="font-size:1rem; font-weight:600; font-style:italic;">Обійматися</div>
+                <div style="font-size:0.8rem; font-weight:800; opacity:0.8; margin-bottom:4px;">СЛОВО ДНЯ</div>
+                <div id="wod-en" style="font-size:1.8rem; font-weight:900;">Cuddle</div>
+                <div id="wod-uk" style="font-size:1.1rem; font-weight:600; font-style:italic;">Обійматися</div>
             </div>
 
             <div class="menu-grid">
-                <div class="menu-card wide" id="boss-btn" onclick="startBoss()">
-                    <div class="icon-box">😈</div>
-                    <div style="text-align:left;"><div class="menu-title">Іспит від коханого для коханої</div><div class="menu-desc" id="boss-desc">Лише в неділю!</div></div>
+                <div class="menu-card wide" id="boss-btn" onclick="startBoss()" style="background: linear-gradient(135deg, #2d0a3d, #000); border: 2px solid #ff0000;">
+                    <div class="icon-box" style="background: rgba(255,0,0,0.2); font-size:2rem;">😈</div>
+                    <div style="text-align:left;"><div class="menu-title" style="color:#ff2a2a; text-shadow:0 0 5px red;">Іспит від коханого для коханої</div><div class="menu-desc" id="boss-desc" style="color:white;">Лише в неділю!</div></div>
                 </div>
                 <div class="menu-card" onclick="showSection('wheel')"><div class="icon-box bg-yellow">🎡</div><div class="menu-title">Рулетка</div></div>
                 <div class="menu-card" onclick="startMistakesMode()"><div class="icon-box bg-red">🧠</div><div class="menu-title">Помилки</div></div>
@@ -189,10 +178,7 @@
         <div id="dictionary" class="section">
             <div class="page-header"><h1 class="page-title">Словник 📖</h1></div>
             <div class="category-scroll" id="cat-filters">
-                <div class="cat-chip active" onclick="setCat('all', this)">Усі</div>
-                <div class="cat-chip" onclick="setCat('co', this)">😍 Компліменти</div>
-                <div class="cat-chip" onclick="setCat('cl', this)">👗 Одяг</div>
-                <div class="cat-chip" onclick="setCat('fo', this)">🍩 Смаколики</div>
+                <div class="cat-chip active" onclick="setCat('all', this)">Усі</div><div class="cat-chip" onclick="setCat('co', this)">😍 Компліменти</div><div class="cat-chip" onclick="setCat('cl', this)">👗 Одяг</div><div class="cat-chip" onclick="setCat('fo', this)">🍩 Смаколики</div><div class="cat-chip" onclick="setCat('bh', this)">🩺 Тіло</div><div class="cat-chip" onclick="setCat('p', this)">💬 Фрази</div>
             </div>
             <input type="text" id="dict-search" class="dict-search-input" placeholder="Пошук..." oninput="renderDictionary()">
             <div class="dict-grid" id="dict-grid"></div>
@@ -203,39 +189,57 @@
             <div id="shop-list" class="shop-list"></div>
         </div>
 
+        <div id="settings" class="section">
+            <div class="page-header"><h1 class="page-title">Опції ⚙️</h1></div>
+            <div class="question-box"><p style="font-size: 1rem; color:var(--text-muted); margin-bottom:10px;">Маєш секретний код? Вводь!</p><button class="btn btn-primary" onclick="enterPromo()">🎁 Ввести код</button></div>
+            <div class="question-box"><p style="font-size: 1rem; color:var(--text-muted); margin-bottom:10px;">Статистика та Профіль</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="showSection('profile')">📊 Статистика Киці</button></div>
+            <div class="question-box"><p style="font-size: 1rem; color:var(--text-muted); margin-bottom:10px;">Збереження прогресу</p><button class="btn" style="border:2px solid var(--primary); margin-bottom:10px;" onclick="exportProgress()">💾 Скопіювати прогрес</button><button class="btn" onclick="importProgress()">📂 Відновити прогрес</button></div>
+        </div>
+
         <div id="profile" class="section">
             <div class="page-header"><h1 class="page-title">Статистика Киці 📊</h1></div>
             <div class="question-box" style="text-align:left; font-size:1.1rem; line-height:2;">
-                <div>❤️ Ми разом: <span id="stats-days" style="color:var(--primary);">...</span> днів</div>
+                <div>❤️ Ми разом: <span id="stats-days" style="color:var(--primary); font-weight:900;">...</span> днів</div>
                 <div>🔥 Стрік (рекорд): <span id="stats-streak">...</span> дн.</div>
                 <div>🌟 Зірок за весь час: <span id="stats-total-xp">...</span></div>
                 <div>🎮 Зіграно ігор: <span id="stats-total-games">...</span></div>
-                <div>🎁 Куплено купонів: <span id="stats-total-shop">...</span></div>
+                <div>🎁 Куплено предметів: <span id="stats-total-shop">...</span></div>
             </div>
-            <button class="btn btn-primary" onclick="showSection('home')">Назад</button>
+            <button class="btn btn-primary" onclick="showSection('home')">Назад в меню</button>
         </div>
 
         <div id="wheel" class="section">
             <div class="page-header"><h1 class="page-title">Рулетка 🎡</h1></div>
-            <div class="wheel-pointer"></div>
-            <div class="wheel-container"><div class="wheel" id="spin-wheel">
-                <div class="wheel-text jackpot-glow" style="transform: translateX(-50%) rotate(18deg);">500</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(54deg);">20</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(90deg);">0</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(126deg);">20</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(162deg);">0</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(198deg);">20</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(234deg);">50</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(270deg);">100</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(306deg); font-size:1.5rem;">🍫</div>
-                <div class="wheel-text" style="transform: translateX(-50%) rotate(342deg); font-size:1.5rem;">🎁</div>
-            </div><div class="wheel-center">🌟</div></div>
+            <div style="position:relative; margin: 0 auto 20px;">
+                <div class="wheel-pointer"></div>
+                <div class="wheel-container">
+                    <div class="wheel" id="spin-wheel">
+                        <div class="wheel-text jackpot-glow" style="transform: translateX(-50%) rotate(18deg);">500</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(54deg);">20</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(90deg);">0</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(126deg);">20</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(162deg);">0</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(198deg);">20</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(234deg);">50</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(270deg);">100</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(306deg); font-size:1.5rem;">🍫</div>
+                        <div class="wheel-text" style="transform: translateX(-50%) rotate(342deg); font-size:1.5rem;">🎁</div>
+                    </div>
+                    <div class="wheel-center">🌟</div>
+                </div>
+            </div>
+            
             <div class="legend-box" id="wheel-legend"></div>
             <button class="btn btn-primary" id="spin-btn" onclick="spinWheel()">Крутити за 50 🌟</button>
         </div>
 
+        <div id="inventory" class="section"><div class="page-header"><h1 class="page-title">Купони 🎁</h1></div><div id="inv-list" class="shop-list"></div></div>
+        <div id="achievements" class="section"><div class="page-header"><h1 class="page-title">Досягнення 🏆</h1></div><div id="achiev-list" class="achiev-list"></div></div>
+        <div id="quiz-menu" class="section"><div class="page-header"><h1 class="page-title">Квіз 🎯</h1></div><div class="menu-grid"><div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div>Укр ➡️ Англ</div></div><div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div>Англ ➡️ Укр</div></div></div></div>
+        <div id="flashcards-menu" class="section"><div class="page-header"><h1 class="page-title">Картки 🗂️</h1></div><div class="menu-grid"><div class="menu-card" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue">🇬🇧</div><div>Англ ➡️ Укр</div></div><div class="menu-card" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow">🇺🇦</div><div>Укр ➡️ Англ</div></div></div></div>
+
         <div id="emoji-quiz" class="section"><div id="emoji-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="emoji-counter"></span><span id="emoji-score"></span></div><div class="question-box" id="emoji-question"></div><div class="options-grid grid-2" id="emoji-options"></div><button class="btn btn-primary" id="btn-next-emoji" style="display:none;margin-top:auto;" onclick="nextEmoji()">Далі</button></div><div class="result-screen" id="emoji-result"><h2>🤩 Готово!</h2><div class="result-score" id="emoji-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
-        <div id="truefalse" class="section"><div id="tf-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="tf-counter"></span><span id="tf-score"></span></div><div style="flex:1;display:flex;align-items:center;justify-content:center;"><div class="tf-card" id="tf-card"></div></div><div style="display:flex;gap:10px;margin-top:auto;"><button class="btn bg-red" onclick="checkTfSwipe(false)">❌ Брехня</button><button class="btn bg-green" onclick="checkTfSwipe(true)">✅ Правда</button></div></div><div class="result-screen" id="tf-result"><h2>⚖️ Готово!</h2><div class="result-score" id="tf-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
+        <div id="truefalse" class="section"><div id="tf-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="tf-counter"></span><span id="tf-score"></span></div><div style="position:relative; flex:1; display:flex; align-items:center; justify-content:center;"><div style="position:absolute; top:-20px; font-weight:700; color:var(--text-muted);">👈 Брехня | Правда 👉</div><div class="tf-card" id="tf-card"></div></div><div style="display:flex;gap:10px;margin-top:auto;"><button class="btn bg-red" onclick="checkTfSwipe(false)">❌ Брехня</button><button class="btn bg-green" onclick="checkTfSwipe(true)">✅ Правда</button></div></div><div class="result-screen" id="tf-result"><h2>⚖️ Готово!</h2><div class="result-score" id="tf-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
         <div id="constructor" class="section"><div id="const-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="const-counter"></span><span id="const-score"></span></div><div class="question-box" id="const-question"></div><div class="const-target" id="const-target"></div><div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:auto;" id="const-words"></div><button class="btn btn-primary" id="btn-next-const" style="display:none;margin-top:20px;" onclick="nextConst()">Далі</button></div><div class="result-screen" id="const-result"><h2>🧩 Геній!</h2><div class="result-score" id="const-final"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
         <div id="quiz" class="section"><div id="quiz-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="quiz-counter"></span><span id="quiz-score"></span></div><div class="question-box" id="quiz-question"></div><div class="options-grid" id="quiz-options"></div><button class="btn btn-primary" id="btn-next-quiz" style="display:none;margin-top:auto;" onclick="nextQuizQuestion()">Далі</button></div><div class="result-screen" id="quiz-result"><h2>🎯 Готово!</h2><div class="result-score" id="final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
         <div id="listening" class="section"><div id="listen-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="listen-counter"></span><span id="listen-score"></span></div><div class="question-box"><div style="margin-bottom:15px;">Слухай:</div><div style="display:flex; justify-content:center; gap:10px;"><button class="btn bg-blue" onclick="playWordAudio('us', event)">🇺🇸 US</button><button class="btn bg-yellow" onclick="playWordAudio('uk', event)">🇬🇧 UK</button></div></div><div class="options-grid" id="listen-options"></div><button class="btn btn-primary" id="btn-next-listen" style="display:none;margin-top:auto;" onclick="nextListenQuestion()">Далі</button></div><div class="result-screen" id="listen-result"><h2>🎧 Готово!</h2><div class="result-score" id="listen-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
@@ -244,11 +248,6 @@
         <div id="sprint" class="section"><div id="sprint-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span>⏱️ <span id="sprint-time-text"></span>с</span><span id="sprint-score-text"></span></div><div style="height:12px;background:var(--bg);border-radius:10px;margin-bottom:15px;"><div id="sprint-bar" style="height:100%;background:var(--correct);transition:width 1s linear;"></div></div><div class="question-box" id="sprint-question"></div><div class="options-grid" id="sprint-options"></div></div><div class="result-screen" id="sprint-result"><h2>⏱ Час вийшов!</h2><div class="result-score" id="sprint-final-score"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
         <div id="hangman" class="section"><div id="hm-active" style="display:flex;flex-direction:column;height:100%;"><div class="status-bar"><span id="hm-counter"></span><span id="hm-lives-text" style="color:var(--wrong);"></span></div><div class="question-box" id="hm-question"></div><div style="display:flex;justify-content:center;gap:6px;margin-bottom:20px;flex-wrap:wrap;" id="hm-slots"></div><div style="display:flex;justify-content:center;gap:6px;margin-top:auto;flex-wrap:wrap;" id="hm-keyboard"></div></div><div class="result-screen" id="hm-result"><h2 id="hm-result-title"></h2><div class="result-score" id="hm-final-word"></div><button class="btn btn-primary" onclick="showSection('home')">В меню</button></div></div>
         <div id="flashcards" class="section"><div class="status-bar"><span id="fc-counter"></span></div><div style="flex:1;display:flex;align-items:center;justify-content:center;perspective:1000px;" onclick="flipCard()"><div id="flashcard" style="width:100%;max-width:300px;height:350px;position:relative;transition:transform 0.4s;transform-style:preserve-3d;cursor:pointer;"><div id="fc-front" style="position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card-bg);border-radius:24px;font-weight:800;font-size:1.8rem;box-shadow:0 10px 30px rgba(0,0,0,0.08);color:var(--text-main);"></div><div id="fc-back" style="position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);border:2px solid var(--primary);border-radius:24px;font-weight:800;font-size:1.8rem;color:var(--primary);transform:rotateY(180deg);"></div></div></div><div style="display:flex;gap:10px; margin-top:20px;"><button class="btn" onclick="prevCard()">Назад</button><button class="btn btn-primary" onclick="nextCard()">Далі</button></div></div>
-        <div id="settings" class="section"><div class="page-header"><h1 class="page-title">Опції ⚙️</h1></div><div class="question-box"><button class="btn btn-primary" onclick="enterPromo()">🎁 Ввести промокод</button></div><div class="question-box"><button class="btn" style="border:2px solid var(--primary); margin-bottom:10px;" onclick="exportProgress()">💾 Копіювати прогрес</button><button class="btn" onclick="importProgress()">📂 Відновити</button></div></div>
-        <div id="inventory" class="section"><div class="page-header"><h1 class="page-title">Купони 🎁</h1></div><div id="inv-list" class="shop-list"></div></div>
-        <div id="achievements" class="section"><div class="page-header"><h1 class="page-title">Досягнення 🏆</h1></div><div id="achiev-list" class="achiev-list"></div></div>
-        <div id="quiz-menu" class="section"><div class="page-header"><h1 class="page-title">Квіз 🎯</h1></div><div class="menu-grid"><div class="menu-card" onclick="startQuiz('uk-en')"><div class="icon-box bg-blue">🇺🇦</div><div>Укр ➡️ Англ</div></div><div class="menu-card" onclick="startQuiz('en-uk')"><div class="icon-box bg-yellow">🇬🇧</div><div>Англ ➡️ Укр</div></div></div></div>
-        <div id="flashcards-menu" class="section"><div class="page-header"><h1 class="page-title">Картки 🗂️</h1></div><div class="menu-grid"><div class="menu-card" onclick="startFlashcards('en-uk')"><div class="icon-box bg-blue">🇬🇧</div><div>Англ ➡️ Укр</div></div><div class="menu-card" onclick="startFlashcards('uk-en')"><div class="icon-box bg-yellow">🇺🇦</div><div>Укр ➡️ Англ</div></div></div></div>
 
         <div id="boss" class="section">
             <div id="boss-active" style="display: flex; flex-direction: column; height: 100%;">
@@ -273,11 +272,11 @@
     </nav>
 </div>
 <script>
-    // --- 1. СЛОВНИК І МАСИВИ (СТИСНУТІ) ---
-    const baseVocabulary=[{en:"Gorgeous",uk:"Розкішна",em:"😻",c:"co"},{en:"Smart",uk:"Розумна",em:"🧠",c:"co"},{en:"Funny",uk:"Смішна",em:"😂",c:"co"},{en:"Cute",uk:"Мила",em:"🥺",c:"co"},{en:"Perfect",uk:"Ідеальна",em:"✨",c:"co"},{en:"Stunning",uk:"Приголомшлива",em:"🤩",c:"co"},{en:"Shirt",uk:"Сорочка",em:"👕",c:"cl"},{en:"Dress",uk:"Сукня",em:"👗",c:"cl"},{en:"Hat",uk:"Шапка",em:"👒",c:"cl"},{en:"Socks",uk:"Шкарпетки",em:"🧦",c:"cl"},{en:"Pants",uk:"Штани",em:"👖",c:"cl"},{en:"Jacket",uk:"Куртка",em:"🧥",c:"cl"},{en:"Skirt",uk:"Спідниця",em:"👗",c:"cl"},{en:"Shoes",uk:"Взуття",em:"👟",c:"cl"},{en:"Coat",uk:"Пальто",em:"🧥",c:"cl"},{en:"Scarf",uk:"Шарф",em:"🧣",c:"cl"},{en:"Because",uk:"Тому що",em:"❓",c:"p"},{en:"But",uk:"Але",em:"☝️",c:"p"},{en:"Or",uk:"Або",em:"🔁",c:"p"},{en:"With",uk:"З",em:"➕",c:"p"},{en:"For",uk:"Для",em:"🎁",c:"p"},{en:"In",uk:"В",em:"📥",c:"p"},{en:"On",uk:"На",em:"🔝",c:"p"},{en:"Under",uk:"Під",em:"👇",c:"p"},{en:"Today",uk:"Сьогодні",em:"📅",c:"p"},{en:"Tomorrow",uk:"Завтра",em:"⏭️",c:"p"},{en:"Always",uk:"Завжди",em:"♾️",c:"p"},{en:"Never",uk:"Ніколи",em:"🚫",c:"p"},{en:"Fast",uk:"Швидко",em:"⚡",c:"p"},{en:"Slow",uk:"Повільно",em:"🐢",c:"p"},{en:"Very",uk:"Дуже",em:"‼️",c:"p"},{en:"Cake",uk:"Торт",em:"🍰",c:"fo"},{en:"Chocolate",uk:"Шоколад",em:"🍫",c:"fo"},{en:"Ice cream",uk:"Морозиво",em:"🍦",c:"fo"},{en:"Coffee",uk:"Кава",em:"☕",c:"fo"},{en:"Candy",uk:"Цукерка",em:"🍬",c:"fo"},{en:"Sweets",uk:"Солодощі",em:"🍭",c:"fo"},{en:"Lips",uk:"Губи",em:"👄",c:"bh"},{en:"Hands",uk:"Руки",em:"🤲",c:"bh"},{en:"Hair",uk:"Волосся",em:"💇‍♀️",c:"bh"},{en:"Hug",uk:"Обійми",em:"🫂",c:"bh"},{en:"Grass",uk:"Трава",em:"🌿",c:"n"},{en:"Tree",uk:"Дерево",em:"🌳",c:"n"},{en:"Flower",uk:"Квітка",em:"🌸",c:"n"},{en:"Stick",uk:"Палиця",em:"🪵",c:"n"},{en:"Sun",uk:"Сонце",em:"☀️",c:"n"},{en:"Moon",uk:"Місяць",em:"🌙",c:"n"},{en:"Star",uk:"Зірка",em:"⭐",c:"n"},{en:"Cloud",uk:"Хмара",em:"☁️",c:"n"},{en:"Sky",uk:"Небо",em:"🌌",c:"n"},{en:"Talk",uk:"Розмовляти",em:"🗣️",c:"a"},{en:"Speak",uk:"Говорити",em:"🎙️",c:"a"},{en:"Tell",uk:"Розповідати",em:"💬",c:"a"},{en:"Joke",uk:"Жарт",em:"😂",c:"a"},{en:"Eat",uk:"Їсти",em:"🍽️",c:"a"},{en:"Drink",uk:"Пити",em:"🥤",c:"a"},{en:"Go",uk:"Йти",em:"🚶‍♀️",c:"a"},{en:"Come",uk:"Приходити",em:"🏃‍♀️",c:"a"},{en:"Make",uk:"Робити",em:"🛠️",c:"a"},{en:"Take",uk:"Брати",em:"🤲",c:"a"},{en:"Give",uk:"Давати",em:"🎁",c:"a"},{en:"See",uk:"Бачити",em:"👁️",c:"a"},{en:"Watch",uk:"Спостерігати",em:"📺",c:"a"},{en:"Look",uk:"Дивитися",em:"🔭",c:"a"},{en:"Buy",uk:"Купувати",em:"🛍️",c:"a"},{en:"Sell",uk:"Продавати",em:"💵",c:"a"},{en:"Sold",uk:"Продано",em:"✅",c:"a"},{en:"Sink",uk:"Тонути",em:"⚓",c:"a"},{en:"Think",uk:"Думати",em:"🤔",c:"a"},{en:"Love",uk:"Любити",em:"❤️",c:"f"},{en:"Kiss",uk:"Цілувати",em:"💋",c:"f"},{en:"Smile",uk:"Посмішка",em:"😊",c:"f"},{en:"Want",uk:"Хотіти",em:"🥺",c:"f"},{en:"Need",uk:"Потребувати",em:"🆘",c:"f"},{en:"Like",uk:"Подобатися",em:"❤️",c:"f"},{en:"Miss",uk:"Сумувати",em:"😢",c:"f"},{en:"Care",uk:"Піклуватися",em:"🫶",c:"f"},{en:"Trust",uk:"Довіряти",em:"🤞",c:"f"},{en:"Feel",uk:"Відчувати",em:"💓",c:"f"},{en:"Touch",uk:"Торкатися",em:"👆",c:"f"},{en:"Hold",uk:"Тримати",em:"🤝",c:"f"},{en:"Eyes",uk:"Очі",em:"👀",c:"h"},{en:"Salt",uk:"Сіль",em:"🧂",c:"h"},{en:"Small",uk:"Маленький",em:"🤏",c:"h"},{en:"Big",uk:"Великий",em:"🐘",c:"h"},{en:"Cool",uk:"Крутий",em:"😎",c:"h"},{en:"Good",uk:"Хороший",em:"👍",c:"h"},{en:"Kind",uk:"Добрий",em:"😇",c:"h"},{en:"Cold",uk:"Холодний",em:"❄️",c:"h"},{en:"Hot",uk:"Гарячий",em:"🔥",c:"h"},{en:"Children",uk:"Діти",em:"👶",c:"h"},{en:"Family",uk:"Сім'я",em:"🏡",c:"h"},{en:"Mirror",uk:"Дзеркало",em:"🪞",c:"h"},{en:"Error",uk:"Помилка",em:"❌",c:"h"},{en:"Phone",uk:"Телефон",em:"📱",c:"h"},{en:"House",uk:"Будинок",em:"🏠",c:"h"},{en:"Flat",uk:"Квартира",em:"🏢",c:"h"},{en:"Bed",uk:"Ліжко",em:"🛏️",c:"h"},{en:"Bad",uk:"Поганий",em:"👎",c:"h"},{en:"Bedroom",uk:"Спальня",em:"🛌",c:"h"},{en:"Sweet",uk:"Солодкий",em:"🍬",c:"h"},{en:"Let's",uk:"Давай",em:"🤝",c:"p"},{en:"About",uk:"Про",em:"ℹ️",c:"p"},{en:"Something",uk:"Щось",em:"📦",c:"p"},{en:"I am",uk:"Я (є)",em:"🙋‍♀️",c:"p"},{en:"We are",uk:"Ми (є)",em:"👫",c:"p"},{en:"You are",uk:"Ти (є)",em:"🫵",c:"p"},{en:"They are",uk:"Вони (є)",em:"👨‍👩‍👦",c:"p"},{en:"He is",uk:"Він (є)",em:"👨",c:"p"},{en:"She is",uk:"Вона (є)",em:"👩",c:"p"},{en:"It is",uk:"Воно (є)",em:"🤖",c:"p"},{en:"Close",uk:"Близько",em:"🤏",c:"p"},{en:"Together",uk:"Разом",em:"💞",c:"p"},{en:"Forever",uk:"Назавжди",em:"♾️",c:"p"},{en:"Beautiful",uk:"Красива",em:"😍",c:"p"}];
+    // --- 1. СЛОВНИК І МАСИВИ ---
+    const baseVocabulary=[{en:"Gorgeous",uk:"Розкішна",em:"😻",c:"co"},{en:"Smart",uk:"Розумна",em:"🧠",c:"co"},{en:"Funny",uk:"Смішна",em:"😂",c:"co"},{en:"Cute",uk:"Мила",em:"🥺",c:"co"},{en:"Perfect",uk:"Ідеальна",em:"✨",c:"co"},{en:"Stunning",uk:"Приголомшлива",em:"🤩",c:"co"},{en:"Shirt",uk:"Сорочка",em:"👕",c:"cl"},{en:"Dress",uk:"Сукня",em:"👗",c:"cl"},{en:"Hat",uk:"Шапка",em:"👒",c:"cl"},{en:"Socks",uk:"Шкарпетки",em:"🧦",c:"cl"},{en:"Pants",uk:"Штани",em:"👖",c:"cl"},{en:"Jacket",uk:"Куртка",em:"🧥",c:"cl"},{en:"Skirt",uk:"Спідниця",em:"👗",c:"cl"},{en:"Shoes",uk:"Взуття",em:"👟",c:"cl"},{en:"Coat",uk:"Пальто",em:"🧥",c:"cl"},{en:"Scarf",uk:"Шарф",em:"🧣",c:"cl"},{en:"Because",uk:"Тому що",em:"❓",c:"p"},{en:"But",uk:"Але",em:"☝️",c:"p"},{en:"Or",uk:"Або",em:"🔁",c:"p"},{en:"With",uk:"З",em:"➕",c:"p"},{en:"For",uk:"Для",em:"🎁",c:"p"},{en:"In",uk:"В",em:"📥",c:"p"},{en:"On",uk:"На",em:"🔝",c:"p"},{en:"Under",uk:"Під",em:"👇",c:"p"},{en:"Today",uk:"Сьогодні",em:"📅",c:"p"},{en:"Tomorrow",uk:"Завтра",em:"⏭️",c:"p"},{en:"Always",uk:"Завжди",em:"♾️",c:"p"},{en:"Never",uk:"Ніколи",em:"🚫",c:"p"},{en:"Fast",uk:"Швидко",em:"⚡",c:"p"},{en:"Slow",uk:"Повільно",em:"🐢",c:"p"},{en:"Very",uk:"Дуже",em:"‼️",c:"p"},{en:"Cake",uk:"Торт",em:"🍰",c:"fo"},{en:"Chocolate",uk:"Шоколад",em:"🍫",c:"fo"},{en:"Ice cream",uk:"Морозиво",em:"🍦",c:"fo"},{en:"Coffee",uk:"Кава",em:"☕",c:"fo"},{en:"Candy",uk:"Цукерка",em:"🍬",c:"fo"},{en:"Sweets",uk:"Солодощі",em:"🍭",c:"fo"},{en:"Lips",uk:"Губи",em:"👄",c:"bh"},{en:"Hands",uk:"Руки",em:"🤲",c:"bh"},{en:"Hair",uk:"Волосся",em:"💇‍♀️",c:"bh"},{en:"Hug",uk:"Обійми",em:"🫂",c:"bh"},{en:"Grass",uk:"Трава",em:"🌿",c:"n"},{en:"Tree",uk:"Дерево",em:"🌳",c:"n"},{en:"Flower",uk:"Квітка",em:"🌸",c:"n"},{en:"Stick",uk:"Палиця",em:"🪵",c:"n"},{en:"Sun",uk:"Сонце",em:"☀️",c:"n"},{en:"Moon",uk:"Місяць",em:"🌙",c:"n"},{en:"Star",uk:"Зірка",em:"⭐",c:"n"},{en:"Cloud",uk:"Хмара",em:"☁️",c:"n"},{en:"Sky",uk:"Небо",em:"🌌",c:"n"},{en:"Talk",uk:"Розмовляти",em:"🗣️",c:"a"},{en:"Speak",uk:"Говорити",em:"🎙️",c:"a"},{en:"Tell",uk:"Розповідати",em:"💬",c:"a"},{en:"Joke",uk:"Жарт",em:"😂",c:"a"},{en:"Eat",uk:"Їсти",em:"🍽️",c:"a"},{en:"Drink",uk:"Пити",em:"🥤",c:"a"},{en:"Go",uk:"Йти",em:"🚶‍♀️",c:"a"},{en:"Come",uk:"Приходити",em:"🏃‍♀️",c:"a"},{en:"Make",uk:"Робити",em:"🛠️",c:"a"},{en:"Take",uk:"Брати",em:"🤲",c:"a"},{en:"Give",uk:"Давати",em:"🎁",c:"a"},{en:"See",uk:"Бачити",em:"👁️",c:"a"},{en:"Watch",uk:"Спостерігати",em:"📺",c:"a"},{en:"Look",uk:"Дивитися",em:"🔭",c:"a"},{en:"Buy",uk:"Купувати",em:"🛍️",c:"a"},{en:"Sell",uk:"Продавати",em:"💵",c:"a"},{en:"Sold",uk:"Продано",em:"✅",c:"a"},{en:"Sink",uk:"Тонути",em:"⚓",c:"a"},{en:"Think",uk:"Думати",em:"🤔",c:"a"},{en:"Love",uk:"Любити",em:"❤️",c:"f"},{en:"Kiss",uk:"Цілувати",em:"💋",c:"f"},{en:"Smile",uk:"Посмішка",em:"😊",c:"f"},{en:"Want",uk:"Хотіти",em:"🥺",c:"f"},{en:"Need",uk:"Потребувати",em:"🆘",c:"f"},{en:"Like",uk:"Подобатися",em:"❤️",c:"f"},{en:"Miss",uk:"Сумувати",em:"😢",c:"f"},{en:"Care",uk:"Піклуватися",em:"🫶",c:"f"},{en:"Trust",uk:"Довіряти",em:"🤞",c:"f"},{en:"Feel",uk:"Відчувати",em:"💓",c:"f"},{en:"Touch",uk:"Торкатися",em:"👆",c:"f"},{en:"Hold",uk:"Тримати",em:"🤝",c:"f"}];
     const sentences=[{en:"I love you forever",uk:"Я кохаю тебе назавжди"},{en:"We are together",uk:"Ми разом"},{en:"You are beautiful",uk:"Ти красива"},{en:"Give me a kiss",uk:"Дай мені поцілунок"},{en:"I miss you",uk:"Я сумую за тобою"},{en:"Hold me close",uk:"Тримай мене міцно"},{en:"You make me smile",uk:"Ти змушуєш мене посміхатися"},{en:"I want to hug you",uk:"Я хочу обійняти тебе"},{en:"You are my everything",uk:"Ти моє все"}];
-    const catTips=["Мяу! Після 'love' дієслово йде з -ing. I love kissing you 😘","Ти - мій crush назавжди! ❤️","Артикль 'the' ставиться перед унікальними речами.","Ніколи не здавайся! Твоя англійська вже звучить чудово 👑","Знаєш як сказати 'Я сумую'? I miss you. 🥺","Слово 'Sweet' означає солодкий. А ти в мене - the sweetest! 🍬","В англійській мові немає слова 'кохаю', є тільки 'love'. 🥰","Дієслово 'to be' дуже важливе. I am happy with you! 😊","Якщо втомилася, просто покрути рулетку! 🍫"];
-    const compliments=["Ти сьогодні неймовірна! ✨","Моя найрозумніша дівчинка 🥰","Пишаюся тобою ❤️","Твоя посмішка - найкраща 😍","Твоя наполегливість вражає! 🚀","Кохаю тебе безмежно 💖","Кохаю тебе дужче🤗","Моя манюня😊","Моє серденько ❤️","Кохаю тебе кицюня😘","Ти моє найбільше натхнення 🌸"];
+    const catTips=["Мяу! Ти сьогодні просто сяєш! ✨","Ти - мій головний приз у цьому житті! ❤️","Оля - найкраща дівчинка на світі! Мурр.. 🥰","Твоя англійська стає все кращою! 👑","Кицику, не забудь усміхнутися! 😊","Сумуєш за Юрою? Він теж дуууже сумує! 🥺","Покрути рулетку, Юра замовив тобі приз! 🎁","Я тут, щоб оберігати твій прогрес! 🐾","Твоя посмішка дорожча за всі зірочки! 😍"];
+    const compliments=["Ти сьогодні неймовірна! ✨","Моя найрозумніша дівчинка 🥰","Пишаюся тобою ❤️","Твоя посмішка - найкраща 😍","Кохаю тебе безмежно 💖","Моя манюня😊","Моє серденько ❤️","Кохаю тебе кицюня😘"];
     const alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
     
     // МАГАЗИН І АЧІВКИ
@@ -288,8 +287,7 @@
 
     // --- 2. СТАН ДОДАТКУ ---
     let totalXP=parseInt(localStorage.getItem('totalXP'))||0; let lifetimeXP=parseInt(localStorage.getItem('lifetimeXP'))||0; let currentStreak=parseInt(localStorage.getItem('streak'))||0; let lastLogin=localStorage.getItem('lastLogin')||''; let bestSprint=parseInt(localStorage.getItem('sprintRecord'))||0; let mistakeWords=JSON.parse(localStorage.getItem('userMistakes'))||[]; let inventory=JSON.parse(localStorage.getItem('userInventory'))||[]; let achievs=JSON.parse(localStorage.getItem('achievs'))||{}; let usedCodes=JSON.parse(localStorage.getItem('usedCodes'))||[]; let userStats=JSON.parse(localStorage.getItem('userStats'))||{purchases:0,flippedCards:0,dictOpens:0,totalGames:0}; let dailyGoals=JSON.parse(localStorage.getItem('dailyGoals'))||null; let dailyProg=JSON.parse(localStorage.getItem('dailyProg'))||{games:0,flash:0,emoji:0,pairs:0,quiz_score:0,spell:0,sprint:0,perfect:0,clean_hm:0,g1Done:false,g2Done:false,g3Done:false}; let currentCat='all'; let lastBoxDate=localStorage.getItem('lastBoxDate')||0; let consecutiveErrors=0; let synth=window.speechSynthesis; let voices=[]; let audioUnlocked=false;
-</script>
-<script>    
+    
     // --- 3. СИСТЕМНІ ФУНКЦІЇ ---
     function unlockAudio(){if(audioUnlocked)return; audioUnlocked=true; if(synth&&synth.paused)synth.resume(); synth.speak(new SpeechSynthesisUtterance(""));}
     function speak(text,accent,e){if(e)e.stopPropagation(); synth.cancel(); setTimeout(()=>{let u=new SpeechSynthesisUtterance(text); u.lang=accent==='us'?'en-US':'en-GB'; u.rate=0.85; synth.speak(u);},50);}
@@ -309,16 +307,37 @@
     function initGamification(){
         const d=new Date(); const today=d.toDateString();
         document.getElementById('compliment-text').textContent=compliments[Math.floor(Math.random()*compliments.length)];
+        
+        // Бос Неділя
         if(d.getDay()===0){const bb=document.getElementById('boss-btn'); bb.style.filter='none'; bb.style.pointerEvents='auto'; document.getElementById('boss-desc').textContent="Відкрито! 😈"; document.getElementById('boss-desc').style.color="#ff4444";}
+        
+        // Слово дня
         const dayOfYear=Math.floor((d-new Date(d.getFullYear(),0,0))/86400000); const wod=baseVocabulary[dayOfYear%baseVocabulary.length]; document.getElementById('wod-en').textContent=wod.en; document.getElementById('wod-uk').textContent=wod.uk;
+        
+        // Дні разом
         const diff=Math.floor((d-new Date('2025-05-16'))/86400000); document.getElementById('stats-days').textContent=diff>0?diff:0;
+        
         if(!dailyGoals||!dailyGoals[0]){dailyGoals=[goalPool.easy[Math.floor(Math.random()*goalPool.easy.length)],goalPool.medium[Math.floor(Math.random()*goalPool.medium.length)],goalPool.hard[Math.floor(Math.random()*goalPool.hard.length)]]; localStorage.setItem('dailyGoals',JSON.stringify(dailyGoals));}
-        if(lastLogin!==today){if(lastLogin!==''){const diffDays=Math.ceil(Math.abs(d-new Date(lastLogin))/86400000); if(diffDays>=3)checkAchiev('sleeping_beauty');} const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1); if(lastLogin===yesterday.toDateString()){currentStreak++;}else if(lastLogin!==''){currentStreak=1;}else{currentStreak=1;} lastLogin=today; dailyGoals=[goalPool.easy[Math.floor(Math.random()*goalPool.easy.length)],goalPool.medium[Math.floor(Math.random()*goalPool.medium.length)],goalPool.hard[Math.floor(Math.random()*goalPool.hard.length)]]; dailyProg={games:0,flash:0,emoji:0,pairs:0,quiz_score:0,spell:0,sprint:0,perfect:0,clean_hm:0,g1Done:false,g2Done:false,g3Done:false}; localStorage.setItem('dailyGoals',JSON.stringify(dailyGoals)); localStorage.setItem('lastLogin',lastLogin); localStorage.setItem('streak',currentStreak); localStorage.setItem('dailyProg',JSON.stringify(dailyProg));}
+        
+        if(lastLogin!==today){
+            let isFreezeUsed = false;
+            if(lastLogin!==''){
+                const diffDays=Math.ceil(Math.abs(d-new Date(lastLogin))/86400000); 
+                if(diffDays>=3)checkAchiev('sleeping_beauty');
+                if(diffDays>=2) {
+                    const fIdx = inventory.findIndex(x=>x.id==='freeze');
+                    if(fIdx !== -1) { inventory.splice(fIdx,1); localStorage.setItem('userInventory',JSON.stringify(inventory)); isFreezeUsed = true; }
+                }
+            } 
+            const yesterday=new Date(); yesterday.setDate(yesterday.getDate()-1); 
+            if(lastLogin===yesterday.toDateString()){currentStreak++;}else if(lastLogin!=='' && isFreezeUsed){alert("Твій стрік був врятований 'Заморозкою Стріку'! ❄️");}else{currentStreak=1;} 
+            
+            lastLogin=today; dailyGoals=[goalPool.easy[Math.floor(Math.random()*goalPool.easy.length)],goalPool.medium[Math.floor(Math.random()*goalPool.medium.length)],goalPool.hard[Math.floor(Math.random()*goalPool.hard.length)]]; dailyProg={games:0,flash:0,emoji:0,pairs:0,quiz_score:0,spell:0,sprint:0,perfect:0,clean_hm:0,g1Done:false,g2Done:false,g3Done:false}; localStorage.setItem('dailyGoals',JSON.stringify(dailyGoals)); localStorage.setItem('lastLogin',lastLogin); localStorage.setItem('streak',currentStreak); localStorage.setItem('dailyProg',JSON.stringify(dailyProg));
+        }
         if(currentStreak>=3)checkAchiev('streak3');
         
-        // Малюємо легенду рулетки
-        const lb = document.getElementById('wheel-legend');
-        lb.innerHTML = `<div class="legend-item"><span style="color:#ff0055;">🔴 1% шанс</span><span style="font-weight:900;">Джекпот (500 🌟)</span></div><div class="legend-item"><span style="color:#a855f7;">🟣 9% шанс</span><span>Кіндер 🍫</span></div><div class="legend-item"><span style="color:#3b82f6;">🔵 10% шанс</span><span>+100 🌟</span></div><div class="legend-item"><span style="color:#10b981;">🟢 15% шанс</span><span>+50 🌟</span></div><div class="legend-item"><span style="color:#f59e0b;">🟡 30% шанс</span><span>+20 🌟</span></div><div class="legend-item"><span style="color:#94a3b8;">🪙 35% шанс</span><span>0 🌟 (Пустушка)</span></div>`;
+        // Легенда рулетки
+        document.getElementById('wheel-legend').innerHTML=`<div class="legend-item"><span style="color:#ff0055;">🔴 1% шанс</span><span style="font-weight:900;">Джекпот (500 🌟)</span></div><div class="legend-item"><span style="color:#a855f7;">🟣 9% шанс</span><span>Кіндер 🍫</span></div><div class="legend-item"><span style="color:#3b82f6;">🔵 10% шанс</span><span>+100 🌟</span></div><div class="legend-item"><span style="color:#10b981;">🟢 15% шанс</span><span>+50 🌟</span></div><div class="legend-item"><span style="color:#f59e0b;">🟡 30% шанс</span><span>+20 🌟</span></div><div class="legend-item"><span style="color:#94a3b8;">🪙 35% шанс</span><span>0 🌟 (Пустушка)</span></div>`;
         updateUI(); renderShop(); renderInventory(); renderAchievs();
     }
 
@@ -385,23 +404,17 @@
     let spinLock=false; let lastWheelDate=localStorage.getItem('lastWheelDate')||0;
     const wheelPrizes=[
         {type:'jackpot',val:'500',msg:'ДЖЕКПОТ! Масаж спини твій!',icon:'💆‍♀️',name:'Масаж (ДЖЕКПОТ)'},
-        {type:'item',val:'🍫',msg:'Виграш: Кіндер-сюрприз!',icon:'🍫',name:'Кіндер (Рулетка)'},
-        {type:'xp',val:100,msg:'КЛАС! +100 🌟!'},{type:'xp',val:50,msg:'+50 🌟! Ого!'},
-        {type:'xp',val:20,msg:'+20 🌟!'},{type:'xp',val:0,msg:'Пусто... 😢'},
-        {type:'xp',val:20,msg:'+20 🌟!'},{type:'xp',val:0,msg:'Пусто... 😢'},
-        {type:'xp',val:20,msg:'+20 🌟!'},{type:'xp',val:0,msg:'Пусто... 😢'}
+        {type:'xp',val:20,msg:'+20 🌟!'},{type:'xp',val:0,msg:'Пусто... 😢'},{type:'xp',val:20,msg:'+20 🌟!'},{type:'xp',val:0,msg:'Пусто... 😢'},{type:'xp',val:20,msg:'+20 🌟!'},
+        {type:'xp',val:50,msg:'+50 🌟! Ого!'},{type:'xp',val:100,msg:'КЛАС! +100 🌟!'},{type:'item',val:'🍫🍬',msg:'Виграш: Солодощі!',icon:'🍬',name:'Смаколики (Рулетка)'},{type:'item',val:'🎁',msg:'Виграш: Сюрприз!',icon:'🎁',name:'Подарунок (Рулетка)'}
     ];
 
     function spinWheel(){
         if(spinLock)return; if(totalXP<50){alert("Бракує зірочок!"); return;} addXP(-50); spinLock=true;
         const wheel=document.getElementById('spin-wheel'); const r=Math.random(); let pIdx;
-        // 0:Джекпот(1%), 1:Кіндер(9%), 2:100xp(10%), 3:50xp(15%), 4,6,8:20xp(30%), 5,7,9:0xp(35%)
-        if(r<0.01)pIdx=0; else if(r<0.10)pIdx=1; else if(r<0.20)pIdx=2; else if(r<0.35)pIdx=3; else if(r<0.65)pIdx=[4,6,8][Math.floor(Math.random()*3)]; else pIdx=[5,7,9][Math.floor(Math.random()*3)];
-        
-        const targetDegree=(pIdx*36)+18; const spins=6; const currentRotation=parseFloat(wheel.dataset.rotation)||0; 
-        const nextRotation=currentRotation+(360-(currentRotation%360))+(360*spins)+(360-targetDegree);
+        // 0:Джекпот(1%), 8:Кіндер(9%), 7:100xp(10%), 6:50xp(15%), 1,3,5:20xp(30%), 2,4,9:0xp(35%)
+        if(r<0.01)pIdx=0; else if(r<0.10)pIdx=8; else if(r<0.20)pIdx=7; else if(r<0.35)pIdx=6; else if(r<0.65)pIdx=[1,3,5][Math.floor(Math.random()*3)]; else pIdx=[2,4,9][Math.floor(Math.random()*3)];
+        const targetDegree=(pIdx*36)+18; const spins=6; const currentRotation=parseFloat(wheel.dataset.rotation)||0; const nextRotation=currentRotation+(360-(currentRotation%360))+(360*spins)+(360-targetDegree);
         wheel.style.transform=`rotate(${nextRotation}deg)`; wheel.dataset.rotation=nextRotation;
-        
         setTimeout(()=>{
             const p=wheelPrizes[pIdx];
             if(p.type==='xp'){if(p.val>0)addXP(p.val); alert(p.msg);} 
@@ -410,14 +423,14 @@
         }, 4000);
     }
 
-    // БОС
+    // --- БОС ---
     let bQ=[], bIdx=0, bErr=3, bLock=false;
     function startBoss(){const voc=getVocab(); if(voc.length<50){alert("Мало слів для іспиту!"); return;} bQ=shuffleArray(voc).slice(0,50); bIdx=0; bErr=3; showSection('boss'); document.getElementById('boss-result').style.display='none'; document.getElementById('boss-active').style.display='flex'; loadBoss();}
     function drawBossHearts(){let h=""; for(let i=0;i<3;i++){h+=i<bErr?"❤️":"🖤";} document.getElementById('boss-errors').innerHTML=h;}
     function loadBoss(){bLock=false; let w=bQ[bIdx]; document.getElementById('boss-counter').textContent=`💀 Питання ${bIdx+1}/50`; drawBossHearts(); document.getElementById('boss-question-box').innerHTML=`<div style="font-size:3.5rem;margin-bottom:10px;">${w.em}</div>${w.uk}`; const opts=shuffleArray([w,...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('boss-options'); g.innerHTML=''; opts.forEach(o=>{const b=document.createElement('button'); b.className='option-btn'; b.textContent=o.en; b.onclick=(e)=>{if(bLock)return; bLock=true; const c=o.en===w.en; fireParticles(e.clientX,e.clientY,c); if(c){b.classList.add('correct'); setTimeout(()=>{bIdx++; if(bIdx<50)loadBoss(); else finishBoss(true);},300);}else{b.classList.add('wrong'); bErr--; drawBossHearts(); setTimeout(()=>{if(bErr<=0)finishBoss(false); else{bIdx++; if(bIdx<50)loadBoss(); else finishBoss(true);}},400);}}; g.appendChild(b);});}
     function finishBoss(win){document.getElementById('boss-active').style.display='none'; document.getElementById('boss-result').style.display='flex'; document.getElementById('boss-result-title').textContent=win?"Ти здолала Боса! 🎉":"Ти загинула... 💔"; if(win){document.getElementById('boss-result-desc').textContent="Ось твої +500 🌟 та Золотий купон!"; addXP(500); inventory.push({id:'boss_win',name:'🥇 Золотий купон',price:0,icon:'🥇',uid:Date.now()}); localStorage.setItem('userInventory',JSON.stringify(inventory)); checkAchiev('boss_killer');}else{document.getElementById('boss-result-desc').textContent="Життя скінчилися. Бос виявився сильнішим.";} renderInventory(); updateUI();}
 
-    function exportProgress(){const d={totalXP,lifetimeXP,currentStreak,bestSprint,dailyProg,mistakeWords,inventory,achievs,usedCodes,lastLogin,dailyGoals,userStats,lastWheelDate}; navigator.clipboard.writeText(btoa(unescape(encodeURIComponent(JSON.stringify(d))))).then(()=>alert("Скопійовано!"));}
+    function exportProgress(){const d={totalXP,lifetimeXP,currentStreak,bestSprint,dailyProg,mistakeWords,inventory,achievs,usedCodes,lastLogin,dailyGoals,userStats,lastBoxDate}; navigator.clipboard.writeText(btoa(unescape(encodeURIComponent(JSON.stringify(d))))).then(()=>alert("Скопійовано!"));}
     function importProgress(){const s=prompt("Код:"); if(!s)return; try{const d=JSON.parse(decodeURIComponent(escape(atob(s)))); if(d.totalXP!==undefined){localStorage.setItem('totalXP',d.totalXP); localStorage.setItem('lifetimeXP',d.lifetimeXP); localStorage.setItem('streak',d.currentStreak); localStorage.setItem('dailyProg',JSON.stringify(d.dailyProg)); localStorage.setItem('userMistakes',JSON.stringify(d.mistakeWords)); localStorage.setItem('userInventory',JSON.stringify(d.inventory)); localStorage.setItem('achievs',JSON.stringify(d.achievs)); localStorage.setItem('usedCodes',JSON.stringify(d.usedCodes)); alert("Прогрес відновлено!"); location.reload();}}catch(e){alert("Помилка коду!");}}
     let isDark=localStorage.getItem('theme')==='dark'; if(isDark)document.getElementById('app-container').classList.add('dark'); document.getElementById('theme-icon').textContent=isDark?'☀️':'🌙';
     function toggleTheme(){isDark=!isDark; document.getElementById('app-container').classList.toggle('dark'); document.getElementById('theme-icon').textContent=isDark?'☀️':'🌙'; localStorage.setItem('theme',isDark?'dark':'light');}
@@ -425,11 +438,10 @@
     let sprintTimerInterval=null;
     function showSection(id){clearInterval(sprintTimerInterval); document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); if(['home','dictionary','shop','settings'].includes(id)){document.querySelector(`.nav-item[onclick="showSection('${id}')"]`).classList.add('active');} window.scrollTo(0,0); if(id==='home'||id==='profile')document.getElementById('user-stats').style.display='flex'; else document.getElementById('user-stats').style.display='none'; if(id==='dictionary'){document.getElementById('dict-search').value=''; renderDictionary();} if(id==='inventory')renderInventory(); if(id==='shop')renderShop(); if(id==='profile')updateUI();}
 
-    function shuffleArray(a){return a.sort(()=>Math.random()-0.5);}
     let dictMode='en-uk'; function setDictMode(m){dictMode=m; renderDictionary();}
     function renderDictionary(){document.getElementById('btn-dict-en').className=dictMode==='en-uk'?'btn btn-primary':'btn'; document.getElementById('btn-dict-uk').className=dictMode==='uk-en'?'btn btn-primary':'btn'; const grid=document.getElementById('dict-grid'); grid.innerHTML=''; const q=document.getElementById('dict-search').value.toLowerCase().trim(); if(q==='love'||q==='кохаю'||q==='люблю'){document.getElementById('easter-egg').style.display='flex'; checkAchiev('love'); document.getElementById('dict-search').value=''; return;} let list=baseVocabulary.filter(w=>{const mQ=w.en.toLowerCase().includes(q)||w.uk.toLowerCase().includes(q); const mC=currentCat==='all'||w.c===currentCat; return mQ&&mC;}); list.sort((a,b)=>a.en.localeCompare(b.en)).forEach(w=>{const c=document.createElement('div'); c.className='dict-card'; const f=document.createElement('div'); f.className='dict-face'; const b=document.createElement('div'); b.className='dict-face dict-back'; const bEn=(el)=>{el.innerHTML=`<div style="font-size:1.8rem; margin-bottom:2px;">${w.em}</div><div>${w.en}</div><div style="margin-top:auto; display:flex; gap:10px; width:100%;"><button class="dict-audio-btn" onclick="speak('${w.en}','us',event)">🇺🇸 US</button><button class="dict-audio-btn" onclick="speak('${w.en}','uk',event)">🇬🇧 UK</button></div>`;}; if(dictMode==='en-uk'){bEn(f); b.innerHTML=`<div style="font-size:1.8rem; margin-bottom:2px;">${w.em}</div><div>${w.uk}</div>`;}else{f.innerHTML=`<div style="font-size:1.8rem; margin-bottom:2px;">${w.em}</div><div>${w.uk}</div>`; bEn(b);} c.innerHTML=`<div class="dict-card-inner"></div>`; c.firstChild.appendChild(f); c.firstChild.appendChild(b); c.onclick=()=>{c.classList.toggle('flipped'); dailyProg.flash++; checkGoals();}; grid.appendChild(c);});}
 
-    // --- 4. ВЛАСТИВО ІГРИ ---
+    // --- 4. ІГРИ (НЕОБРІЗАНІ) ---
     let emoQ=[],eIdx=0,eScore=0,eAns=false;
     function startEmojiQuiz(){const voc=getVocab(); if(voc.length<4){alert("Замало слів!"); return;} emoQ=shuffleArray(voc).slice(0,15); eIdx=0; eScore=0; showSection('emoji-quiz'); document.getElementById('emoji-result').style.display='none'; document.getElementById('emoji-active').style.display='flex'; loadEmo();}
     function loadEmo(){eAns=false; document.getElementById('btn-next-emoji').style.display='none'; let w=emoQ[eIdx]; document.getElementById('emoji-counter').textContent=`${eIdx+1}/${emoQ.length}`; document.getElementById('emoji-score').textContent=eScore; document.getElementById('emoji-question').innerHTML=`<div style="font-size: 4.5rem;">${w.em}</div><div style="font-size: 1.2rem; color: var(--text-muted);">${w.uk}</div>`; const opts=shuffleArray([w,...shuffleArray(baseVocabulary.filter(x=>x.en!==w.en)).slice(0,3)]); const g=document.getElementById('emoji-options'); g.innerHTML=''; opts.forEach(o=>{const b=document.createElement('button'); b.className='option-btn'; b.textContent=o.en; b.onclick=(e)=>{if(eAns)return; eAns=true; const c=o.en===w.en; fireParticles(e.clientX,e.clientY,c); document.querySelectorAll('#emoji-options .option-btn').forEach(btn=>{btn.disabled=true; if(btn.textContent===w.en)btn.classList.add('correct'); else if(btn===b&&!c)btn.classList.add('wrong');}); if(c){eScore++; addXP(1); registerCorrect();}else registerMistake(w); document.getElementById('emoji-score').textContent=eScore; document.getElementById('btn-next-emoji').style.display='block';}; g.appendChild(b);});}
